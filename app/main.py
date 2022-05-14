@@ -1,17 +1,16 @@
-from flask import jsonify,render_template
+from flask import jsonify, render_template
 from models import *
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def index(path):
-    return render_template('index.html')
+@app.route('/')
+def index():
+    return render_template('index.html', token="hello flask+react!")
 
 
-@app.route('/hoge-page', defaults={'path': ''})
-@app.route('/<path:path>')
-def hogePage(path):
-    return render_template('hoge.html')
+# @app.route('/hoge-page', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def hogePage(path):
+#     return render_template('hoge.html')
 
 
 @app.route("/test", methods=['GET'])
