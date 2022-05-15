@@ -7,12 +7,6 @@ def index():
     return render_template('index.html')
 
 
-# @app.route('/hoge-page', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def hogePage(path):
-#     return render_template('hoge.html')
-
-
 @app.route("/test", methods=['GET'])
 def getTest():
     musics = Music.query.all()
