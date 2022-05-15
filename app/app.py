@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 
-app = Flask("__main__")
+app = Flask(__name__)
 
 # config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'

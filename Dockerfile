@@ -11,7 +11,6 @@ RUN npm install -g n
 RUN n 16.14.2
 RUN apt purge -y nodejs npm
 RUN apt -y autoremove
-RUN npm install -g @vue/cli
 RUN npm install
 RUN npm run build
 
@@ -22,7 +21,7 @@ RUN pip install flask-marshmallow
 RUN pip install marshmallow-sqlalchemy
 RUN pip install Flask-Migrate
 
-ENV  FLASK_APP models.py
+ENV FLASK_APP models.py
 RUN flask db init
 RUN flask db migrate
 RUN flask db upgrade
