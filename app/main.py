@@ -4,7 +4,7 @@ from models import *
 
 @app.route('/')
 def index():
-    return render_template('index.html', token="hello flask+react!")
+    return render_template('index.html')
 
 
 # @app.route('/hoge-page', defaults={'path': ''})
