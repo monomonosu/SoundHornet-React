@@ -1,3 +1,5 @@
 /app/__pycache__
 /app/migrations
 /app/database/database.db
+/app/static/react/
+/app/templates
