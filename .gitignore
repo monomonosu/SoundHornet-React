@@ -2,4 +2,4 @@
 /app/migrations
 /app/database/database.db
 /app/static/react/
-/app/templates
+/app/templates/
