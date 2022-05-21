@@ -5,7 +5,7 @@ import './App.css';
 import { AppBar, Toolbar, IconButton, Typography, Button, Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from "react-router-dom";
-// import axios from "axios"
+import axios from "axios"
 
 function createData(
   name: string,
@@ -25,16 +25,16 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-// function getMusics(){
-//   const musics = axios.get("http://10.231.136.165:8080/test",{
-//   }).then(function(res) {
-//     console.log(res.data);
-//     alert(res.data.result);
-//     return res.data;
-//   });
-// }
+function getMusics() {
+  const musics = axios.get("http://10.231.136.165:8080/test", {
+  }).then(function (response) {
+    console.log(response.data);
+    return response.data;
+  });
+}
 
 function App() {
+  getMusics();
   return (
     <div className="App">
       <Box sx={{ flexGrow: 1 }}>
@@ -64,11 +64,11 @@ function App() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell style={{color:"#FFFFFF"}}>Dessert (100g serving)</TableCell>
-              <TableCell style={{color:"#FFFFFF"}} align="right">Calories</TableCell>
-              <TableCell style={{color:"#FFFFFF"}} align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell style={{color:"#FFFFFF"}} align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell style={{color:"#FFFFFF"}} align="right">Protein&nbsp;(g)</TableCell>
+              <TableCell style={{ color: "#FFFFFF" }}>Dessert (100g serving)</TableCell>
+              <TableCell style={{ color: "#FFFFFF" }} align="right">Calories</TableCell>
+              <TableCell style={{ color: "#FFFFFF" }} align="right">Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ color: "#FFFFFF" }} align="right">Carbs&nbsp;(g)</TableCell>
+              <TableCell style={{ color: "#FFFFFF" }} align="right">Protein&nbsp;(g)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
