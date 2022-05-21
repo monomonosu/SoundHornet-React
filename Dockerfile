@@ -20,6 +20,7 @@ RUN pip install flask-sqlalchemy
 RUN pip install flask-marshmallow 
 RUN pip install marshmallow-sqlalchemy
 RUN pip install Flask-Migrate
+RUN pip install flask-cors
 
 ENV FLASK_APP models.py
 RUN flask db init

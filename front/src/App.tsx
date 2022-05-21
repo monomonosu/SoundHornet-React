@@ -26,7 +26,7 @@ const rows = [
 ];
 
 function getMusics() {
-  const musics = axios.get("http://10.231.136.165:8080/test", {
+  const musics = axios.get("http://localhost:8080/test", {
   }).then(function (response) {
     console.log(response.data);
     return response.data;
@@ -60,35 +60,43 @@ function App() {
         <p>ここにジャケ画</p>
       </Box>
 
-      <TableContainer component={Paper} style={{ backgroundColor: "#0E0E0E" }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ color: "#FFFFFF" }}>Dessert (100g serving)</TableCell>
-              <TableCell style={{ color: "#FFFFFF" }} align="right">Calories</TableCell>
-              <TableCell style={{ color: "#FFFFFF" }} align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell style={{ color: "#FFFFFF" }} align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell style={{ color: "#FFFFFF" }} align="right">Protein&nbsp;(g)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid container spacing={2}>
+        <Grid item xs={1}>
+        </Grid>
+        <Grid item xs={10}>
+          <TableContainer component={Paper} style={{ backgroundColor: "#0E0E0E" }}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ color: "#FFFFFF" }}>Dessert (100g serving)</TableCell>
+                  <TableCell style={{ color: "#FFFFFF" }} align="right">Calories</TableCell>
+                  <TableCell style={{ color: "#FFFFFF" }} align="right">Fat&nbsp;(g)</TableCell>
+                  <TableCell style={{ color: "#FFFFFF" }} align="right">Carbs&nbsp;(g)</TableCell>
+                  <TableCell style={{ color: "#FFFFFF" }} align="right">Protein&nbsp;(g)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+                    <TableCell align="right">{row.calories}</TableCell>
+                    <TableCell align="right">{row.fat}</TableCell>
+                    <TableCell align="right">{row.carbs}</TableCell>
+                    <TableCell align="right">{row.protein}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        <Grid item xs={1}>
+        </Grid>
+      </Grid>
 
       <nav>
         <Link to="/invoices">Invoices</Link> |{" "}
