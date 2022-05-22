@@ -3,6 +3,9 @@ import { useState } from 'react';
 import './App.css';
 import { AppBar, Toolbar, IconButton, Typography, Button, Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import BackupIcon from '@mui/icons-material/Backup';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { Link } from "react-router-dom";
 import axios from "axios"
 import { Howl, Howler } from 'howler';
@@ -53,6 +56,19 @@ function App() {
             <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
               SoundHornet
             </Typography>
+            <Link to="/download">
+              <Button>
+                <YouTubeIcon fontSize="large" />
+              </Button>
+            </Link>
+            <Link to="/import">
+              <Button>
+                <BackupIcon fontSize="large" />
+              </Button>
+            </Link>
+            <Button>
+              <SettingsIcon fontSize="large" />
+            </Button>
           </Toolbar>
         </AppBar>
       </Box>
@@ -108,18 +124,6 @@ function App() {
         </Grid>
       </Grid>
 
-      <Grid container>
-        <Grid item xs>
-        </Grid>
-        <Grid item xs={11}>
-          <nav>
-            <Link to="/import">Import</Link> |{" "}
-            <Link to="/download">Download</Link>
-          </nav>
-        </Grid>
-        <Grid item xs>
-        </Grid>
-      </Grid>
     </div>
   );
 }
