@@ -5,6 +5,7 @@ import { AppBar, Toolbar, IconButton, Typography, Button, Box, Grid, Table, Tabl
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from "react-router-dom";
 import axios from "axios"
+import { Howl, Howler } from 'howler';
 
 
 type Music = {
@@ -17,6 +18,15 @@ type Music = {
 }
 
 function App() {
+  function PlaySound(music: Music) {
+    const filepath = 'static/musics/' + music.musicName + '.mp3';
+    console.log(music);
+    console.log(filepath);
+    const sound: Howl = new Howl({
+      src: [filepath],
+    });
+    sound.play();
+  }
   const [musics, setMusics] = useState<Music[]>([]);
   useEffect(() => {
     axios.get("http://localhost:8080/test")
@@ -71,7 +81,7 @@ function App() {
                   <TableRow
                     key={music.musicName}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={()=>console.log(music)}
+                    onClick={() => PlaySound(music)}
                   >
                     <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
                       {music.musicName}
