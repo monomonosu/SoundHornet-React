@@ -57,14 +57,22 @@ function App() {
         </AppBar>
       </Box>
 
-      <Box>
-        <p>ここにジャケ画</p>
-      </Box>
-
-      <Grid container spacing={2}>
-        <Grid item xs={1}>
+      <Grid container>
+        <Grid item xs>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={11}>
+          <Box>
+            <p>ここにジャケ画</p>
+          </Box>
+        </Grid>
+        <Grid item xs>
+        </Grid>
+      </Grid>
+
+      <Grid container>
+        <Grid item xs>
+        </Grid>
+        <Grid item xs={11}>
           <TableContainer component={Paper} style={{ backgroundColor: "#0E0E0E" }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -96,14 +104,22 @@ function App() {
             </Table>
           </TableContainer>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs>
         </Grid>
       </Grid>
 
-      <nav>
-        <Link to="/import">Import</Link> |{" "}
-        <Link to="/download">Download</Link>
-      </nav>
+      <Grid container>
+        <Grid item xs>
+        </Grid>
+        <Grid item xs={11}>
+          <nav>
+            <Link to="/import">Import</Link> |{" "}
+            <Link to="/download">Download</Link>
+          </nav>
+        </Grid>
+        <Grid item xs>
+        </Grid>
+      </Grid>
     </div>
   );
 }
