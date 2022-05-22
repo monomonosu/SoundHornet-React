@@ -71,6 +71,7 @@ function App() {
                   <TableRow
                     key={music.musicName}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    onClick={()=>console.log(music)}
                   >
                     <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
                       {music.musicName}
@@ -90,8 +91,8 @@ function App() {
       </Grid>
 
       <nav>
-        <Link to="/invoices">Invoices</Link> |{" "}
-        <Link to="/expenses">Expenses</Link>
+        <Link to="/import">Import</Link> |{" "}
+        <Link to="/download">Download</Link>
       </nav>
     </div>
   );

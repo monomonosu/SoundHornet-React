@@ -13,7 +13,8 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="expenses" element={<App2 />} />
+      <Route path="import" element={<App2 />} />
+      <Route path="download" element={<App2 />} />
     </Routes>
   </BrowserRouter>
 );
