@@ -49,7 +49,7 @@ function App() {
     <div className="App">
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
-          <Toolbar style={{ backgroundColor: "#0A0A0A" }}>
+          <Toolbar style={{ backgroundColor: "#161B22" }}>
             <IconButton
               size="large"
               edge="start"
@@ -103,7 +103,7 @@ function App() {
         <Grid item xs>
         </Grid>
         <Grid item xs={11}>
-          <TableContainer component={Paper} style={{ backgroundColor: "#0E0E0E" }}>
+          <TableContainer component={Paper} style={{ backgroundColor: "#161B22" }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
