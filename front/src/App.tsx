@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import './App.css';
-import { AppBar, Toolbar, IconButton, Typography, Button, Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import {
+  AppBar, Toolbar, IconButton, Typography, Button, Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Drawer, List
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import BackupIcon from '@mui/icons-material/Backup';
@@ -30,7 +32,11 @@ function App() {
     });
     sound.play();
   }
+  const drawerOpen = () => {
+    setIsOpenDrawer(!isOpenDrawer);
+  }
   const [musics, setMusics] = useState<Music[]>([]);
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false)
   useEffect(() => {
     axios.get("http://localhost:8080/test")
       .then((response) => {
@@ -50,8 +56,16 @@ function App() {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
+              onClick={drawerOpen}
             >
               <MenuIcon />
+              <Drawer
+                anchor="left"
+                open={isOpenDrawer}
+                onClose={drawerOpen}
+              >
+                <Button>aaaa</Button>
+              </Drawer>
             </IconButton>
             <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
               SoundHornet
@@ -124,7 +138,7 @@ function App() {
         </Grid>
       </Grid>
 
-    </div>
+    </div >
   );
 }
 
