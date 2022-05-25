@@ -1,3 +1,5 @@
+from email.policy import default
+from fileinput import filename
 from xml.etree.ElementInclude import include
 from app import db, app, migrate, ma
 from datetime import datetime
@@ -17,7 +19,7 @@ class Music(db.Model):
     bitRate = db.Column(db.String,)
     fileType = db.Column(db.String, nullable=False)
     fileSize = db.Column(db.String, nullable=False)
-    path = db.Column(db.String, nullable=False)
+    fileName = db.Column(db.String, nullable=False, default='filename')
     url = db.Column(db.String,)
     createdAt = db.Column(db.String, nullable=False, default=datetime.now)
     updatedAt = db.Column(db.String, nullable=False,
