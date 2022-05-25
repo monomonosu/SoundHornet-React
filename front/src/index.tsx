@@ -15,6 +15,7 @@ root.render(
       <Route path="/" element={<App />} />
       <Route path="import" element={<App2 />} />
       <Route path="download" element={<App2 />} />
+      <Route path="setting" element={<App2 />} />
     </Routes>
   </BrowserRouter>
 );

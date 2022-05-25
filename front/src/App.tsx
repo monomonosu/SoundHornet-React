@@ -140,14 +140,16 @@ function App() {
                 </Popper>
               </Button>
             </Link>
-            <Button onMouseEnter={openPopper3} onMouseLeave={closePopper3}>
-              <SettingsIcon fontSize="large" />
-              <Popper open={isOpenPopper3} anchorEl={anchorEl3}>
-                <Paper>
-                  <Typography sx={{ p: 2 }}>Setting</Typography>
-                </Paper>
-              </Popper>
-            </Button>
+            <Link to="/setting">
+              <Button onMouseEnter={openPopper3} onMouseLeave={closePopper3}>
+                <SettingsIcon fontSize="large" />
+                <Popper open={isOpenPopper3} anchorEl={anchorEl3}>
+                  <Paper>
+                    <Typography sx={{ p: 2 }}>Setting</Typography>
+                  </Paper>
+                </Popper>
+              </Button>
+            </Link>
           </Toolbar>
         </AppBar>
       </Box>
