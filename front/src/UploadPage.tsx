@@ -1,12 +1,25 @@
-import React from 'react';              //Reactを読み込んでいる
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
-
-const UploadPage = () => {
+const style = {
+    width: 200,
+    height: 150,
+    border: "1px dotted #888"
+};
+export default function UploadPage() {
+    const onDrop = useCallback((acceptedFiles: any) => {
+        // Do something with the files
+        console.log("onDrop:", acceptedFiles);
+    }, []);
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
     return (
-        <div>
-            <h1>UploadPage</h1>
+        <div {...getRootProps()} style={style}>
+            <input {...getInputProps()} />
+            {isDragActive ? (
+                <p>Drop the files here ...</p>
+            ) : (
+                <p>Drag 'n' drop some files here, or click to select files</p>
+            )}
         </div>
-    )
+    );
 }
-
-export default UploadPage;                   //page1を出力する為に必要
