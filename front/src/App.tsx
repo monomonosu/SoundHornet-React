@@ -8,6 +8,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import BackupIcon from '@mui/icons-material/Backup';
 import SettingsIcon from '@mui/icons-material/Settings';
+import BoyIcon from '@mui/icons-material/Boy';
+import FilterIcon from '@mui/icons-material/Filter';
+import SellIcon from '@mui/icons-material/Sell';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link } from "react-router-dom";
 import axios from "axios"
 import { Howl, Howler } from 'howler';
@@ -59,14 +63,28 @@ function App() {
               onClick={drawerOpen}
             >
               <MenuIcon />
-              <Drawer
-                anchor="left"
-                open={isOpenDrawer}
-                onClose={drawerOpen}
-              >
-                <Button>aaaa</Button>
-              </Drawer>
             </IconButton>
+            <Drawer
+              anchor="left"
+              open={isOpenDrawer}
+              onClose={drawerOpen}
+            >
+              <Box style={{ backgroundColor: "#161B22", height: '100vh' }}>
+                <Box style={{ height: '9vh' }}></Box>
+                <Grid container>
+                  <Button><BoyIcon />　Artist</Button>
+                </Grid>
+                <Grid container>
+                  <Button><FilterIcon />　Album</Button>
+                </Grid>
+                <Grid container>
+                  <Button><SellIcon />　Genre</Button>
+                </Grid>
+                <Grid container>
+                  <Button><FavoriteIcon />　Favorite</Button>
+                </Grid>
+              </Box>
+            </Drawer>
             <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
               SoundHornet
             </Typography>
