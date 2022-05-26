@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Grid } from "@mui/material";
 import Header from "./component/Header";
+import axios from "axios";
 
 const style = {
     width: 'auto',
@@ -12,6 +13,10 @@ export default function UploadPage() {
     const onDrop = useCallback((acceptedFiles: any) => {
         // Do something with the files
         console.log("onDrop:", acceptedFiles);
+        axios.get("http://localhost:8080/test")
+            .then((response) => {
+                console.log(response.data);
+            });
     }, []);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
     return (
