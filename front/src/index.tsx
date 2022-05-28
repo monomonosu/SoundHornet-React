@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route, } from "react-router-dom";
 import UploadPage from './UploadPage';
 import DownloadPage from './DownloadPage';
+import SettingPage from './SettingPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +17,7 @@ root.render(
       <Route path="/" element={<App />} />
       <Route path="import" element={<UploadPage />} />
       <Route path="download" element={<DownloadPage />} />
-      <Route path="setting" element={<UploadPage />} />
+      <Route path="setting" element={<SettingPage />} />
     </Routes>
   </BrowserRouter>
 );
