@@ -9,9 +9,13 @@ const UploadPage = () => {
         console.log(meta);
         const body = new FormData();
         body.append('file', file);
-        body.append('duration', String(Math.floor(meta.duration)));
+        // 再生時間整形
+        const min = Math.floor(meta.duration / 60);
+        const sec = Math.floor(meta.duration % 60);
+        const secPadding: string = ('00' + sec).slice(-2);
+        body.append('duration', String(min + ':' + secPadding));
         // 拡張子識別
-        let fileName = file.name;
+        const fileName = file.name;
         const position = fileName.lastIndexOf('.');
         const extension = fileName.slice(position + 1);
         body.append('type', extension);
