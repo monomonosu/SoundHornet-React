@@ -84,7 +84,9 @@ export default function Header() {
                             </Box>
                         </Drawer>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                            SoundHornet
+                            <Link to="/" style={{ textDecoration: 'none' }}>
+                                <Button size='large' style={{ textTransform: "none", color: "white" }}>SoundHornet</Button>
+                            </Link>
                         </Typography>
                         <Link to="/download">
                             <Button onMouseEnter={openPopper} onMouseLeave={closePopper}>
