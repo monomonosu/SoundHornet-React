@@ -42,7 +42,7 @@ const UploadPage = () => {
                         getUploadParams={getUploadParams}
                         onChangeStatus={handleChangeStatus}
                         onSubmit={handleSubmit}
-                        accept="image/*,audio/*,video/*"
+                        accept="audio/*"
                     />
                 </Grid>
                 <Grid item xs>
@@ -53,27 +53,3 @@ const UploadPage = () => {
 }
 
 export default UploadPage;
-
-//   <MyUploader />
-
-// const style = {
-//     width: 'auto',
-//     height: 150,
-//     border: "1px dotted #888"
-// };
-// export default function UploadPage() {
-//     return (
-//         <div>
-//             <Header></Header>
-//             <input type="file" name="file" />
-//             <Grid container>
-//                 <Grid item xs>
-//                 </Grid>
-//                 <Grid item xs>
-//                 </Grid>
-//                 <Grid item xs>
-//                 </Grid>
-//             </Grid>
-//         </div>
-//     );
-// }
