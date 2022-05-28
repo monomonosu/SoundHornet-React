@@ -3,3 +3,7 @@
 /app/database/database.db
 /app/static/react/
 /app/templates/
+/app/static/musics/
+!//app/static/musics/魔王魂 シャイニングスター.mp3
+!//app/static/musics/魔王魂 ハルジオン.mp3
+!//app/static/musics/魔王魂 ベガロスト.mp3
