@@ -1,6 +1,7 @@
 import os
 from flask import jsonify, render_template, request
 from models import *
+import math
 
 
 @app.route('/')
@@ -20,7 +21,7 @@ def upload():
     fileName = f.filename
     filePath = 'static/musics/'+fileName
     f.save(filePath)
-    fileSize = os.path.getsize(filePath)
+    fileSize = convert_size(os.path.getsize(filePath))
     newMusic = Music(
         musicName=fileName,
         fileType='mp3',
@@ -32,6 +33,14 @@ def upload():
     print(f)
     print(os.getcwd())
     return jsonify({"filename": f.filename})
+
+
+def convert_size(size):
+    units = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB")
+    i = math.floor(math.log(size, 1024)) if size > 0 else 0
+    size = round(size / 1024 ** i, 2)
+
+    return f"{size} {units[i]}"
 
 
 if __name__ == '__main__':
