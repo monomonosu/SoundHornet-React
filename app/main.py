@@ -18,13 +18,16 @@ def getTest():
 @app.route("/upload-test", methods=['POST'])
 def upload():
     f = request.files["file"]
+    time = request.form["duration"]
+    fileType = request.form["type"]
     fileName = f.filename
     filePath = 'static/musics/'+fileName
     f.save(filePath)
     fileSize = convert_size(os.path.getsize(filePath))
     newMusic = Music(
         musicName=fileName,
-        fileType='mp3',
+        time=time,
+        fileType=fileType,
         fileSize=fileSize,
         fileName=fileName,
     )

@@ -5,7 +5,18 @@ import Dropzone from 'react-dropzone-uploader'
 
 const UploadPage = () => {
     // 転送前
-    const getUploadParams = (meta: any) => { return { url: 'http://localhost:8080/upload-test' } }
+    const getUploadParams = ({ meta, file }: any) => {
+        console.log(meta);
+        const body = new FormData();
+        body.append('file', file);
+        body.append('duration', String(Math.floor(meta.duration)));
+        // 拡張子識別
+        let fileName = file.name;
+        const position = fileName.lastIndexOf('.');
+        const extension = fileName.slice(position + 1);
+        body.append('type', extension);
+        return { url: 'http://localhost:8080/upload-test', body }
+    }
 
     // 転送後
     const handleChangeStatus = ({ meta, file, xhr }: any, status: any) => {
