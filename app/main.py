@@ -5,6 +5,9 @@ import math
 
 
 @app.route('/')
+@app.route('/download')
+@app.route('/import')
+@app.route('/setting')
 def index():
     return render_template('index.html')
 
