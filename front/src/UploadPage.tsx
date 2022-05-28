@@ -42,6 +42,7 @@ const UploadPage = () => {
                 <Grid item xs>
                 </Grid>
                 <Grid item xs={11}>
+                    <h1 style={{ color: "white" }}>Import</h1>
                     <Dropzone
                         getUploadParams={getUploadParams}
                         onChangeStatus={handleChangeStatus}

@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route, } from "react-router-dom";
 import UploadPage from './UploadPage';
+import DownloadPage from './DownloadPage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +15,7 @@ root.render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="import" element={<UploadPage />} />
-      <Route path="download" element={<UploadPage />} />
+      <Route path="download" element={<DownloadPage />} />
       <Route path="setting" element={<UploadPage />} />
     </Routes>
   </BrowserRouter>
