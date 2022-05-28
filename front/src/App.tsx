@@ -16,14 +16,14 @@ type Music = {
   album: string;
   genre: string;
   fileSize: string;
+  fileName: string;
 }
 
 function App() {
   // メソッド
   function PlaySound(music: Music) {
-    const filepath = 'static/musics/' + music.musicName + '.mp3';
+    const filepath = 'static/musics/' + music.fileName;
     console.log(music);
-    console.log(filepath);
     const sound: Howl = new Howl({
       src: [filepath],
     });

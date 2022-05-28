@@ -17,7 +17,18 @@ def getTest():
 @app.route("/upload-test", methods=['POST'])
 def upload():
     f = request.files["file"]
-    f.save('static/musics/'+f.filename)
+    fileName = f.filename
+    filePath = 'static/musics/'+fileName
+    f.save(filePath)
+    fileSize = os.path.getsize(filePath)
+    newMusic = Music(
+        musicName=fileName,
+        fileType='mp3',
+        fileSize=fileSize,
+        fileName=fileName,
+    )
+    db.session.add(newMusic)
+    db.session.commit()
     print(f)
     print(os.getcwd())
     return jsonify({"filename": f.filename})
