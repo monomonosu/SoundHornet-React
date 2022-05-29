@@ -20,7 +20,7 @@ def seeder():
               fileName='魔王魂 ハルジオン.mp3', url='',),
         Music(musicName='魔王魂 ベガロスト', artist='魔王魂', album='ベガロスト', genre='rock',
               evaluation=5, comment='悲し気で癖になる曲', time='4:59', bitRate='192kbps', fileType='mp3', fileSize='6.86 MB',
-              fileName='ベガロスト.mp3', url='',),
+              fileName='魔王魂 ベガロスト.mp3', url='',),
     ]
     db.session.add_all(musics)
     db.session.commit()

@@ -21,6 +21,7 @@ RUN pip install flask-marshmallow
 RUN pip install marshmallow-sqlalchemy
 RUN pip install Flask-Migrate
 RUN pip install flask-cors
+RUN pip install yt-dlp
 
 ENV FLASK_APP models.py
 RUN flask db init

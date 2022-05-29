@@ -23,6 +23,9 @@ const DownloadPage = () => {
                 <Grid item xs></Grid>
                 <Grid item xs={11}>
                     <h1 style={{ color: "white" }}>Download</h1>
+                    <p style={{ color: "white" }}>Please do not download audio from copyrighted videos.
+                        Please only download material that uses a Creative Commons license.
+                        Please do not redistribute the downloaded audio, and keep it for personal use only.</p>
                     <h2 style={{ color: "white" }}>InputURL</h2>
                     <Box
                         component="form"
