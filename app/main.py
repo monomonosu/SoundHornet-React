@@ -5,6 +5,10 @@ import math
 
 
 @app.route('/')
+@app.route('/artist')
+@app.route('/album')
+@app.route('/genre')
+@app.route('/favorite')
 @app.route('/download')
 @app.route('/import')
 @app.route('/setting')

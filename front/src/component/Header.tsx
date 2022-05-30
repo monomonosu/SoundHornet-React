@@ -73,7 +73,9 @@ export default function Header() {
                                     <Button><BoyIcon />　Artist</Button>
                                 </Grid>
                                 <Grid container>
-                                    <Button><FilterIcon />　Album</Button>
+                                    <Link to="/album">
+                                        <Button><FilterIcon />　Album</Button>
+                                    </Link>
                                 </Grid>
                                 <Grid container>
                                     <Button><SellIcon />　Genre</Button>

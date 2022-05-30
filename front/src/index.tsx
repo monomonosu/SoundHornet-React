@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route, } from "react-router-dom";
+import AlbumPage from './AlbumPage';
 import UploadPage from './UploadPage';
 import DownloadPage from './DownloadPage';
 import SettingPage from './SettingPage';
@@ -15,6 +16,7 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
+      <Route path='album' element={<AlbumPage />}></Route>
       <Route path="import" element={<UploadPage />} />
       <Route path="download" element={<DownloadPage />} />
       <Route path="setting" element={<SettingPage />} />
