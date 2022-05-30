@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Header from './component/Header';
-import { Box, Card, CardContent, CardMedia, IconButton, Typography, Grid } from '@mui/material'
+import {
+    Box, Card, CardContent, CardMedia, IconButton, Typography, Grid,
+} from '@mui/material'
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
@@ -13,9 +15,10 @@ export default function AlbumPage() {
             <Header></Header>
             <Grid container>
                 <Grid item xs={1}></Grid>
-                <Grid item xs><h1 style={{ color: "white" }}>Album</h1></Grid>
+                <Grid item xs><h1 style={{ color: "white" }}>Album</h1><h2 style={{ color: "white" }}>Many views</h2></Grid>
                 <Grid item xs={1}></Grid>
             </Grid>
+
             <Grid container>
                 <Grid item xs={1}>
                 </Grid>
@@ -114,6 +117,12 @@ export default function AlbumPage() {
                 </Grid>
                 <Grid item xs={1}>
                 </Grid>
+            </Grid>
+
+            <Grid container>
+                <Grid item xs={1}></Grid>
+                <Grid item xs><h2 style={{ color: "white" }}>AlbumList</h2></Grid>
+                <Grid item xs={1}></Grid>
             </Grid>
         </div >
     );
