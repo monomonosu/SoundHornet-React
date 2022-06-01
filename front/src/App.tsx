@@ -2,8 +2,11 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import './App.css';
 import {
-  Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button,
+  Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Collapse, Typography
 } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Link } from "react-router-dom";
 import Header from './component/Header';
 import axios from "axios"
@@ -32,6 +35,7 @@ function App() {
   }
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
+  const [isDetail, setIsDetail] = useState(false);
   useEffect(() => {
     axios.get("http://localhost:8080/test")
       .then((response) => {
@@ -65,6 +69,7 @@ function App() {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
+                  <TableCell />
                   <TableCell style={{ color: "#FFFFFF" }}>MusicName</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Artist</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Album</TableCell>
@@ -74,19 +79,39 @@ function App() {
               </TableHead>
               <TableBody>
                 {musics.map((music) => (
-                  <TableRow
-                    key={music.musicName}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    onClick={() => PlaySound(music)}
-                  >
-                    <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
-                      {music.musicName}
-                    </TableCell>
-                    <TableCell style={{ color: "#FFFFFF" }}>{music.artist}</TableCell>
-                    <TableCell style={{ color: "#FFFFFF" }}>{music.album}</TableCell>
-                    <TableCell style={{ color: "#FFFFFF" }}>{music.genre}</TableCell>
-                    <TableCell style={{ color: "#FFFFFF" }} align="right">{music.fileSize}</TableCell>
-                  </TableRow>
+                  <React.Fragment>
+                    <TableRow
+                      key={music.musicName}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      onClick={() => PlaySound(music)}
+                    >
+                      <TableCell>
+                        <IconButton
+                          aria-label="expand row"
+                          size="small"
+                          onClick={() => setIsDetail(!isDetail)}
+                        >
+                          {isDetail ? <KeyboardArrowUpIcon style={{ color: 'white' }} /> : <KeyboardArrowDownIcon style={{ color: 'white' }} />}
+                        </IconButton>
+                      </TableCell>
+                      <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
+                        {music.musicName}
+                      </TableCell>
+                      <TableCell style={{ color: "#FFFFFF" }}>{music.artist}</TableCell>
+                      <TableCell style={{ color: "#FFFFFF" }}>{music.album}</TableCell>
+                      <TableCell style={{ color: "#FFFFFF" }}>{music.genre}</TableCell>
+                      <TableCell style={{ color: "#FFFFFF" }} align="right">{music.fileSize}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <Collapse in={isDetail} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 1 }}>
+                          <Typography variant="h6" gutterBottom component="div">
+                            Detail
+                          </Typography>
+                        </Box>
+                      </Collapse>
+                    </TableRow>
+                  </React.Fragment>
                 ))}
               </TableBody>
             </Table>
