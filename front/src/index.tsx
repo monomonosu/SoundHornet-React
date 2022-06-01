@@ -8,6 +8,8 @@ import AlbumPage from './AlbumPage';
 import UploadPage from './UploadPage';
 import DownloadPage from './DownloadPage';
 import SettingPage from './SettingPage';
+// sample
+import TableSample from './sample/TableSample';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,6 +22,9 @@ root.render(
       <Route path="import" element={<UploadPage />} />
       <Route path="download" element={<DownloadPage />} />
       <Route path="setting" element={<SettingPage />} />
+
+      {/* sample */}
+      <Route path='table-sample' element={<TableSample />} />
     </Routes>
   </BrowserRouter>
 );

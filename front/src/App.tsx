@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import './App.css';
 import {
-  Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+  Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button,
 } from '@mui/material';
+import { Link } from "react-router-dom";
 import Header from './component/Header';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
@@ -90,6 +91,20 @@ function App() {
               </TableBody>
             </Table>
           </TableContainer>
+        </Grid>
+        <Grid item xs>
+        </Grid>
+      </Grid>
+
+      {/* コンポーネントサンプル */}
+      <Grid container>
+        <Grid item xs>
+        </Grid>
+        <Grid item xs={11}>
+          <div style={{ height: "300px" }}></div>
+          <Link to="/table-sample">
+            <Button>TableSample</Button>
+          </Link>
         </Grid>
         <Grid item xs>
         </Grid>

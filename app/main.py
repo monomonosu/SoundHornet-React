@@ -16,6 +16,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/table-sample')
+def componentSample():
+    return render_template('index.html')
+
+
 @app.route("/test", methods=['GET'])
 def getTest():
     musics = Music.query.all()
