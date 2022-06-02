@@ -19,8 +19,14 @@ type Music = {
   artist: string;
   album: string;
   genre: string;
+  evaluation: number;
+  comment: string;
+  time: string;
+  fileType: string;
   fileSize: string;
   fileName: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // メソッド
@@ -135,13 +141,37 @@ export const Row = (props: Music) => {
         <TableCell style={{ color: "#FFFFFF" }} align="right">{props.fileSize}</TableCell>
       </TableRow>
       <TableRow>
-        <Collapse in={isDetail} timeout="auto" unmountOnExit>
-          <Box sx={{ margin: 1 }}>
-            <Typography variant="h6" gutterBottom component="div">
-              Detail
-            </Typography>
-          </Box>
-        </Collapse>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={isDetail} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Typography variant="h6" gutterBottom component="div" style={{ color: "white" }}>
+                Detail
+              </Typography>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell style={{ color: "white" }}>Evaluation</TableCell>
+                    <TableCell style={{ color: "white" }}>Comment</TableCell>
+                    <TableCell style={{ color: "white" }}>FileType</TableCell>
+                    <TableCell style={{ color: "white" }}>FileName</TableCell>
+                    <TableCell style={{ color: "white" }}>Created</TableCell>
+                    <TableCell style={{ color: "white" }}>Updated</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell component="th" scope="row" style={{ color: "white" }}>{props.evaluation}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.comment}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.fileType}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.fileName}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.createdAt.toString()}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.updatedAt.toString()}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
       </TableRow>
     </React.Fragment>
   )
