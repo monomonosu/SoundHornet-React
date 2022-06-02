@@ -23,19 +23,19 @@ type Music = {
   fileName: string;
 }
 
+// メソッド
+function PlaySound(music: Music) {
+  const filepath = 'static/musics/' + music.fileName;
+  console.log(music);
+  const sound: Howl = new Howl({
+    src: [filepath],
+  });
+  sound.play();
+}
+
 function App() {
-  // メソッド
-  function PlaySound(music: Music) {
-    const filepath = 'static/musics/' + music.fileName;
-    console.log(music);
-    const sound: Howl = new Howl({
-      src: [filepath],
-    });
-    sound.play();
-  }
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
-  const [isDetail, setIsDetail] = useState(false);
   useEffect(() => {
     axios.get("http://localhost:8080/test")
       .then((response) => {
@@ -79,39 +79,7 @@ function App() {
               </TableHead>
               <TableBody>
                 {musics.map((music) => (
-                  <React.Fragment>
-                    <TableRow
-                      key={music.musicName}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      onClick={() => PlaySound(music)}
-                    >
-                      <TableCell>
-                        <IconButton
-                          aria-label="expand row"
-                          size="small"
-                          onClick={() => setIsDetail(!isDetail)}
-                        >
-                          {isDetail ? <KeyboardArrowUpIcon style={{ color: 'white' }} /> : <KeyboardArrowDownIcon style={{ color: 'white' }} />}
-                        </IconButton>
-                      </TableCell>
-                      <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
-                        {music.musicName}
-                      </TableCell>
-                      <TableCell style={{ color: "#FFFFFF" }}>{music.artist}</TableCell>
-                      <TableCell style={{ color: "#FFFFFF" }}>{music.album}</TableCell>
-                      <TableCell style={{ color: "#FFFFFF" }}>{music.genre}</TableCell>
-                      <TableCell style={{ color: "#FFFFFF" }} align="right">{music.fileSize}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <Collapse in={isDetail} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                          <Typography variant="h6" gutterBottom component="div">
-                            Detail
-                          </Typography>
-                        </Box>
-                      </Collapse>
-                    </TableRow>
-                  </React.Fragment>
+                  <Row {...music} />
                 ))}
               </TableBody>
             </Table>
@@ -137,6 +105,46 @@ function App() {
 
     </div >
   );
+}
+
+// テーブルRow
+export const Row = (props: Music) => {
+  const [isDetail, setIsDetail] = useState(false);
+  return (
+    <React.Fragment>
+      <TableRow
+        key={props.musicName}
+        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        onClick={() => PlaySound(props)}
+      >
+        <TableCell>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setIsDetail(!isDetail)}
+          >
+            {isDetail ? <KeyboardArrowUpIcon style={{ color: 'white' }} /> : <KeyboardArrowDownIcon style={{ color: 'white' }} />}
+          </IconButton>
+        </TableCell>
+        <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
+          {props.musicName}
+        </TableCell>
+        <TableCell style={{ color: "#FFFFFF" }}>{props.artist}</TableCell>
+        <TableCell style={{ color: "#FFFFFF" }}>{props.album}</TableCell>
+        <TableCell style={{ color: "#FFFFFF" }}>{props.genre}</TableCell>
+        <TableCell style={{ color: "#FFFFFF" }} align="right">{props.fileSize}</TableCell>
+      </TableRow>
+      <TableRow>
+        <Collapse in={isDetail} timeout="auto" unmountOnExit>
+          <Box sx={{ margin: 1 }}>
+            <Typography variant="h6" gutterBottom component="div">
+              Detail
+            </Typography>
+          </Box>
+        </Collapse>
+      </TableRow>
+    </React.Fragment>
+  )
 }
 
 export default App;
