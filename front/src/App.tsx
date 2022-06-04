@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import './App.css';
 import {
-  Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Collapse, Typography
+  Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Collapse, Typography, Checkbox
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -42,6 +42,7 @@ function PlaySound(music: Music) {
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
+  // const [checkedNumbers, setCheckedNumbers] = useState([]);
   useEffect(() => {
     axios.get("http://localhost:8080/test")
       .then((response) => {
@@ -75,6 +76,7 @@ function App() {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
+                  <TableCell />
                   <TableCell />
                   <TableCell style={{ color: "#FFFFFF" }}>MusicName</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Artist</TableCell>
@@ -116,6 +118,11 @@ function App() {
 // テーブルRow
 export const Row = (props: Music) => {
   const [isDetail, setIsDetail] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.checked);
+    setIsChecked(event.target.checked);
+  }
   return (
     <React.Fragment>
       <TableRow
@@ -131,6 +138,9 @@ export const Row = (props: Music) => {
           >
             {isDetail ? <KeyboardArrowUpIcon style={{ color: 'white' }} /> : <KeyboardArrowDownIcon style={{ color: 'white' }} />}
           </IconButton>
+        </TableCell>
+        <TableCell>
+          <Checkbox style={{ color: "white" }} checked={isChecked} onChange={handleChange}></Checkbox>
         </TableCell>
         <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
           {props.musicName}
