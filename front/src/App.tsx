@@ -42,7 +42,7 @@ function PlaySound(music: Music) {
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
-  // const [checkedNumbers, setCheckedNumbers] = useState([]);
+  const [checkedNumbers, setCheckedNumbers] = useState([]);
   useEffect(() => {
     axios.get("http://localhost:8080/test")
       .then((response) => {
@@ -87,7 +87,8 @@ function App() {
               </TableHead>
               <TableBody>
                 {musics.map((music) => (
-                  <Row {...music} />
+                  // ↓配列へのプッシュテスト
+                  <Row {...music} setCheckedNumbers={setCheckedNumbers} checkedNumbers={checkedNumbers} />
                 ))}
               </TableBody>
             </Table>
@@ -116,12 +117,15 @@ function App() {
 }
 
 // テーブルRow
-export const Row = (props: Music) => {
+export const Row = (props: any) => {
   const [isDetail, setIsDetail] = useState(false);
   const [isChecked, setIsChecked] = useState(true);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.checked);
     setIsChecked(event.target.checked);
+    // ↓配列へのプッシュテスト
+    props.setCheckedNumbers([...props.checkedNumbers, event.target.checked]);
+    console.log(props.checkedNumbers);
   }
   return (
     <React.Fragment>
