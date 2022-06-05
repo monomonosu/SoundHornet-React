@@ -7,6 +7,7 @@ import {
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from "react-router-dom";
 import Header from './component/Header';
 import axios from "axios"
@@ -51,8 +52,12 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    console.log('選択中のid:'+checkedNumbers.toString());
+    console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
+  const isDeleteButton = () => {
+    if (checkedNumbers.length !== 0) return true;
+    else return false;
+  }
 
   return (
     <div className="App">
@@ -80,7 +85,9 @@ function App() {
               <TableHead>
                 <TableRow>
                   <TableCell />
-                  <TableCell />
+                  <TableCell align='center'>
+                    <Button style={{ color: "white" }} disabled={!isDeleteButton()}>{isDeleteButton() ? <DeleteIcon /> : ""}</Button>
+                  </TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>MusicName</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Artist</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Album</TableCell>
@@ -147,7 +154,7 @@ export const Row = (props: { music: Music, setCheckedNumbers: React.Dispatch<Rea
             {isDetail ? <KeyboardArrowUpIcon style={{ color: 'white' }} /> : <KeyboardArrowDownIcon style={{ color: 'white' }} />}
           </IconButton>
         </TableCell>
-        <TableCell>
+        <TableCell align='center'>
           <Checkbox style={{ color: "white" }} checked={isChecked} onChange={handleChange}></Checkbox>
         </TableCell>
         <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
