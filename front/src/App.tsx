@@ -58,6 +58,14 @@ function App() {
     if (checkedNumbers.length !== 0) return true;
     else return false;
   }
+  function musicsDelete(ids: number[]) {
+    console.log(ids);
+    axios.delete("http://localhost:8080/musics/" + ids)
+      .then((response) => {
+        console.log(response.data);
+        setMusics(response.data);
+      })
+  }
 
   return (
     <div className="App">
@@ -86,7 +94,9 @@ function App() {
                 <TableRow>
                   <TableCell />
                   <TableCell align='center'>
-                    <Button style={{ color: "white" }} disabled={!isDeleteButton()}>{isDeleteButton() ? <DeleteIcon /> : ""}</Button>
+                    <Button style={{ color: "white" }} disabled={!isDeleteButton()} onClick={() => musicsDelete(checkedNumbers)}>
+                      {isDeleteButton() ? <DeleteIcon /> : ""}
+                    </Button>
                   </TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>MusicName</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Artist</TableCell>

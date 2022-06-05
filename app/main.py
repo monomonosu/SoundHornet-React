@@ -27,6 +27,19 @@ def getTest():
     return jsonify(MusicSchema(many=True).dump(musics))
 
 
+@app.route("/musics/<ids>", methods=['DELETE'])
+def deleteMusics(ids):
+    print(ids)
+    for id in ids:
+        musicCount = Music.query.filter(Music.id == id).count()
+        if musicCount:
+            musicCount = Music.query.filter(Music.id == id).delete()
+    db.session.commit()
+    musics = Music.query.all()
+    print(musics)
+    return jsonify(MusicSchema(many=True).dump(musics))
+
+
 @app.route("/upload-test", methods=['POST'])
 def upload():
     f = request.files["file"]
