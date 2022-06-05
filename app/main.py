@@ -29,14 +29,15 @@ def getTest():
 
 @app.route("/musics/<ids>", methods=['DELETE'])
 def deleteMusics(ids):
-    print(ids)
     for id in ids:
         musicCount = Music.query.filter(Music.id == id).count()
         if musicCount:
+            music = Music.query.filter(Music.id == id).one()
+            print(music.fileName)
+            os.remove('static/musics/'+music.fileName)
             musicCount = Music.query.filter(Music.id == id).delete()
     db.session.commit()
     musics = Music.query.all()
-    print(musics)
     return jsonify(MusicSchema(many=True).dump(musics))
 
 
