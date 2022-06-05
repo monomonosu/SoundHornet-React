@@ -19,7 +19,7 @@ const UploadPage = () => {
         const position = fileName.lastIndexOf('.');
         const extension = fileName.slice(position + 1);
         body.append('type', extension);
-        return { url: 'http://localhost:8080/upload-test', body }
+        return { url: 'http://localhost:8080/upload-music', body }
     }
 
     // 転送後

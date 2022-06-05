@@ -4,6 +4,7 @@ from models import *
 import math
 
 
+# ---------- Page ----------
 @app.route('/')
 @app.route('/artist')
 @app.route('/album')
@@ -21,8 +22,9 @@ def componentSample():
     return render_template('index.html')
 
 
+# ---------- API ----------
 @app.route("/musics", methods=['GET'])
-def getTest():
+def getMusics():
     musics = Music.query.all()
     return jsonify(MusicSchema(many=True).dump(musics))
 
@@ -41,8 +43,9 @@ def deleteMusics(ids):
     return jsonify(MusicSchema(many=True).dump(musics))
 
 
-@app.route("/upload-test", methods=['POST'])
-def upload():
+# ---------- upload ----------
+@app.route("/upload-music", methods=['POST'])
+def uploadMusic():
     f = request.files["file"]
     time = request.form["duration"]
     fileType = request.form["type"]
