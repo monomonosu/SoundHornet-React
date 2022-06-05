@@ -7,6 +7,7 @@ import {
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from "react-router-dom";
 import Header from './component/Header';
@@ -90,14 +91,15 @@ function App() {
         <Grid item xs={11}>
           <TableContainer component={Paper} style={{ backgroundColor: "#161B22" }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
+              <TableHead style={{ height: "73px" }}>
                 <TableRow>
                   <TableCell />
                   <TableCell align='center'>
-                    <Button style={{ color: "white" }} disabled={!isDeleteButton()} onClick={() => musicsDelete(checkedNumbers)}>
+                    <IconButton style={{ color: "white" }} disabled={!isDeleteButton()} onClick={() => musicsDelete(checkedNumbers)}>
                       {isDeleteButton() ? <DeleteIcon /> : ""}
-                    </Button>
+                    </IconButton>
                   </TableCell>
+                  <TableCell />
                   <TableCell style={{ color: "#FFFFFF" }}>MusicName</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Artist</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Album</TableCell>
@@ -153,7 +155,6 @@ export const Row = (props: { music: Music, setCheckedNumbers: React.Dispatch<Rea
       <TableRow
         key={props.music.musicName}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-        onClick={() => PlaySound(props.music)}
       >
         <TableCell>
           <IconButton
@@ -165,7 +166,16 @@ export const Row = (props: { music: Music, setCheckedNumbers: React.Dispatch<Rea
           </IconButton>
         </TableCell>
         <TableCell align='center'>
-          <Checkbox style={{ color: "white" }} checked={isChecked} onChange={handleChange}></Checkbox>
+          <Checkbox size="small" style={{ color: "white" }} checked={isChecked} onChange={handleChange}></Checkbox>
+        </TableCell>
+        <TableCell align='center'>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => PlaySound(props.music)}
+          >
+            <PlayArrowIcon style={{ color: 'white' }} />
+          </IconButton>
         </TableCell>
         <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
           {props.music.musicName}
