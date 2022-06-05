@@ -42,7 +42,7 @@ function PlaySound(music: Music) {
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
-  const [checkedNumbers, setCheckedNumbers] = useState([]);
+  const [checkedNumbers, setCheckedNumbers] = useState<boolean[]>([]);
   useEffect(() => {
     axios.get("http://localhost:8080/test")
       .then((response) => {
@@ -88,7 +88,7 @@ function App() {
               <TableBody>
                 {musics.map((music) => (
                   // ↓配列へのプッシュテスト
-                  <Row {...music} setCheckedNumbers={setCheckedNumbers} checkedNumbers={checkedNumbers} />
+                  <Row music={music} setCheckedNumbers={setCheckedNumbers} checkedNumbers={checkedNumbers} />
                 ))}
               </TableBody>
             </Table>
@@ -117,7 +117,7 @@ function App() {
 }
 
 // テーブルRow
-export const Row = (props: any) => {
+export const Row = (props: { music: Music, setCheckedNumbers: React.Dispatch<React.SetStateAction<boolean[]>>, checkedNumbers: boolean[] }) => {
   const [isDetail, setIsDetail] = useState(false);
   const [isChecked, setIsChecked] = useState(true);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,9 +130,9 @@ export const Row = (props: any) => {
   return (
     <React.Fragment>
       <TableRow
-        key={props.musicName}
+        key={props.music.musicName}
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-        onClick={() => PlaySound(props)}
+        onClick={() => PlaySound(props.music)}
       >
         <TableCell>
           <IconButton
@@ -147,12 +147,12 @@ export const Row = (props: any) => {
           <Checkbox style={{ color: "white" }} checked={isChecked} onChange={handleChange}></Checkbox>
         </TableCell>
         <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
-          {props.musicName}
+          {props.music.musicName}
         </TableCell>
-        <TableCell style={{ color: "#FFFFFF" }}>{props.artist}</TableCell>
-        <TableCell style={{ color: "#FFFFFF" }}>{props.album}</TableCell>
-        <TableCell style={{ color: "#FFFFFF" }}>{props.genre}</TableCell>
-        <TableCell style={{ color: "#FFFFFF" }} align="right">{props.fileSize}</TableCell>
+        <TableCell style={{ color: "#FFFFFF" }}>{props.music.artist}</TableCell>
+        <TableCell style={{ color: "#FFFFFF" }}>{props.music.album}</TableCell>
+        <TableCell style={{ color: "#FFFFFF" }}>{props.music.genre}</TableCell>
+        <TableCell style={{ color: "#FFFFFF" }} align="right">{props.music.fileSize}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -174,12 +174,12 @@ export const Row = (props: any) => {
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell component="th" scope="row" style={{ color: "white" }}>{props.evaluation}</TableCell>
-                    <TableCell style={{ color: "white" }}>{props.comment}</TableCell>
-                    <TableCell style={{ color: "white" }}>{props.fileType}</TableCell>
-                    <TableCell style={{ color: "white" }}>{props.fileName}</TableCell>
-                    <TableCell style={{ color: "white" }}>{props.createdAt.toString()}</TableCell>
-                    <TableCell style={{ color: "white" }}>{props.updatedAt.toString()}</TableCell>
+                    <TableCell component="th" scope="row" style={{ color: "white" }}>{props.music.evaluation}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.music.comment}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.music.fileType}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.music.fileName}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.music.createdAt.toString()}</TableCell>
+                    <TableCell style={{ color: "white" }}>{props.music.updatedAt.toString()}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
