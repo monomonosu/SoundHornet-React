@@ -10,11 +10,9 @@
 | evaluation | 評価              | integer  |                            | 
 | comment    | コメント          | string   |                            | 
 | time       | 長さ              | string   | 参考程度なので暫定的にTEXT | 
-| bitRate    | ビットレート      | string   |                            | 
 | fileType   | ファイル形式      | string   | mp3,wav等                  | 
 | fileSize   | ファイルサイズ    | string   |                            | 
 | fileName   | ファイル名        | string   |                            |
-| url        | ダウンロード元URL | string   | youtubeからのDL用          | 
 | createdAt  | 作成日時          | datetime |                            | 
 | updatedAt  | 更新日時          | datetime |                            | 
 

@@ -16,11 +16,9 @@ class Music(db.Model):
     evaluation = db.Column(db.Integer,)
     comment = db.Column(db.String,)
     time = db.Column(db.String,)
-    bitRate = db.Column(db.String,)
     fileType = db.Column(db.String, nullable=False)
     fileSize = db.Column(db.String, nullable=False)
     fileName = db.Column(db.String, nullable=False, default='filename')
-    url = db.Column(db.String,)
     createdAt = db.Column(db.String, nullable=False, default=datetime.now)
     updatedAt = db.Column(db.String, nullable=False,
                           default=datetime.now, onupdate=datetime.now)

@@ -13,14 +13,14 @@ def seeder():
     print('---Musics---')
     musics = [
         Music(musicName='魔王魂 シャイニングスター', artist='魔王魂', album='シャイニングスター', genre='pop',
-              evaluation=3, comment='明るい曲', time='4:36', bitRate='160kbps', fileType='mp3', fileSize='5.27 MB',
-              fileName='魔王魂 シャイニングスター.mp3', url='',),
+              evaluation=3, comment='明るい曲', time='4:36', fileType='mp3', fileSize='5.27 MB',
+              fileName='魔王魂 シャイニングスター.mp3',),
         Music(musicName='魔王魂 ハルジオン', artist='魔王魂', album='ハルジオン', genre='japaneseRock',
-              evaluation=4, comment='和風な感じ', time='5:00', bitRate='160kbps', fileType='mp3', fileSize='5.72 MB',
-              fileName='魔王魂 ハルジオン.mp3', url='',),
+              evaluation=4, comment='和風な感じ', time='5:00', fileType='mp3', fileSize='5.72 MB',
+              fileName='魔王魂 ハルジオン.mp3',),
         Music(musicName='魔王魂 ベガロスト', artist='魔王魂', album='ベガロスト', genre='rock',
-              evaluation=5, comment='悲し気で癖になる曲', time='4:59', bitRate='192kbps', fileType='mp3', fileSize='6.86 MB',
-              fileName='魔王魂 ベガロスト.mp3', url='',),
+              evaluation=5, comment='悲し気で癖になる曲', time='4:59', fileType='mp3', fileSize='6.86 MB',
+              fileName='魔王魂 ベガロスト.mp3',),
     ]
     db.session.add_all(musics)
     db.session.commit()
