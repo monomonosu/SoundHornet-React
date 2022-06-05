@@ -9,6 +9,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { Link } from "react-router-dom";
 import Header from './component/Header';
 import axios from "axios"
@@ -201,6 +202,7 @@ export const Row = (props: { music: Music, setCheckedNumbers: React.Dispatch<Rea
                     <TableCell style={{ color: "white" }}>FileName</TableCell>
                     <TableCell style={{ color: "white" }}>Created</TableCell>
                     <TableCell style={{ color: "white" }}>Updated</TableCell>
+                    <TableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -211,6 +213,14 @@ export const Row = (props: { music: Music, setCheckedNumbers: React.Dispatch<Rea
                     <TableCell style={{ color: "white" }}>{props.music.fileName}</TableCell>
                     <TableCell style={{ color: "white" }}>{props.music.createdAt.toString()}</TableCell>
                     <TableCell style={{ color: "white" }}>{props.music.updatedAt.toString()}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        size="small"
+                        onClick={() => console.log('hoge')}
+                      >
+                        <EditIcon style={{ color: 'white' }} />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
