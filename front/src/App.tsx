@@ -45,7 +45,7 @@ function App() {
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   useEffect(() => {
-    axios.get("http://localhost:8080/test")
+    axios.get("musics")
       .then((response) => {
         console.log(response.data);
         setMusics(response.data);

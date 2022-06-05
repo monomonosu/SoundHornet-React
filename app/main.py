@@ -21,7 +21,7 @@ def componentSample():
     return render_template('index.html')
 
 
-@app.route("/test", methods=['GET'])
+@app.route("/musics", methods=['GET'])
 def getTest():
     musics = Music.query.all()
     return jsonify(MusicSchema(many=True).dump(musics))
