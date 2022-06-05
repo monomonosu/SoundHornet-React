@@ -50,6 +50,9 @@ function App() {
         setMusics(response.data);
       });
   }, []);
+  useEffect(() => {
+    console.log('選択中のid:'+checkedNumbers.toString());
+  }, [checkedNumbers]);
 
   return (
     <div className="App">
@@ -87,7 +90,6 @@ function App() {
               </TableHead>
               <TableBody>
                 {musics.map((music) => (
-                  // ↓配列へのプッシュテスト
                   <Row music={music} setCheckedNumbers={setCheckedNumbers} checkedNumbers={checkedNumbers} />
                 ))}
               </TableBody>
@@ -124,15 +126,11 @@ export const Row = (props: { music: Music, setCheckedNumbers: React.Dispatch<Rea
     const check = event.target.checked;
     setIsChecked(check);
     console.log(check);
-    // ↓配列へのプッシュテスト
     if (check)
       props.setCheckedNumbers([...props.checkedNumbers, props.music.id]);
     else
       props.setCheckedNumbers(props.checkedNumbers.filter((value) => (value !== props.music.id)));
   }
-  useEffect(() => {
-    console.log(props.checkedNumbers);
-  }, [props.checkedNumbers]);
   return (
     <React.Fragment>
       <TableRow
