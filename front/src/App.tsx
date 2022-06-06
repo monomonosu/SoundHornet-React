@@ -47,11 +47,7 @@ function App() {
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   useEffect(() => {
-    axios.get("musics")
-      .then((response) => {
-        console.log(response.data);
-        setMusics(response.data);
-      });
+    musicsGet();
   }, []);
   useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
@@ -60,9 +56,16 @@ function App() {
     if (checkedNumbers.length !== 0) return true;
     else return false;
   }
+  function musicsGet() {
+    axios.get("/musics")
+      .then((response) => {
+        console.log(response.data);
+        setMusics(response.data)
+      })
+  }
   function musicsDelete(ids: number[]) {
     console.log(ids);
-    axios.delete("http://localhost:8080/musics/" + ids)
+    axios.delete("/musics/" + ids)
       .then((response) => {
         console.log(response.data);
         setMusics(response.data);
