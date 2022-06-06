@@ -67,6 +67,7 @@ function App() {
         console.log(response.data);
         setMusics(response.data);
       })
+    setCheckedNumbers([]);
   }
 
   return (
