@@ -32,14 +32,29 @@ type Music = {
   updatedAt: Date;
 }
 
+interface MusicResource {
+  howl: Howl,
+  filePath: string,
+}
+
+let sounds: MusicResource[] = [];
+let playingId: any;
+
 // メソッド
 function PlaySound(music: Music) {
-  const filepath = 'static/musics/' + music.fileName;
-  console.log(music);
-  const sound: Howl = new Howl({
-    src: [filepath],
-  });
-  sound.play();
+  let current = sounds.find(el => el.howl.playing(playingId) === true);
+  let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName)
+  if (current !== undefined && current?.filePath === resource?.filePath) {
+    current.howl.stop();
+  }
+  else if (current !== undefined && current?.filePath !== resource?.filePath) {
+    current.howl.stop();
+    playingId = resource?.howl.play();
+  }
+  else {
+    const id = resource?.howl.play();
+    playingId = id;
+  }
 }
 
 function App() {
@@ -48,7 +63,10 @@ function App() {
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   useEffect(() => {
     musicsGet();
-  }, []);
+  }, [])
+  useEffect(() => {
+    createHowler();
+  }, [musics]);
   useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
@@ -56,12 +74,24 @@ function App() {
     if (checkedNumbers.length !== 0) return true;
     else return false;
   }
+  function createHowler() {
+    musics.forEach(music => {
+      const filepath = 'static/musics/' + music.fileName;
+      sounds.push({
+        filePath: filepath,
+        howl: new Howl({
+          src: filepath,
+        })
+      });
+    });
+    console.log(sounds);
+  }
   function musicsGet() {
     axios.get("/musics")
       .then((response) => {
         console.log(response.data);
         setMusics(response.data)
-      })
+      });
   }
   function musicsDelete(ids: number[]) {
     console.log(ids);
