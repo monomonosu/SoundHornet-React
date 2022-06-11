@@ -32,15 +32,29 @@ type Music = {
   updatedAt: Date;
 }
 
-let sounds: Howl[] = [];
+interface MusicResource {
+  howl: Howl,
+  filePath: string,
+}
+
+let sounds: MusicResource[] = [];
+let playingId: any;
 
 // メソッド
 function PlaySound(music: Music) {
-  let musicSrc: any = sounds[1];
-  console.log(musicSrc._src);
-  if (sounds[1].playing() === true)
-    sounds[1].stop();
-  sounds[1].play();
+  let current = sounds.find(el => el.howl.playing(playingId) === true);
+  let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName)
+  if (current !== undefined && current?.filePath === resource?.filePath) {
+    current.howl.stop();
+  }
+  else if (current !== undefined && current?.filePath !== resource?.filePath) {
+    current.howl.stop();
+    playingId = resource?.howl.play();
+  }
+  else {
+    const id = resource?.howl.play();
+    playingId = id;
+  }
 }
 
 function App() {
@@ -63,9 +77,12 @@ function App() {
   function createHowler() {
     musics.forEach(music => {
       const filepath = 'static/musics/' + music.fileName;
-      sounds.push(new Howl({
-        src: filepath
-      }))
+      sounds.push({
+        filePath: filepath,
+        howl: new Howl({
+          src: filepath,
+        })
+      });
     });
     console.log(sounds);
   }
