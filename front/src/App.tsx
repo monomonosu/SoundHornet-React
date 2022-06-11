@@ -32,14 +32,15 @@ type Music = {
   updatedAt: Date;
 }
 
+let sounds: Howl[] = [];
+
 // メソッド
 function PlaySound(music: Music) {
-  const filepath = 'static/musics/' + music.fileName;
-  console.log(music);
-  const sound: Howl = new Howl({
-    src: [filepath],
-  });
-  sound.play();
+  let musicSrc: any = sounds[1];
+  console.log(musicSrc._src);
+  if (sounds[1].playing() === true)
+    sounds[1].stop();
+  sounds[1].play();
 }
 
 function App() {
@@ -48,7 +49,10 @@ function App() {
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   useEffect(() => {
     musicsGet();
-  }, []);
+  }, [])
+  useEffect(() => {
+    createHowler();
+  }, [musics]);
   useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
@@ -56,12 +60,21 @@ function App() {
     if (checkedNumbers.length !== 0) return true;
     else return false;
   }
+  function createHowler() {
+    musics.forEach(music => {
+      const filepath = 'static/musics/' + music.fileName;
+      sounds.push(new Howl({
+        src: filepath
+      }))
+    });
+    console.log(sounds);
+  }
   function musicsGet() {
     axios.get("/musics")
       .then((response) => {
         console.log(response.data);
         setMusics(response.data)
-      })
+      });
   }
   function musicsDelete(ids: number[]) {
     console.log(ids);
