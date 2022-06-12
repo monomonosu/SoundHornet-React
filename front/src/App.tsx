@@ -38,7 +38,7 @@ interface MusicResource {
 }
 
 let sounds: MusicResource[] = [];
-let playingId: any;
+let playingId: number | undefined;
 
 // メソッド
 function PlaySound(music: Music) {
@@ -46,14 +46,18 @@ function PlaySound(music: Music) {
   let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName)
   if (current !== undefined && current?.filePath === resource?.filePath) {
     current.howl.stop();
+    console.log(current);
   }
   else if (current !== undefined && current?.filePath !== resource?.filePath) {
     current.howl.stop();
     playingId = resource?.howl.play();
+    console.log(current);
+    console.log(resource);
   }
   else {
     const id = resource?.howl.play();
     playingId = id;
+    console.log(resource);
   }
 }
 
@@ -77,12 +81,15 @@ function App() {
   function createHowler() {
     musics.forEach(music => {
       const filepath = 'static/musics/' + music.fileName;
-      sounds.push({
-        filePath: filepath,
-        howl: new Howl({
-          src: filepath,
-        })
-      });
+      if (!sounds.find(el => el.filePath === filepath)) {
+        sounds.push({
+          filePath: filepath,
+          howl: new Howl({
+            src: filepath,
+            volume: 0.05,
+          })
+        });
+      }
     });
     console.log(sounds);
   }
