@@ -51,20 +51,23 @@ def uploadMusic():
     fileType = request.form["type"]
     fileName = f.filename
     filePath = 'static/musics/'+fileName
-    f.save(filePath)
-    fileSize = convert_size(os.path.getsize(filePath))
-    newMusic = Music(
-        musicName=fileName,
-        time=time,
-        fileType=fileType,
-        fileSize=fileSize,
-        fileName=fileName,
-    )
-    db.session.add(newMusic)
-    db.session.commit()
-    print(f)
-    print(os.getcwd())
-    return jsonify({"filename": f.filename})
+    if os.path.exists(filePath):
+        return jsonify({"message": "Uploaded file already exists"}), 500
+    else:
+        f.save(filePath)
+        fileSize = convert_size(os.path.getsize(filePath))
+        newMusic = Music(
+            musicName=fileName,
+            time=time,
+            fileType=fileType,
+            fileSize=fileSize,
+            fileName=fileName,
+        )
+        db.session.add(newMusic)
+        db.session.commit()
+        print(f)
+        print(os.getcwd())
+        return jsonify({"filename": f.filename})
 
 
 def convert_size(size):
