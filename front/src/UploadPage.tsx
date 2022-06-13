@@ -27,6 +27,11 @@ const UploadPage = () => {
         console.log(status, meta, file)
         if (status === 'done') {
             console.log(JSON.parse(xhr.response));
+            return;
+        }
+        if (status === 'error_upload') {
+            // TODO:エラー時のレスポンスがnullになってしまうので、後で要修正。
+            console.log(xhr);
         }
     }
 
