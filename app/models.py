@@ -40,11 +40,11 @@ class Music_Photo(db.Model):
                           default=datetime.now, onupdate=datetime.now)
 
 
-class Artist(db.Model):
-    __tablename__ = 'artists'
+class Group(db.Model):
+    __tablename__ = 'groups'
 
     id = db.Column(db.Integer, primary_key=True)
-    artistName = db.Column(db.String)
+    groupName = db.Column(db.String)
     createdAt = db.Column(db.String, nullable=False, default=datetime.now)
     updatedAt = db.Column(db.String, nullable=False,
                           default=datetime.now, onupdate=datetime.now)
@@ -73,9 +73,9 @@ class MusicSchema(ma.SQLAlchemyAutoSchema):
     music_photos = ma.Nested(Music_PhotoSchema, many=True)
 
 
-class ArtistSchema(ma.SQLAlchemyAutoSchema):
+class GroupSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Artist
+        model = Group
 
 
 class GenreSchema(ma.SQLAlchemyAutoSchema):

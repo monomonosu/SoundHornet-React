@@ -3,7 +3,7 @@ from models import *
 
 
 def seeder():
-    models = [Music, Music_Photo, Artist, Genre]
+    models = [Music, Music_Photo, Group, Genre]
 
     for model in models:
         db.session.query(model).delete()
@@ -44,16 +44,16 @@ def seeder():
     for photo in musicPhotos:
         print(photo.fileName)
 
-    # -----Artists-----
-    print('---Artists---')
-    artists = [
-        Artist(artistName='魔王魂'),
+    # -----Groups-----
+    print('---Groups---')
+    groups = [
+        Group(groupName='魔王魂'),
     ]
-    db.session.add_all(artists)
+    db.session.add_all(groups)
     db.session.commit()
-    artists = Artist.query.all()
-    for artist in artists:
-        print(artist.artistName)
+    groups = Group.query.all()
+    for group in groups:
+        print(group.groupName)
 
     # -----Genres-----
     print('---Genres---')
