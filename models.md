@@ -31,12 +31,12 @@
 | createdAt | 作成日時       | datetime |      | 
 | updatedAt | 更新日時       | datetime |      | 
 
-## Artists
+## Groups
 
 | 項目       | 和名           | タイプ  | 備考 | 
 | ---------- | -------------- | ------- | ---- | 
 | id         | id             | integer |      | 
-| artistName | アーティスト名 | string   |      | 
+| groupName  | グループ名     | string   |      | 
 | createdAt  | 作成日時       | datetime |      | 
 | updatedAt  | 更新日時       | datetime |      | 
 

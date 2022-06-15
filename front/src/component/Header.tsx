@@ -70,7 +70,7 @@ export default function Header() {
                             <Box style={{ backgroundColor: "#161B22", height: '100vh' }}>
                                 <Box style={{ height: '9vh' }}></Box>
                                 <Grid container>
-                                    <Button><BoyIcon />　Artist</Button>
+                                    <Button><BoyIcon />　Group</Button>
                                 </Grid>
                                 <Grid container>
                                     <Link to="/album">
