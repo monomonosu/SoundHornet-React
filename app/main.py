@@ -6,7 +6,7 @@ import math
 
 # ---------- Page ----------
 @app.route('/')
-@app.route('/artist')
+@app.route('/group')
 @app.route('/album')
 @app.route('/genre')
 @app.route('/favorite')

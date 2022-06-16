@@ -10,7 +10,7 @@ class Music(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     musicName = db.Column(db.String, nullable=False)
-    artist = db.Column(db.String,)
+    group = db.Column(db.String,)
     album = db.Column(db.String,)
     genre = db.Column(db.String,)
     evaluation = db.Column(db.Integer,)
