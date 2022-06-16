@@ -2,13 +2,17 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import './App.css';
 import {
-  Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Collapse, Typography, Checkbox
+  Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Collapse, Typography, Checkbox, Card, CardContent, CardMedia,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import EditIcon from '@mui/icons-material/Edit';
 import { Link } from "react-router-dom";
 import Header from './component/Header';
@@ -166,7 +170,7 @@ function App() {
         <Grid item xs>
         </Grid>
         <Grid item xs={11}>
-          <div style={{ height: "300px" }}></div>
+          <div style={{ height: "1000px" }}></div>
           <Link to="/table-sample">
             <Button>TableSample</Button>
           </Link>
@@ -174,6 +178,9 @@ function App() {
         <Grid item xs>
         </Grid>
       </Grid>
+
+      {/* フッター */}
+      <Footer></Footer>
 
     </div >
   );
@@ -270,6 +277,82 @@ export const Row = (props: { music: Music, setCheckedNumbers: React.Dispatch<Rea
         </TableCell>
       </TableRow>
     </React.Fragment>
+  )
+}
+
+export const Footer = () => {
+  // TODO:アルバムフォト・MusicName・GroupNameの繋ぎこみをする。
+  // TODO:再生・次へ・前へ・音量・詳細・再生進捗機能を付ける。
+  return (
+    <div>
+      <Card style={{ width: "100%", position: "fixed", height: "90px", bottom: "0", backgroundColor: '#161B22' }}>
+        <CardContent>
+          <Grid container>
+            <Grid item xs>
+              <div style={{ display: 'flex' }}>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 60, height: 60 }}
+                  image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlNIDOXlthHXz96_Q3_oREmfsZFs-seuKCMw&usqp=CAU"
+                  alt="Live from space album cover"
+                />
+                <div style={{ marginLeft: '10px' }}>
+                  <Typography variant="h6" component="div" style={{ color: "white" }}>
+                    MusicNameHoge
+                  </Typography>
+                  <p style={{ color: "white", margin: '4px 0' }}>
+                    ArtistNameHoge
+                  </p>
+                </div>
+              </div>
+            </Grid>
+            <Grid item xs>
+              <div style={{ display: 'flex', justifyContent: "center" }}>
+                <IconButton
+                  aria-label="expand row"
+                  size="large"
+                  onClick={() => console.log('hoge')}
+                >
+                  <SkipPreviousIcon fontSize='large' style={{ color: 'white' }} />
+                </IconButton>
+                <IconButton
+                  aria-label="expand row"
+                  size="large"
+                  onClick={() => console.log('hoge')}
+                >
+                  <PlayArrowIcon fontSize='large' style={{ color: 'white' }} />
+                </IconButton>
+                <IconButton
+                  aria-label="expand row"
+                  size="large"
+                  onClick={() => console.log('hoge')}
+                >
+                  <SkipNextIcon fontSize='large' style={{ color: 'white' }} />
+                </IconButton>
+              </div>
+            </Grid>
+            <Grid item xs>
+              <div style={{ display: 'flex', justifyContent: "right" }}>
+                <IconButton
+                  aria-label="expand row"
+                  size="large"
+                  onClick={() => console.log('hoge')}
+                >
+                  <VolumeUpIcon fontSize='large' style={{ color: 'white' }} />
+                </IconButton>
+                <IconButton
+                  aria-label="expand row"
+                  size="large"
+                  onClick={() => console.log('hoge')}
+                >
+                  <MoreHorizIcon fontSize='large' style={{ color: 'white' }} />
+                </IconButton>
+              </div>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </div >
   )
 }
 
