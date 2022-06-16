@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './App.css';
 import {
   Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Collapse, Typography, Checkbox, Card, CardContent, CardMedia,
+  Slider,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -285,8 +286,17 @@ export const Footer = () => {
   // TODO:再生・次へ・前へ・音量・詳細・再生進捗機能を付ける。
   return (
     <div>
-      <Card style={{ width: "100%", position: "fixed", height: "90px", bottom: "0", backgroundColor: '#161B22' }}>
-        <CardContent>
+      <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>
+        <CardContent style={{ paddingTop: '0' }}>
+          <Box style={{ width: "100%", height: "30px", backgroundColor: '#161B22', }}>
+            <Slider
+              size="small"
+              defaultValue={0}
+              aria-label="Small"
+              valueLabelDisplay="off"
+              style={{ padding: '0', }}
+            />
+          </Box>
           <Grid container>
             <Grid item xs>
               <div style={{ display: 'flex' }}>
@@ -301,7 +311,7 @@ export const Footer = () => {
                     MusicNameHoge
                   </Typography>
                   <p style={{ color: "white", margin: '4px 0' }}>
-                    ArtistNameHoge
+                    GroupNameHoge
                   </p>
                 </div>
               </div>
