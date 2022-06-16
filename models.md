@@ -4,7 +4,7 @@
 | ---------- | ----------------- | -------- | -------------------------- | 
 | id         | id                | integer  |                            | 
 | musicName  | 音楽名            | string   |                            | 
-| artist     | アーティスト      | string   | フリーor多対１？後日検討     | 
+| group      | グループ          | string   | フリーor多対１？後日検討     | 
 | album      | アルバム          | string   | フリーor多対１？後日検討     | 
 | genre      | ジャンル          | string   | フリーor多対１？後日検討     | 
 | evaluation | 評価              | integer  |                            | 

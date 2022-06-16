@@ -19,7 +19,7 @@ import { Howl, Howler } from 'howler';
 type Music = {
   id: number;
   musicName: string;
-  artist: string;
+  group: string;
   album: string;
   genre: string;
   evaluation: number;
@@ -143,7 +143,7 @@ function App() {
                   </TableCell>
                   <TableCell />
                   <TableCell style={{ color: "#FFFFFF" }}>MusicName</TableCell>
-                  <TableCell style={{ color: "#FFFFFF" }}>Artist</TableCell>
+                  <TableCell style={{ color: "#FFFFFF" }}>Group</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Album</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }}>Genre</TableCell>
                   <TableCell style={{ color: "#FFFFFF" }} align="right">FileSize</TableCell>
@@ -222,7 +222,7 @@ export const Row = (props: { music: Music, setCheckedNumbers: React.Dispatch<Rea
         <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
           {props.music.musicName}
         </TableCell>
-        <TableCell style={{ color: "#FFFFFF" }}>{props.music.artist}</TableCell>
+        <TableCell style={{ color: "#FFFFFF" }}>{props.music.group}</TableCell>
         <TableCell style={{ color: "#FFFFFF" }}>{props.music.album}</TableCell>
         <TableCell style={{ color: "#FFFFFF" }}>{props.music.genre}</TableCell>
         <TableCell style={{ color: "#FFFFFF" }} align="right">{props.music.fileSize}</TableCell>
