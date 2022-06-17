@@ -122,20 +122,8 @@ function App() {
 
   return (
     <div className="App">
-
+      
       <Header></Header>
-
-      <Grid container>
-        <Grid item xs>
-        </Grid>
-        <Grid item xs={11}>
-          <Box>
-            <p>ここにジャケ画</p>
-          </Box>
-        </Grid>
-        <Grid item xs>
-        </Grid>
-      </Grid>
 
       <Grid container>
         <Grid item xs>
