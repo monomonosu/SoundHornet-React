@@ -50,7 +50,7 @@ function PlaySound(music: Music) {
   let current = sounds.find(el => el.howl.playing(playingId) === true);
   let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName)
   if (current !== undefined && current?.filePath === resource?.filePath) {
-    current.howl.stop();
+    current.howl.pause();
     console.log(current);
   }
   else if (current !== undefined && current?.filePath !== resource?.filePath) {
@@ -79,6 +79,11 @@ function App() {
   useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
+  setInterval(() => {
+    let current = sounds.find(el => el.howl.playing(playingId) === true);
+    if (!current) return;
+    console.log(current.howl.seek());
+  }, 300);
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
     else return false;
