@@ -19,23 +19,9 @@ import { Link } from "react-router-dom";
 import Header from './component/Header';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
+// types
+import type { Music } from './types/musics'
 
-
-type Music = {
-  id: number;
-  musicName: string;
-  group: string;
-  album: string;
-  genre: string;
-  evaluation: number;
-  comment: string;
-  time: string;
-  fileType: string;
-  fileSize: string;
-  fileName: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 interface MusicResource {
   howl: Howl,
@@ -122,7 +108,7 @@ function App() {
 
   return (
     <div className="App">
-      
+
       <Header></Header>
 
       <Grid container>
