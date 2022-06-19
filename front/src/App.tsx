@@ -26,6 +26,7 @@ function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
+  const [currentSeek, setCurrentSeek] = useState<number>();
   let sounds: MusicResource[] = [];
   let playingId: number | undefined;
   useEffect(() => {
@@ -37,10 +38,13 @@ function App() {
   useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
+  useEffect(() => {
+    console.log(currentSeek);
+  }, [currentSeek]);
   setInterval(() => {
     let current = sounds.find(el => el.howl.playing(playingId) === true);
     if (!current) return;
-    console.log(current.howl.seek());
+    setCurrentSeek(current.howl.seek());
   }, 300);
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
