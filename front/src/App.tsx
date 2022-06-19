@@ -146,20 +146,6 @@ function App() {
         </Grid>
       </Grid>
 
-      {/* コンポーネントサンプル */}
-      <Grid container>
-        <Grid item xs>
-        </Grid>
-        <Grid item xs={11}>
-          <div style={{ height: "1000px" }}></div>
-          <Link to="/table-sample">
-            <Button>TableSample</Button>
-          </Link>
-        </Grid>
-        <Grid item xs>
-        </Grid>
-      </Grid>
-
       {/* フッター */}
       <Footer></Footer>
 

@@ -83,6 +83,13 @@ export default function Header() {
                                 <Grid container>
                                     <Button><FavoriteIcon />　Favorite</Button>
                                 </Grid>
+                                <Grid container>
+                                </Grid>
+                                <Grid container>
+                                    <Link to="/table-sample">
+                                        <Button>　Sample</Button>
+                                    </Link>
+                                </Grid>
                             </Box>
                         </Drawer>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
