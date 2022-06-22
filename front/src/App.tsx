@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
+import styled from 'styled-components';
 import './App.css';
 import {
   Box, Grid, Typography, Card, CardContent, CardMedia, Slider,
@@ -38,9 +39,6 @@ function App() {
   useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
-  useEffect(() => {
-    console.log(currentSeek);
-  }, [currentSeek]);
   setInterval(() => {
     let current = sounds.find(el => el.howl.playing(playingId) === true);
     if (!current) return;
@@ -118,27 +116,43 @@ function App() {
         musicsDelete={musicsDelete}></MusicTable>
 
       {/* フッター */}
-      <Footer></Footer>
+      <Footer seek={currentSeek}></Footer>
 
     </div >
   );
 }
 
-export const Footer = () => {
+export const Footer = (props: { seek: number | undefined }) => {
   // TODO:アルバムフォト・MusicName・GroupNameの繋ぎこみをする。
   // TODO:再生・次へ・前へ・音量・詳細・再生進捗機能を付ける。
+  const Wrapper = styled.div`
+    .MuiSlider-thumbColorPrimary{
+      left:40%
+    }
+  `
+  const [time, setTime] = useState<number | number[] | undefined>();
+  let seek = props.seek;
+  useEffect(() => {
+    setTime(seek);
+    console.log(time);
+  }, [seek]);
   return (
     <div>
       <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>
         <CardContent style={{ paddingTop: '0' }}>
           <Box style={{ width: "100%", height: "30px", backgroundColor: '#161B22', }}>
-            <Slider
-              size="small"
-              defaultValue={0}
-              aria-label="Small"
-              valueLabelDisplay="off"
-              style={{ padding: '0', }}
-            />
+            <Wrapper>
+              <Slider
+                size="small"
+                defaultValue={0}
+                value={time}
+                max={100}
+                min={0}
+                aria-label="Small"
+                valueLabelDisplay="off"
+                style={{ padding: '0', }}
+              />
+            </Wrapper>
           </Box>
           <Grid container>
             <Grid item xs>

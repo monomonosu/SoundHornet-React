@@ -94,7 +94,7 @@ export default function Header() {
                         </Drawer>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                             <Link to="/" style={{ textDecoration: 'none' }}>
-                                <Button size='large' style={{ textTransform: "none", color: "white" }}>SoundHornet</Button>
+                                <Button size='large' style={{ textTransform: "none", color: "white" }}>Sound</Button>
                             </Link>
                         </Typography>
                         <Link to="/download">
