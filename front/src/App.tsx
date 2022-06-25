@@ -29,7 +29,6 @@ function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  // const [currentSeek, setCurrentSeek] = useState<number>();
   let sounds: MusicResource[] = [];
   let playingId: number | undefined;
   useEffect(() => {
