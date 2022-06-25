@@ -23,11 +23,13 @@ interface MusicResource {
   filePath: string,
 }
 
+let currentSeek: number = 0;
+
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  const [currentSeek, setCurrentSeek] = useState<number>();
+  // const [currentSeek, setCurrentSeek] = useState<number>();
   let sounds: MusicResource[] = [];
   let playingId: number | undefined;
   useEffect(() => {
@@ -42,7 +44,7 @@ function App() {
   setInterval(() => {
     let current = sounds.find(el => el.howl.playing(playingId) === true);
     if (!current) return;
-    setCurrentSeek(current.howl.seek());
+    currentSeek = current.howl.seek();
   }, 300);
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
@@ -116,13 +118,13 @@ function App() {
         musicsDelete={musicsDelete}></MusicTable>
 
       {/* フッター */}
-      <Footer seek={currentSeek}></Footer>
+      <Footer></Footer>
 
     </div >
   );
 }
 
-export const Footer = (props: { seek: number | undefined }) => {
+export const Footer = () => {
   // TODO:アルバムフォト・MusicName・GroupNameの繋ぎこみをする。
   // TODO:再生・次へ・前へ・音量・詳細・再生進捗機能を付ける。
   const Wrapper = styled.div`
@@ -131,11 +133,12 @@ export const Footer = (props: { seek: number | undefined }) => {
     }
   `
   const [time, setTime] = useState<number | number[] | undefined>();
-  let seek = props.seek;
+  setInterval(() => {
+    setTime(currentSeek);
+  }, 300);
   useEffect(() => {
-    setTime(seek);
     console.log(time);
-  }, [seek]);
+  }, [time]);
   return (
     <div>
       <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>
