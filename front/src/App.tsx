@@ -136,25 +136,28 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
     }
   `
 
-  const [time, setTime] = useState<number | undefined>();
+  const [timePar, setTimePar] = useState<number | undefined>();
   setInterval(() => {
-    setTime(currentSeek);
+    setTimePar(currentSeek);
   }, 100);
   useEffect(() => {
-    console.log(time);
-  }, [time]);
+    console.log(timePar);
+  }, [timePar]);
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val_str = newValue.toString();
     const val: number = Number(val_str);
-    setTime(val);
+    setTimePar(val);
     props.ChangeSeek(val);
+  };
+  const timeParCalculation = () => {
+
   };
   return (
     <div>
       <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>
         <CardContent style={{ paddingTop: '0' }}>
           <Box style={{ width: "100%", height: "30px", backgroundColor: '#161B22', }}>
-            <Wrapper left={time}>
+            <Wrapper left={timePar}>
               <Slider
                 size="small"
                 onChange={handleChange}
