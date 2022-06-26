@@ -83,7 +83,7 @@ function App() {
       console.log(resource);
     }
   }
-  function ChangeSeek(seek: number) {
+  function ChangeSeek(seek: number | undefined) {
     let current = sounds.find(el => el.howl.playing(playingId) === true);
     if (current !== undefined) current.howl.seek(seek);
   }
@@ -121,33 +121,33 @@ function App() {
         musicsDelete={musicsDelete}></MusicTable>
 
       {/* フッター */}
-      <Footer changeSeek={ChangeSeek}></Footer>
+      <Footer ChangeSeek={ChangeSeek}></Footer>
 
     </div >
   );
 }
 
-export const Footer = (props: { changeSeek(seek: number): void }) => {
+export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) => {
   // TODO:アルバムフォト・MusicName・GroupNameの繋ぎこみをする。
   // TODO:再生・次へ・前へ・音量・詳細を付ける。
-  const Wrapper = styled.div<{ left: string | undefined }>`
+  const Wrapper = styled.div<{ left: number | undefined }>`
     .MuiSlider-thumbColorPrimary{
-      left:${props => (props.left ? props.left : '0%')} !important;
+      left:${props => (props.left ? props.left.toString() + '%' : '0%')} !important;
     }
   `
 
-  const [time, setTime] = useState<string | undefined>();
+  const [time, setTime] = useState<number | undefined>();
   setInterval(() => {
-    setTime(currentSeek.toString() + '%');
+    setTime(currentSeek);
   }, 100);
   useEffect(() => {
     console.log(time);
   }, [time]);
   const handleChange = (event: Event, newValue: number | number[]) => {
-    const val = newValue.toString();
-    const val2: number = Number(val);
+    const val_str = newValue.toString();
+    const val: number = Number(val_str);
     setTime(val);
-    props.changeSeek(val2);
+    props.ChangeSeek(val);
   };
   return (
     <div>
