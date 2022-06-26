@@ -9,7 +9,8 @@
 | genre      | ジャンル          | string   | フリーor多対１？後日検討     | 
 | evaluation | 評価              | integer  |                            | 
 | comment    | コメント          | string   |                            | 
-| time       | 長さ              | string   | 参考程度なので暫定的にTEXT | 
+| duration   | 長さ(秒・マイクロ) | integer  | 計算等に必要               | 
+| time       | 長さ(分・秒)      | string   | 参考程度なので暫定的にTEXT  | 
 | fileType   | ファイル形式      | string   | mp3,wav等                  | 
 | fileSize   | ファイルサイズ    | string   |                            | 
 | fileName   | ファイル名        | string   |                            |
