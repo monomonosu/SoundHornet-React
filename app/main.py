@@ -47,7 +47,8 @@ def deleteMusics(ids):
 @app.route("/upload-music", methods=['POST'])
 def uploadMusic():
     f = request.files["file"]
-    time = request.form["duration"]
+    duration = request.form["duration"]
+    time = request.form["time"]
     fileType = request.form["type"]
     fileName = f.filename
     filePath = 'static/musics/'+fileName
@@ -58,6 +59,7 @@ def uploadMusic():
         fileSize = convert_size(os.path.getsize(filePath))
         newMusic = Music(
             musicName=fileName,
+            duration=duration,
             time=time,
             fileType=fileType,
             fileSize=fileSize,

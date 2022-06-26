@@ -15,6 +15,7 @@ class Music(db.Model):
     genre = db.Column(db.String,)
     evaluation = db.Column(db.Integer,)
     comment = db.Column(db.String,)
+    duration = db.Column(db.Integer,)
     time = db.Column(db.String,)
     fileType = db.Column(db.String, nullable=False)
     fileSize = db.Column(db.String, nullable=False)
