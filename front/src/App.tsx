@@ -24,12 +24,12 @@ interface MusicResource {
 }
 
 let currentSeek: number = 0;
+let sounds: MusicResource[] = [];
 
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  let sounds: MusicResource[] = [];
   let playingId: number | undefined;
   useEffect(() => {
     musicsGet();
@@ -44,7 +44,7 @@ function App() {
     let current = sounds.find(el => el.howl.playing(playingId) === true);
     if (!current) return;
     currentSeek = current.howl.seek();
-  }, 300);
+  }, 100);
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
     else return false;
@@ -83,6 +83,10 @@ function App() {
       console.log(resource);
     }
   }
+  function ChangeSeek(seek: number) {
+    let current = sounds.find(el => el.howl.playing(playingId) === true);
+    if (current !== undefined) current.howl.seek(seek);
+  }
   function musicsGet() {
     axios.get("/musics")
       .then((response) => {
@@ -117,37 +121,43 @@ function App() {
         musicsDelete={musicsDelete}></MusicTable>
 
       {/* フッター */}
-      <Footer></Footer>
+      <Footer changeSeek={ChangeSeek}></Footer>
 
     </div >
   );
 }
 
-export const Footer = () => {
+export const Footer = (props: { changeSeek(seek: number): void }) => {
   // TODO:アルバムフォト・MusicName・GroupNameの繋ぎこみをする。
-  // TODO:再生・次へ・前へ・音量・詳細・再生進捗機能を付ける。
-  const Wrapper = styled.div`
+  // TODO:再生・次へ・前へ・音量・詳細を付ける。
+  const Wrapper = styled.div<{ left: string | undefined }>`
     .MuiSlider-thumbColorPrimary{
-      left:40%
+      left:${props => (props.left ? props.left : '0%')} !important;
     }
   `
-  const [time, setTime] = useState<number | number[] | undefined>();
+
+  const [time, setTime] = useState<string | undefined>();
   setInterval(() => {
-    setTime(currentSeek);
-  }, 300);
+    setTime(currentSeek.toString() + '%');
+  }, 100);
   useEffect(() => {
     console.log(time);
   }, [time]);
+  const handleChange = (event: Event, newValue: number | number[]) => {
+    const val = newValue.toString();
+    const val2: number = Number(val);
+    setTime(val);
+    props.changeSeek(val2);
+  };
   return (
     <div>
       <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>
         <CardContent style={{ paddingTop: '0' }}>
           <Box style={{ width: "100%", height: "30px", backgroundColor: '#161B22', }}>
-            <Wrapper>
+            <Wrapper left={time}>
               <Slider
                 size="small"
-                defaultValue={0}
-                value={time}
+                onChange={handleChange}
                 max={100}
                 min={0}
                 aria-label="Small"
