@@ -25,12 +25,12 @@ interface MusicResource {
 
 let currentSeek: number = 0;
 let sounds: MusicResource[] = [];
+let playingId: number | undefined;
 
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  let playingId: number | undefined;
   useEffect(() => {
     musicsGet();
   }, [])
@@ -136,25 +136,39 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
     }
   `
 
-  const [time, setTime] = useState<number | undefined>();
+  const [timePer, setTimePer] = useState<number | undefined>();
   setInterval(() => {
-    setTime(currentSeek);
+    setTimePer(timeToPerCalculation(currentSeek));
   }, 100);
   useEffect(() => {
-    console.log(time);
-  }, [time]);
+    console.log(timePer);
+  }, [timePer]);
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val_str = newValue.toString();
     const val: number = Number(val_str);
-    setTime(val);
-    props.ChangeSeek(val);
+    setTimePer(val);
+    props.ChangeSeek(perToTimeCalculation(val));
+  };
+  const timeToPerCalculation = (seek: number) => {
+    let current = sounds.find(el => el.howl.playing(playingId) === true);
+    if (current !== undefined) {
+      return seek / current?.howl.duration() * 100;
+    }
+    return 0;
+  };
+  const perToTimeCalculation = (per: number) => {
+    let current = sounds.find(el => el.howl.playing(playingId) === true);
+    if (current !== undefined) {
+      return current.howl.duration() / 100 * per;
+    }
+    return 0;
   };
   return (
     <div>
       <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>
         <CardContent style={{ paddingTop: '0' }}>
           <Box style={{ width: "100%", height: "30px", backgroundColor: '#161B22', }}>
-            <Wrapper left={time}>
+            <Wrapper left={timePer}>
               <Slider
                 size="small"
                 onChange={handleChange}
