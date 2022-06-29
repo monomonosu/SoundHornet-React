@@ -65,7 +65,7 @@ class Setting(db.Model):
     __tablename__ = 'settings'
 
     id = db.Column(db.Integer, primary_key=True)
-    volume = db.Column(db.Integer)
+    volume = db.Column(db.Integer, nullable=False, default=50)
     createdAt = db.Column(db.String, nullable=False, default=datetime.now)
     updatedAt = db.Column(db.String, nullable=False,
                           default=datetime.now, onupdate=datetime.now)
@@ -92,7 +92,7 @@ class GroupSchema(ma.SQLAlchemyAutoSchema):
 class GenreSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Genre
-        
+
 
 class SettingSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
