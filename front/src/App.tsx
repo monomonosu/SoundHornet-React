@@ -262,11 +262,10 @@ export const VolumeButton = memo((props: { volume: number | undefined }) => {
   useEffect(() => {
     setVolumeValue(props.volume);
   }, [props.volume]);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     if (!!isOpenPopper)
-      // TODO:音量保存処理 
-      console.log('ここで音量の保存を行う');
+      await volumeUpdate({ 'volume': volumeValue });
     setIsOpenPopper(!isOpenPopper);
   };
   const handleChange = (event: Event, newValue: number | number[]) => {
@@ -275,6 +274,12 @@ export const VolumeButton = memo((props: { volume: number | undefined }) => {
     console.log('volumeValue:', volumeValue);
     const valFloat: number = val * 0.01;
     Howler.volume(valFloat);
+  };
+  async function volumeUpdate(item: { volume: number | undefined }) {
+    axios.put("/volume", item)
+      .then((response) => {
+        console.log(response);
+      });
   };
 
   return (
