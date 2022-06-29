@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
 import {
-  Box, Grid, Typography, Card, CardContent, CardMedia, Slider,
+  Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -226,13 +226,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
             </Grid>
             <Grid item xs>
               <div style={{ display: 'flex', justifyContent: "right" }}>
-                <IconButton
-                  aria-label="expand row"
-                  size="large"
-                  onClick={() => console.log('hoge')}
-                >
-                  <VolumeUpIcon fontSize='large' style={{ color: 'white' }} />
-                </IconButton>
+                <VolumeButton />
                 <IconButton
                   aria-label="expand row"
                   size="large"
@@ -247,6 +241,44 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
       </Card>
     </div >
   )
+}
+
+export const VolumeButton = () => {
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [isOpenPopper, setIsOpenPopper] = useState(false);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    setIsOpenPopper(!isOpenPopper);
+  };
+
+  return (
+    <div>
+      <IconButton
+        aria-label="expand row"
+        size="large"
+        onClick={handleClick}
+      >
+        <VolumeUpIcon fontSize='large' style={{ color: 'white' }} />
+      </IconButton>
+      <Popper
+        open={isOpenPopper}
+        anchorEl={anchorEl}
+      >
+        <Paper style={{ width: '30px', height: '20vh', textAlign: 'center', paddingTop: '3vh', paddingBottom: '3vh' }}>
+          <Slider
+            size="small"
+            // onChange={handleChange}
+            max={100}
+            min={0}
+            orientation="vertical"
+            aria-label="Small"
+            valueLabelDisplay="off"
+          />
+        </Paper>
+      </Popper>
+    </div>
+  );
 }
 
 export default App;
