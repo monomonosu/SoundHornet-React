@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
@@ -16,7 +16,8 @@ import MusicTable from './component/MusicsTable';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
 // types
-import type { Music } from './types/musics'
+import type { Music } from './types/musics';
+import type { Setting } from './types/Setting';
 
 interface MusicResource {
   howl: Howl,
@@ -26,20 +27,23 @@ interface MusicResource {
 let currentSeek: number = 0;
 let sounds: MusicResource[] = [];
 let playingId: number | undefined;
-let volume: number = 0.1;
-Howler.volume(volume);
 
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
+  const [setting, setSetting] = useState<Setting>();
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   useEffect(() => {
-    // TODO:DBから呼んできた値でグローバル音量の初期セットを行う
     musicsGet();
+    settingGet();
   }, [])
   useEffect(() => {
     createHowler();
   }, [musics]);
+  useEffect(() => {
+    Howler.volume(setting?.volume ? setting.volume * 0.01 : 0);
+    console.log('howlerVolume:', Howler.volume());
+  }, [setting]);
   useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
@@ -93,7 +97,7 @@ function App() {
     axios.get("/musics")
       .then((response) => {
         console.log(response.data);
-        setMusics(response.data)
+        setMusics(response.data);
       });
   }
   function musicsDelete(ids: number[]) {
@@ -104,6 +108,14 @@ function App() {
         setMusics(response.data);
       })
     setCheckedNumbers([]);
+  }
+  function settingGet() {
+    axios.get("/settings")
+      .then((response) => {
+        console.log(response.data);
+        setSetting(response.data);
+      });
+    return;
   }
 
   return (
@@ -123,13 +135,13 @@ function App() {
         musicsDelete={musicsDelete}></MusicTable>
 
       {/* フッター */}
-      <Footer ChangeSeek={ChangeSeek}></Footer>
+      <Footer ChangeSeek={ChangeSeek} volume={setting?.volume}></Footer>
 
     </div >
   );
 }
 
-export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) => {
+export const Footer = (props: { ChangeSeek(seek: number | undefined): void, volume: number | undefined }) => {
   // TODO:アルバムフォト・MusicName・GroupNameの繋ぎこみをする。
   // TODO:再生・次へ・前へ・音量・詳細を付ける。
   const Wrapper = styled.div<{ left: number | undefined }>`
@@ -142,9 +154,6 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   setInterval(() => {
     setTimePer(timeToPerCalculation(currentSeek));
   }, 100);
-  useEffect(() => {
-    console.log(timePer);
-  }, [timePer]);
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val_str = newValue.toString();
     const val: number = Number(val_str);
@@ -228,7 +237,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
             </Grid>
             <Grid item xs>
               <div style={{ display: 'flex', justifyContent: "right" }}>
-                <VolumeButton />
+                <VolumeButton volume={props.volume} />
                 <IconButton
                   aria-label="expand row"
                   size="large"
@@ -245,11 +254,14 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   )
 }
 
-export const VolumeButton = () => {
+export const VolumeButton = memo((props: { volume: number | undefined }) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [isOpenPopper, setIsOpenPopper] = useState<boolean>(false);
-  const [volumeValue, setVolumeValue] = useState<number | number[]>(volume * 100);
+  const [volumeValue, setVolumeValue] = useState<number | undefined>(props.volume ? props.volume : 0);
 
+  useEffect(() => {
+    setVolumeValue(props.volume);
+  }, [props.volume]);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     if (!!isOpenPopper)
@@ -260,7 +272,7 @@ export const VolumeButton = () => {
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val: number = Number(newValue);
     setVolumeValue(val);
-    console.log(volumeValue);
+    console.log('volumeValue:', volumeValue);
     const valFloat: number = val * 0.01;
     Howler.volume(valFloat);
   };
@@ -293,6 +305,6 @@ export const VolumeButton = () => {
       </Popper>
     </div>
   );
-}
+});
 
 export default App;
