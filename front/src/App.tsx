@@ -26,12 +26,15 @@ interface MusicResource {
 let currentSeek: number = 0;
 let sounds: MusicResource[] = [];
 let playingId: number | undefined;
+let volume: number = 0.1;
+Howler.volume(volume);
 
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   useEffect(() => {
+    // TODO:DBから呼んできた値でグローバル音量の初期セットを行う
     musicsGet();
   }, [])
   useEffect(() => {
@@ -57,7 +60,6 @@ function App() {
           filePath: filepath,
           howl: new Howl({
             src: filepath,
-            volume: 0.05,
           })
         });
       }
@@ -245,11 +247,22 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
 
 export const VolumeButton = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  const [isOpenPopper, setIsOpenPopper] = useState(false);
+  const [isOpenPopper, setIsOpenPopper] = useState<boolean>(false);
+  const [volumeValue, setVolumeValue] = useState<number | number[]>(volume * 100);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+    if (!!isOpenPopper)
+      // TODO:音量保存処理 
+      console.log('ここで音量の保存を行う');
     setIsOpenPopper(!isOpenPopper);
+  };
+  const handleChange = (event: Event, newValue: number | number[]) => {
+    const val: number = Number(newValue);
+    setVolumeValue(val);
+    console.log(volumeValue);
+    const valFloat: number = val * 0.01;
+    Howler.volume(valFloat);
   };
 
   return (
@@ -268,7 +281,8 @@ export const VolumeButton = () => {
         <Paper style={{ width: '30px', height: '20vh', textAlign: 'center', paddingTop: '3vh', paddingBottom: '3vh' }}>
           <Slider
             size="small"
-            // onChange={handleChange}
+            onChange={handleChange}
+            value={volumeValue}
             max={100}
             min={0}
             orientation="vertical"
