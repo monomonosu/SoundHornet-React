@@ -43,6 +43,12 @@ def deleteMusics(ids):
     return jsonify(MusicSchema(many=True).dump(musics))
 
 
+@app.route("/settings", methods=['GET'])
+def getSetting():
+    setting = Setting.query.filter(Setting.id == 1).first()
+    return jsonify(SettingSchema().dump(setting))
+
+
 # ---------- upload ----------
 @app.route("/upload-music", methods=['POST'])
 def uploadMusic():

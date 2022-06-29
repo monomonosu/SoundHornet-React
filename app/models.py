@@ -61,6 +61,16 @@ class Genre(db.Model):
                           default=datetime.now, onupdate=datetime.now)
 
 
+class Setting(db.Model):
+    __tablename__ = 'settings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    volume = db.Column(db.Integer)
+    createdAt = db.Column(db.String, nullable=False, default=datetime.now)
+    updatedAt = db.Column(db.String, nullable=False,
+                          default=datetime.now, onupdate=datetime.now)
+
+
 class Music_PhotoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Music_Photo
@@ -82,3 +92,8 @@ class GroupSchema(ma.SQLAlchemyAutoSchema):
 class GenreSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Genre
+        
+
+class SettingSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Setting

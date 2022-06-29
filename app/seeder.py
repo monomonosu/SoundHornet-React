@@ -3,7 +3,7 @@ from models import *
 
 
 def seeder():
-    models = [Music, Music_Photo, Group, Genre]
+    models = [Music, Music_Photo, Group, Genre, Setting]
 
     for model in models:
         db.session.query(model).delete()
@@ -67,6 +67,16 @@ def seeder():
     genres = Genre.query.all()
     for genre in genres:
         print(genre.genreName)
+
+    # -----Setting-----
+    print('---Setting---')
+    setting = [
+        Setting(volume=50),
+    ]
+    db.session.add_all(setting)
+    db.session.commit()
+    setting = Setting.query.all()
+    print(setting[0].volume)
 
 
 if __name__ == '__main__':

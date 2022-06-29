@@ -51,3 +51,13 @@
 | genreName  | ジャンル名     | string   |      | 
 | createdAt  | 作成日時       | datetime |      | 
 | updatedAt  | 更新日時       | datetime |      | 
+
+<br>
+
+## Setting
+| 項目       | 和名           | タイプ  | 備考 | 
+| ---------- | -------------- | ------- | ---- | 
+| id         | id             | integer |      | 
+| volume     | 音量           | integer  |      | 
+| createdAt  | 作成日時       | datetime |      | 
+| updatedAt  | 更新日時       | datetime |      | 
