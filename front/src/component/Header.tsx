@@ -73,7 +73,7 @@ export default function Header() {
                                     <Button><BoyIcon />　Group</Button>
                                 </Grid>
                                 <Grid container>
-                                    <Link to="/album">
+                                    <Link to="/album-page">
                                         <Button><FilterIcon />　Album</Button>
                                     </Link>
                                 </Grid>
@@ -97,7 +97,7 @@ export default function Header() {
                                 <Button size='large' style={{ textTransform: "none", color: "white" }}>Sound</Button>
                             </Link>
                         </Typography>
-                        <Link to="/download">
+                        <Link to="/download-page">
                             <Button onMouseEnter={openPopper} onMouseLeave={closePopper}>
                                 <YouTubeIcon fontSize="large" />
                                 <Popper open={isOpenPopper} anchorEl={anchorEl}>
@@ -107,7 +107,7 @@ export default function Header() {
                                 </Popper>
                             </Button>
                         </Link>
-                        <Link to="/import">
+                        <Link to="/import-page">
                             <Button onMouseEnter={openPopper2} onMouseLeave={closePopper2}>
                                 <BackupIcon fontSize="large" />
                                 <Popper open={isOpenPopper2} anchorEl={anchorEl2}>
@@ -117,7 +117,7 @@ export default function Header() {
                                 </Popper>
                             </Button>
                         </Link>
-                        <Link to="/setting">
+                        <Link to="/setting-page">
                             <Button onMouseEnter={openPopper3} onMouseLeave={closePopper3}>
                                 <SettingsIcon fontSize="large" />
                                 <Popper open={isOpenPopper3} anchorEl={anchorEl3}>

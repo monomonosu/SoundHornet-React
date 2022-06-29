@@ -18,10 +18,10 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path='album' element={<AlbumPage />}></Route>
-      <Route path="import" element={<UploadPage />} />
-      <Route path="download" element={<DownloadPage />} />
-      <Route path="setting" element={<SettingPage />} />
+      <Route path='album-page' element={<AlbumPage />}></Route>
+      <Route path="import-page" element={<UploadPage />} />
+      <Route path="download-page" element={<DownloadPage />} />
+      <Route path="setting-page" element={<SettingPage />} />
 
       {/* sample */}
       <Route path='table-sample' element={<TableSample />} />
