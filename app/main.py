@@ -49,6 +49,15 @@ def getSetting():
     return jsonify(SettingSchema().dump(setting))
 
 
+@app.route("/volume", methods=['PUT'])
+def updateVolume():
+    data = request.json
+    setting = Setting.query.filter(Setting.id == 1).one()
+    setting.volume = data.get('volume')
+    db.session.commit()
+    return jsonify({'result': 'SuccessUpdate', 'data': data})
+
+
 # ---------- upload ----------
 @app.route("/upload-music", methods=['POST'])
 def uploadMusic():
