@@ -134,6 +134,8 @@ function App() {
         isDeleteButton={isDeleteButton}
         musicsDelete={musicsDelete}></MusicTable>
 
+      <div style={{ height: '150px' }}></div>
+
       {/* フッター */}
       <Footer ChangeSeek={ChangeSeek} volume={setting?.volume}></Footer>
 
