@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useContext, useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
@@ -15,6 +15,7 @@ import Header from './component/Header';
 import MusicTable from './component/MusicsTable';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
+import { VolumeContext } from './providers/VolumeProvider';
 // types
 import type { Music } from './types/musics';
 import type { Setting } from './types/Setting';
@@ -33,6 +34,8 @@ function App() {
   const [musics, setMusics] = useState<Music[]>([]);
   const [setting, setSetting] = useState<Setting>();
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
+  const contextVolume = useContext(VolumeContext);
+  console.log(contextVolume);
   useEffect(() => {
     musicsGet();
     settingGet();
