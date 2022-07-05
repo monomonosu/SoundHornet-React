@@ -1,13 +1,13 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-export const VolumeContext = createContext({});
+export const VolumeContext = createContext();
 
 export const VolumeProvider = props => {
     const { children } = props;
-    const sample = { sampleValue: 'test' };
+    const [volume, setVolume] = useState(0);
 
     return (
-        <VolumeContext.Provider value={sample}>
+        <VolumeContext.Provider value={{ volume, setVolume }}>
             {children}
         </VolumeContext.Provider>
     );

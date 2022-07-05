@@ -32,10 +32,8 @@ let playingId: number | undefined;
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
-  const [setting, setSetting] = useState<Setting>();
+  const { volume, setVolume } = useContext(VolumeContext);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  const contextVolume = useContext(VolumeContext);
-  console.log(contextVolume);
   useEffect(() => {
     musicsGet();
     settingGet();
@@ -44,9 +42,9 @@ function App() {
     createHowler();
   }, [musics]);
   useEffect(() => {
-    Howler.volume(setting?.volume ? setting.volume * 0.01 : 0);
+    Howler.volume(volume ? volume * 0.01 : 0);
     console.log('howlerVolume:', Howler.volume());
-  }, [setting]);
+  }, [volume]);
   useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
@@ -116,7 +114,7 @@ function App() {
     axios.get("/settings")
       .then((response) => {
         console.log(response.data);
-        setSetting(response.data);
+        setVolume(Number(response.data.volume));
       });
     return;
   }
@@ -140,13 +138,13 @@ function App() {
       <div style={{ height: '150px' }}></div>
 
       {/* フッター */}
-      <Footer ChangeSeek={ChangeSeek} volume={setting?.volume}></Footer>
+      <Footer ChangeSeek={ChangeSeek}></Footer>
 
     </div >
   );
 }
 
-export const Footer = (props: { ChangeSeek(seek: number | undefined): void, volume: number | undefined }) => {
+export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) => {
   // TODO:アルバムフォト・MusicName・GroupNameの繋ぎこみをする。
   // TODO:再生・次へ・前へ・音量・詳細を付ける。
   const Wrapper = styled.div<{ left: number | undefined }>`
@@ -242,7 +240,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void, volu
             </Grid>
             <Grid item xs>
               <div style={{ display: 'flex', justifyContent: "right" }}>
-                <VolumeButton volume={props.volume} />
+                <VolumeButton />
                 <IconButton
                   aria-label="expand row"
                   size="large"
@@ -259,24 +257,20 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void, volu
   )
 }
 
-export const VolumeButton = memo((props: { volume: number | undefined }) => {
+export const VolumeButton = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [isOpenPopper, setIsOpenPopper] = useState<boolean>(false);
-  const [volumeValue, setVolumeValue] = useState<number | undefined>(props.volume ? props.volume : 0);
+  const { volume, setVolume } = useContext(VolumeContext);
 
-  useEffect(() => {
-    setVolumeValue(props.volume);
-  }, [props.volume]);
   const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     if (!!isOpenPopper)
-      await volumeUpdate({ 'volume': volumeValue });
+      await volumeUpdate({ 'volume': volume });
     setIsOpenPopper(!isOpenPopper);
   };
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val: number = Number(newValue);
-    setVolumeValue(val);
-    console.log('volumeValue:', volumeValue);
+    setVolume(val);
     const valFloat: number = val * 0.01;
     Howler.volume(valFloat);
   };
@@ -304,7 +298,7 @@ export const VolumeButton = memo((props: { volume: number | undefined }) => {
           <Slider
             size="small"
             onChange={handleChange}
-            value={volumeValue}
+            value={volume}
             max={100}
             min={0}
             orientation="vertical"
@@ -315,6 +309,6 @@ export const VolumeButton = memo((props: { volume: number | undefined }) => {
       </Popper>
     </div>
   );
-});
+};
 
 export default App;
