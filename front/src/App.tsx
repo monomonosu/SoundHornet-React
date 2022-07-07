@@ -16,6 +16,8 @@ import MusicTable from './component/MusicsTable';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
 import { VolumeContext } from './providers/VolumeProvider';
+import { useRecoilState } from 'recoil';
+import { playingIdAtom } from './providers/PlayingIdAtom';
 // types
 import type { Music } from './types/musics';
 import type { Setting } from './types/Setting';
@@ -27,13 +29,13 @@ interface MusicResource {
 
 let currentSeek: number = 0;
 let sounds: MusicResource[] = [];
-let playingId: number | undefined;
 
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
   const { volume, setVolume } = useContext(VolumeContext);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
+  const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   useEffect(() => {
     musicsGet();
     settingGet();
@@ -52,7 +54,7 @@ function App() {
     let current = sounds.find(el => el.howl.playing(playingId) === true);
     if (!current) return;
     currentSeek = current.howl.seek();
-  }, 100);
+  }, 300);
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
     else return false;
@@ -80,13 +82,12 @@ function App() {
     }
     else if (current !== undefined && current?.filePath !== resource?.filePath) {
       current.howl.stop();
-      playingId = resource?.howl.play();
+      setPlayingId(Number(resource?.howl.play()));
       console.log(current);
       console.log(resource);
     }
     else {
-      const id = resource?.howl.play();
-      playingId = id;
+      setPlayingId(Number(resource?.howl.play()));
       console.log(resource);
     }
   }
@@ -154,6 +155,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   `
 
   const [timePer, setTimePer] = useState<number | undefined>();
+  const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   setInterval(() => {
     setTimePer(timeToPerCalculation(currentSeek));
   }, 100);
