@@ -15,8 +15,8 @@ import Header from './component/Header';
 import MusicTable from './component/MusicsTable';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
-import { VolumeContext } from './atoms/VolumeProvider';
 import { useRecoilState } from 'recoil';
+import { volumeAtom } from './atoms/VolumeAtom';
 import { playingIdAtom } from './atoms/PlayingIdAtom';
 // types
 import type { Music } from './types/musics';
@@ -33,8 +33,8 @@ let sounds: MusicResource[] = [];
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
-  const { volume, setVolume } = useContext(VolumeContext);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
+  const [volume, setVolume] = useRecoilState(volumeAtom);
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   useEffect(() => {
     musicsGet();
@@ -262,7 +262,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
 export const VolumeButton = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [isOpenPopper, setIsOpenPopper] = useState<boolean>(false);
-  const { volume, setVolume } = useContext(VolumeContext);
+  const [volume, setVolume] = useRecoilState(volumeAtom);
 
   const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
