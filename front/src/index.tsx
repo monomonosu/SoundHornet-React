@@ -8,7 +8,7 @@ import AlbumPage from './AlbumPage';
 import UploadPage from './UploadPage';
 import DownloadPage from './DownloadPage';
 import SettingPage from './SettingPage';
-import { VolumeProvider } from './providers/VolumeProvider';
+import { VolumeProvider } from './atoms/VolumeProvider';
 import { RecoilRoot } from 'recoil';
 // sample
 import TableSample from './sample/TableSample';

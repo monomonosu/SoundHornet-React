@@ -15,9 +15,9 @@ import Header from './component/Header';
 import MusicTable from './component/MusicsTable';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
-import { VolumeContext } from './providers/VolumeProvider';
+import { VolumeContext } from './atoms/VolumeProvider';
 import { useRecoilState } from 'recoil';
-import { playingIdAtom } from './providers/PlayingIdAtom';
+import { playingIdAtom } from './atoms/PlayingIdAtom';
 // types
 import type { Music } from './types/musics';
 import type { Setting } from './types/Setting';
