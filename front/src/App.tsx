@@ -18,6 +18,7 @@ import { Howl, Howler } from 'howler';
 import { useRecoilState } from 'recoil';
 import { volumeAtom } from './atoms/VolumeAtom';
 import { playingIdAtom } from './atoms/PlayingIdAtom';
+import { currentSeekAtom } from './atoms/CurrentSeekAtom';
 // types
 import type { Music } from './types/musics';
 import type { Setting } from './types/Setting';
@@ -27,7 +28,6 @@ interface MusicResource {
   filePath: string,
 }
 
-let currentSeek: number = 0;
 let sounds: MusicResource[] = [];
 
 function App() {
@@ -36,6 +36,7 @@ function App() {
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   const [volume, setVolume] = useRecoilState(volumeAtom);
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
+  const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
   useEffect(() => {
     musicsGet();
     settingGet();
@@ -53,7 +54,7 @@ function App() {
   setInterval(() => {
     let current = sounds.find(el => el.howl.playing(playingId) === true);
     if (!current) return;
-    currentSeek = current.howl.seek();
+    setCurrentSeek(current.howl.seek());
   }, 300);
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
@@ -156,9 +157,13 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
 
   const [timePer, setTimePer] = useState<number | undefined>();
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
+  const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
   setInterval(() => {
     setTimePer(timeToPerCalculation(currentSeek));
   }, 100);
+  // useEffect(() => {
+  //   setTimePer(timeToPerCalculation(currentSeek));
+  // }, [currentSeek]);
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val_str = newValue.toString();
     const val: number = Number(val_str);
