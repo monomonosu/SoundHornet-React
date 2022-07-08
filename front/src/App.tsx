@@ -55,7 +55,7 @@ function App() {
     let current = sounds.find(el => el.howl.playing(playingId) === true);
     if (!current) return;
     setCurrentSeek(current.howl.seek());
-  }, 300);
+  }, 1000);
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
     else return false;
@@ -158,12 +158,12 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   const [timePer, setTimePer] = useState<number | undefined>();
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
-  setInterval(() => {
-    setTimePer(timeToPerCalculation(currentSeek));
-  }, 100);
-  // useEffect(() => {
+  // setInterval(() => {
   //   setTimePer(timeToPerCalculation(currentSeek));
-  // }, [currentSeek]);
+  // }, 100);
+  useEffect(() => {
+    setTimePer(timeToPerCalculation(currentSeek));
+  }, [currentSeek]);
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val_str = newValue.toString();
     const val: number = Number(val_str);
