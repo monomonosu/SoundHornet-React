@@ -24,6 +24,14 @@ import { currentSeekAtom } from './atoms/CurrentSeekAtom';
 import type { Music } from './types/musics';
 import type { Setting } from './types/Setting';
 
+// 投げたcallbackを毎秒実行
+export const useInterval = (callback: () => void) => {
+  useEffect(() => {
+    const id = setInterval(callback, 500);
+    return () => clearInterval(id);
+  }, [callback])
+}
+
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
@@ -46,11 +54,12 @@ function App() {
   useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
-  setInterval(() => {
+  // 毎秒再生進捗を更新する。
+  useInterval(() => {
     let current = sounds.find(el => el.howl.playing(playingId) === true);
     if (!current) return;
     setCurrentSeek(current.howl.seek());
-  }, 1000);
+  });
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
     else return false;
@@ -154,9 +163,6 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   const [sounds, setSounds] = useRecoilState(soundsAtom);
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
-  // setInterval(() => {
-  //   setTimePer(timeToPerCalculation(currentSeek));
-  // }, 100);
   useEffect(() => {
     setTimePer(timeToPerCalculation(currentSeek));
   }, [currentSeek]);
