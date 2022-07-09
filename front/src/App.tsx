@@ -16,6 +16,7 @@ import MusicTable from './component/MusicsTable';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
 import { useRecoilState } from 'recoil';
+import { soundsAtom } from './atoms/SoundsAtom';
 import { volumeAtom } from './atoms/VolumeAtom';
 import { playingIdAtom } from './atoms/PlayingIdAtom';
 import { currentSeekAtom } from './atoms/CurrentSeekAtom';
@@ -23,17 +24,11 @@ import { currentSeekAtom } from './atoms/CurrentSeekAtom';
 import type { Music } from './types/musics';
 import type { Setting } from './types/Setting';
 
-interface MusicResource {
-  howl: Howl,
-  filePath: string,
-}
-
-let sounds: MusicResource[] = [];
-
 function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
+  const [sounds, setSounds] = useRecoilState(soundsAtom);
   const [volume, setVolume] = useRecoilState(volumeAtom);
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
@@ -64,12 +59,12 @@ function App() {
     musics.forEach(music => {
       const filepath = 'static/musics/' + music.fileName;
       if (!sounds.find(el => el.filePath === filepath)) {
-        sounds.push({
+        setSounds((sounds) => [...sounds, {
           filePath: filepath,
           howl: new Howl({
             src: filepath,
           })
-        });
+        }])
       }
     });
     console.log(sounds);
@@ -156,6 +151,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   `
 
   const [timePer, setTimePer] = useState<number | undefined>();
+  const [sounds, setSounds] = useRecoilState(soundsAtom);
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
   // setInterval(() => {
