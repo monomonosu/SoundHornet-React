@@ -16,7 +16,7 @@ import Header from './component/Header';
 import MusicTable from './component/MusicsTable';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
 import { currentSoundAtom } from './atoms/CurrentSoundAtom';
 import { soundsAtom } from './atoms/SoundsAtom';
 import { volumeAtom } from './atoms/VolumeAtom';
@@ -43,6 +43,7 @@ function App() {
   const [volume, setVolume] = useRecoilState(volumeAtom);
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
+  const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
   useEffect(() => {
     musicsGet();
     settingGet();
@@ -141,13 +142,15 @@ function App() {
       <div style={{ height: '5vh' }}></div>
 
       {/* テーブル */}
-      <MusicTable
-        musics={musics}
-        checkedNumbers={checkedNumbers}
-        setCheckedNumbers={setCheckedNumbers}
-        PlaySound={PlaySound}
-        isDeleteButton={isDeleteButton}
-        musicsDelete={musicsDelete}></MusicTable>
+      <RecoilBridge>
+        <MusicTable
+          musics={musics}
+          checkedNumbers={checkedNumbers}
+          setCheckedNumbers={setCheckedNumbers}
+          PlaySound={PlaySound}
+          isDeleteButton={isDeleteButton}
+          musicsDelete={musicsDelete}></MusicTable>
+      </RecoilBridge>
 
       <div style={{ height: '150px' }}></div>
 
