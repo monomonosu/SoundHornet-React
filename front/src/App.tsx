@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -240,7 +241,9 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
                   size="large"
                   onClick={() => console.log('hoge')}
                 >
-                  <PlayArrowIcon fontSize='large' style={{ color: 'white' }} />
+                  {currentSound.howl?.playing() ?
+                    <PauseIcon fontSize='large' style={{ color: 'white' }} /> : <PlayArrowIcon fontSize='large' style={{ color: 'white' }} />
+                  }
                 </IconButton>
                 <IconButton
                   aria-label="expand row"
