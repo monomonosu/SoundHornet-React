@@ -173,6 +173,14 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   useEffect(() => {
     setTimePer(timeToPerCalculation(currentSeek));
   }, [currentSeek]);
+  const playButtonSubmit = () => {
+    if (!!currentSound.howl && currentSound.howl?.playing()) {
+      currentSound.howl.pause();
+      return;
+    }
+    if (!!currentSound.howl)
+      currentSound.howl.play();
+  };
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val_str = newValue.toString();
     const val: number = Number(val_str);
@@ -239,7 +247,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
                 <IconButton
                   aria-label="expand row"
                   size="large"
-                  onClick={() => console.log('hoge')}
+                  onClick={playButtonSubmit}
                 >
                   {currentSound.howl?.playing() ?
                     <PauseIcon fontSize='large' style={{ color: 'white' }} /> : <PlayArrowIcon fontSize='large' style={{ color: 'white' }} />
