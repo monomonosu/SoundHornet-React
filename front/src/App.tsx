@@ -192,7 +192,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
     }
     return 0;
   };
-  if (currentSound.howl !== undefined) {
+  if (!!currentSound.howl) {
     return (
       <div>
         <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>
@@ -272,11 +272,9 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
       </div >
     )
   }
-  else {
-    return (
-      <div></div>
-    )
-  }
+  return (
+    <div></div>
+  )
 }
 
 export const VolumeButton = () => {
