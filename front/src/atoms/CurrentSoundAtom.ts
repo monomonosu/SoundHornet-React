@@ -2,11 +2,11 @@ import { atom } from "recoil"
 import { Howl } from 'howler';
 
 interface MusicResource {
-    howl: Howl | null,
-    filePath: string | null,
+    howl: Howl | undefined,
+    filePath: string | undefined,
 }
 
 export const currentSoundAtom = atom<MusicResource>({
     key: "currentSoundAtom",
-    default: { howl: null, filePath: null },
+    default: { howl: undefined, filePath: undefined },
 })

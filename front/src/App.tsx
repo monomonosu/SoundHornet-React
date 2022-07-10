@@ -61,9 +61,8 @@ function App() {
   }, [checkedNumbers]);
   // 毎秒再生進捗を更新する。
   useInterval(() => {
-    let current = sounds.find(el => el.howl.playing(playingId) === true);
-    if (!current) return;
-    setCurrentSeek(current.howl.seek());
+    if (currentSound.howl === undefined) return;
+    setCurrentSeek(currentSound?.howl.seek());
   });
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
@@ -84,32 +83,29 @@ function App() {
     console.log(sounds);
   }
   function PlaySound(music: Music) {
-    let current = sounds.find(el => el.howl.playing(playingId) === true);
     let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName)
-    if (current !== undefined && current?.filePath === resource?.filePath) {
-      current.howl.pause();
-      console.log(current);
+    if (currentSound.howl !== undefined && currentSound.howl.playing() === true && currentSound.filePath === resource?.filePath) {
+      currentSound.howl.pause();
     }
-    else if (current !== undefined && current?.filePath !== resource?.filePath) {
-      current.howl.stop();
+    else if (currentSound.howl !== undefined && currentSound.filePath !== resource?.filePath) {
+      currentSound.howl.stop();
       setPlayingId(Number(resource?.howl.play()));
       if (resource !== undefined)
         setCurrentSound(resource);
-      console.log(current);
-      console.log(resource);
     }
     else {
-      setPlayingId(Number(resource?.howl.play()));
-      if (current === undefined && resource !== undefined)
+      if (currentSound.howl === undefined && !!resource) {
         setCurrentSound(resource);
-      if (current !== undefined)
-        setCurrentSound(current);
-      console.log(resource);
+        setPlayingId(Number(resource?.howl.play()));
+      }
+      if (currentSound.howl !== undefined) {
+        currentSound.howl.play();
+      }
     }
   }
   function ChangeSeek(seek: number | undefined) {
-    let current = sounds.find(el => el.howl.playing(playingId) === true);
-    if (current !== undefined) current.howl.seek(seek);
+    if (!!currentSound.howl)
+      currentSound.howl.seek(seek);
   }
   function musicsGet() {
     axios.get("/musics")
@@ -171,8 +167,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   `
 
   const [timePer, setTimePer] = useState<number | undefined>();
-  const [sounds, setSounds] = useRecoilState(soundsAtom);
-  const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
+  const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
   useEffect(() => {
     setTimePer(timeToPerCalculation(currentSeek));
@@ -184,16 +179,14 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
     props.ChangeSeek(perToTimeCalculation(val));
   };
   const timeToPerCalculation = (seek: number) => {
-    let current = sounds.find(el => el.howl.playing(playingId) === true);
-    if (current !== undefined) {
-      return seek / current?.howl.duration() * 100;
+    if (currentSound.howl !== undefined) {
+      return seek / currentSound.howl.duration() * 100;
     }
     return 0;
   };
   const perToTimeCalculation = (per: number) => {
-    let current = sounds.find(el => el.howl.playing(playingId) === true);
-    if (current !== undefined) {
-      return current.howl.duration() / 100 * per;
+    if (currentSound.howl !== undefined) {
+      return currentSound.howl.duration() / 100 * per;
     }
     return 0;
   };
