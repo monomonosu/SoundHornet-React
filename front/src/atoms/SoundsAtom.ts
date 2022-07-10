@@ -3,6 +3,8 @@ import { Howl, Howler } from 'howler';
 
 interface MusicResource {
     howl: Howl,
+    musicName: string,
+    group: string,
     filePath: string,
 }
 
