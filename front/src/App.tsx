@@ -16,6 +16,7 @@ import MusicTable from './component/MusicsTable';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
 import { useRecoilState } from 'recoil';
+import { currentSoundAtom } from './atoms/CurrentSoundAtom';
 import { soundsAtom } from './atoms/SoundsAtom';
 import { volumeAtom } from './atoms/VolumeAtom';
 import { playingIdAtom } from './atoms/PlayingIdAtom';
@@ -36,6 +37,7 @@ function App() {
   // ステート
   const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
+  const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
   const [sounds, setSounds] = useRecoilState(soundsAtom);
   const [volume, setVolume] = useRecoilState(volumeAtom);
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
@@ -44,6 +46,9 @@ function App() {
     musicsGet();
     settingGet();
   }, [])
+  useEffect(() => {
+    console.log('currentSound:', currentSound);
+  }, [currentSound]);
   useEffect(() => {
     createHowler();
   }, [musics]);
@@ -88,11 +93,17 @@ function App() {
     else if (current !== undefined && current?.filePath !== resource?.filePath) {
       current.howl.stop();
       setPlayingId(Number(resource?.howl.play()));
+      if (resource !== undefined)
+        setCurrentSound(resource);
       console.log(current);
       console.log(resource);
     }
     else {
       setPlayingId(Number(resource?.howl.play()));
+      if (current === undefined && resource !== undefined)
+        setCurrentSound(resource);
+      if (current !== undefined)
+        setCurrentSound(current);
       console.log(resource);
     }
   }
