@@ -84,13 +84,13 @@ function App() {
   }
   function PlaySound(music: Music) {
     let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName)
-    if (currentSound.howl !== undefined && currentSound.howl.playing() === true && currentSound.filePath === resource?.filePath) {
+    if (!!currentSound.howl && currentSound.howl.playing() === true && currentSound.filePath === resource?.filePath) {
       currentSound.howl.pause();
     }
-    else if (currentSound.howl !== undefined && currentSound.filePath !== resource?.filePath) {
+    else if (!!currentSound.howl && currentSound.filePath !== resource?.filePath) {
       currentSound.howl.stop();
       setPlayingId(Number(resource?.howl.play()));
-      if (resource !== undefined)
+      if (!!resource)
         setCurrentSound(resource);
     }
     else {
@@ -98,7 +98,7 @@ function App() {
         setCurrentSound(resource);
         setPlayingId(Number(resource?.howl.play()));
       }
-      if (currentSound.howl !== undefined) {
+      if (!!currentSound.howl) {
         currentSound.howl.play();
       }
     }
@@ -179,13 +179,13 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
     props.ChangeSeek(perToTimeCalculation(val));
   };
   const timeToPerCalculation = (seek: number) => {
-    if (currentSound.howl !== undefined) {
+    if (!!currentSound.howl) {
       return seek / currentSound.howl.duration() * 100;
     }
     return 0;
   };
   const perToTimeCalculation = (per: number) => {
-    if (currentSound.howl !== undefined) {
+    if (!!currentSound.howl) {
       return currentSound.howl.duration() / 100 * per;
     }
     return 0;
