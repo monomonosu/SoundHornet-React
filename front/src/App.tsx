@@ -79,6 +79,17 @@ function App() {
             src: filepath,
           })
         }])
+        return;
+      }
+      else {
+        const index = sounds.findIndex((el) => el.filePath === filepath);
+        const soundsCopy = [...sounds];
+        soundsCopy[index] = {
+          filePath: filepath,
+          music_photo: music.music_photo,
+          howl: sounds[index].howl,
+        }
+        setSounds(soundsCopy);
       }
     });
     console.log(sounds);
@@ -214,7 +225,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
                 <CardMedia
                   component="img"
                   sx={{ width: 60, height: 60 }}
-                  image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlNIDOXlthHXz96_Q3_oREmfsZFs-seuKCMw&usqp=CAU"
+                  image={currentSound.music_photo?.path}
                   alt="Live from space album cover"
                 />
                 <div style={{ marginLeft: '10px' }}>

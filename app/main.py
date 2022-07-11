@@ -38,7 +38,9 @@ def deleteMusics(ids):
             music = Music.query.filter(Music.id == id).one()
             print(music.fileName)
             os.remove('static/musics/'+music.fileName)
-            musicCount = Music.query.filter(Music.id == id).delete()
+            Music.query.filter(Music.id == id).delete()
+            Music_Photo.query.filter(Music_Photo.musicId == id).delete()
+
     db.session.commit()
     musics = Music.query.all()
     return jsonify(MusicSchema(many=True).dump(musics))
