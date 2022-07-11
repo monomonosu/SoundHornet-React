@@ -4,6 +4,7 @@ import { Howl, Howler } from 'howler';
 interface MusicResource {
     howl: Howl,
     filePath: string,
+    music_photo: object,
 }
 
 export const soundsAtom = atom<MusicResource[]>({

@@ -74,6 +74,7 @@ function App() {
       if (!sounds.find(el => el.filePath === filepath)) {
         setSounds((sounds) => [...sounds, {
           filePath: filepath,
+          music_photo: music.music_photo,
           howl: new Howl({
             src: filepath,
           })
@@ -83,7 +84,7 @@ function App() {
     console.log(sounds);
   }
   function PlaySound(music: Music) {
-    let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName)
+    let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName);
     if (!!currentSound.howl && currentSound.howl.playing() === true && currentSound.filePath === resource?.filePath) {
       currentSound.howl.pause();
     }

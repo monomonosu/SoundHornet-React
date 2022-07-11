@@ -10,6 +10,7 @@ export type Music = {
     fileType: string;
     fileSize: string;
     fileName: string;
+    music_photo: object;
     createdAt: Date;
     updatedAt: Date;
 }

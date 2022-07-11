@@ -1,3 +1,4 @@
+from importlib.resources import path
 import os
 from flask import jsonify, render_template, request
 from models import *
@@ -79,6 +80,12 @@ def uploadMusic():
             fileType=fileType,
             fileSize=fileSize,
             fileName=fileName,
+            music_photo=Music_Photo(
+                fileName='no_image_white.png',
+                fileType='png',
+                fileSize="5.88KB",
+                path='static/photos/no_image_white.png',
+            )
         )
         db.session.add(newMusic)
         db.session.commit()
