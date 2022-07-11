@@ -1,4 +1,3 @@
-from importlib.resources import path
 import os
 from flask import jsonify, render_template, request
 from models import *
