@@ -1,6 +1,3 @@
-from email.policy import default
-from fileinput import filename
-from xml.etree.ElementInclude import include
 from app import db, app, migrate, ma
 from datetime import datetime
 
@@ -23,15 +20,15 @@ class Music(db.Model):
     createdAt = db.Column(db.String, nullable=False, default=datetime.now)
     updatedAt = db.Column(db.String, nullable=False,
                           default=datetime.now, onupdate=datetime.now)
-    music_photos = db.relationship(
-        'Music_Photo', backref='music', uselist=True, cascade='all, delete',)
+    music_photo = db.relationship(
+        'Music_Photo', backref='music', uselist=False, cascade='all, delete',)
 
 
 class Music_Photo(db.Model):
     __tablename__ = 'music_photos'
 
     id = db.Column(db.Integer, primary_key=True)
-    musicId = db.Column(db.Integer, db.ForeignKey('musics.id'))
+    musicId = db.Column(db.Integer, db.ForeignKey('musics.id'), unique=True)
     fileName = db.Column(db.String)
     fileType = db.Column(db.String, nullable=False)
     fileSize = db.Column(db.String, nullable=False)
@@ -81,7 +78,7 @@ class MusicSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Music
         include_fk = True
-    music_photos = ma.Nested(Music_PhotoSchema, many=True)
+    music_photo = ma.Nested(Music_PhotoSchema, many=False)
 
 
 class GroupSchema(ma.SQLAlchemyAutoSchema):

@@ -75,17 +75,33 @@ function App() {
       const filepath = 'static/musics/' + music.fileName;
       if (!sounds.find(el => el.filePath === filepath)) {
         setSounds((sounds) => [...sounds, {
+          musicName: music.musicName,
+          group: music.group,
           filePath: filepath,
+          music_photo: music.music_photo,
           howl: new Howl({
             src: filepath,
           })
         }])
+        return;
+      }
+      else {
+        const index = sounds.findIndex((el) => el.filePath === filepath);
+        const soundsCopy = [...sounds];
+        soundsCopy[index] = {
+          musicName: music.musicName,
+          group: music.group,
+          filePath: filepath,
+          music_photo: music.music_photo,
+          howl: sounds[index].howl,
+        }
+        setSounds(soundsCopy);
       }
     });
     console.log(sounds);
   }
   function PlaySound(music: Music) {
-    let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName)
+    let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName);
     if (!!currentSound.howl && currentSound.howl.playing() === true && currentSound.filePath === resource?.filePath) {
       currentSound.howl.pause();
     }
@@ -202,85 +218,90 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
     }
     return 0;
   };
-  return (
-    <div>
-      <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>
-        <CardContent style={{ paddingTop: '0' }}>
-          <Box style={{ width: "100%", height: "30px", backgroundColor: '#161B22', }}>
-            <Wrapper left={timePer}>
-              <Slider
-                size="small"
-                onChange={handleChange}
-                max={100}
-                min={0}
-                aria-label="Small"
-                valueLabelDisplay="off"
-                style={{ padding: '0', }}
-              />
-            </Wrapper>
-          </Box>
-          <Grid container>
-            <Grid item xs>
-              <div style={{ display: 'flex' }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 60, height: 60 }}
-                  image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlNIDOXlthHXz96_Q3_oREmfsZFs-seuKCMw&usqp=CAU"
-                  alt="Live from space album cover"
+  if (!!currentSound.howl) {
+    return (
+      <div>
+        <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>
+          <CardContent style={{ paddingTop: '0' }}>
+            <Box style={{ width: "100%", height: "30px", backgroundColor: '#161B22', }}>
+              <Wrapper left={timePer}>
+                <Slider
+                  size="small"
+                  onChange={handleChange}
+                  max={100}
+                  min={0}
+                  aria-label="Small"
+                  valueLabelDisplay="off"
+                  style={{ padding: '0', }}
                 />
-                <div style={{ marginLeft: '10px' }}>
-                  <Typography variant="h6" component="div" style={{ color: "white" }}>
-                    MusicNameHoge
-                  </Typography>
-                  <p style={{ color: "white", margin: '4px 0' }}>
-                    GroupNameHoge
-                  </p>
+              </Wrapper>
+            </Box>
+            <Grid container>
+              <Grid item xs>
+                <div style={{ display: 'flex' }}>
+                  <CardMedia
+                    component="img"
+                    sx={{ width: 60, height: 60 }}
+                    image={currentSound.music_photo?.path}
+                    alt="Live from space album cover"
+                  />
+                  <div style={{ marginLeft: '10px' }}>
+                    <Typography variant="h6" component="div" style={{ color: "white" }}>
+                      {currentSound.musicName}
+                    </Typography>
+                    <p style={{ color: "white", margin: '4px 0' }}>
+                      {currentSound.group}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </Grid>
+              <Grid item xs>
+                <div style={{ display: 'flex', justifyContent: "center" }}>
+                  <IconButton
+                    aria-label="expand row"
+                    size="large"
+                    onClick={() => console.log('hoge')}
+                  >
+                    <SkipPreviousIcon fontSize='large' style={{ color: 'white' }} />
+                  </IconButton>
+                  <IconButton
+                    aria-label="expand row"
+                    size="large"
+                    onClick={playButtonSubmit}
+                  >
+                    {currentSound.howl?.playing() ?
+                      <PauseIcon fontSize='large' style={{ color: 'white' }} /> : <PlayArrowIcon fontSize='large' style={{ color: 'white' }} />
+                    }
+                  </IconButton>
+                  <IconButton
+                    aria-label="expand row"
+                    size="large"
+                    onClick={() => console.log('hoge')}
+                  >
+                    <SkipNextIcon fontSize='large' style={{ color: 'white' }} />
+                  </IconButton>
+                </div>
+              </Grid>
+              <Grid item xs>
+                <div style={{ display: 'flex', justifyContent: "right" }}>
+                  <VolumeButton />
+                  <IconButton
+                    aria-label="expand row"
+                    size="large"
+                    onClick={() => console.log('hoge')}
+                  >
+                    <MoreHorizIcon fontSize='large' style={{ color: 'white' }} />
+                  </IconButton>
+                </div>
+              </Grid>
             </Grid>
-            <Grid item xs>
-              <div style={{ display: 'flex', justifyContent: "center" }}>
-                <IconButton
-                  aria-label="expand row"
-                  size="large"
-                  onClick={() => console.log('hoge')}
-                >
-                  <SkipPreviousIcon fontSize='large' style={{ color: 'white' }} />
-                </IconButton>
-                <IconButton
-                  aria-label="expand row"
-                  size="large"
-                  onClick={playButtonSubmit}
-                >
-                  {currentSound.howl?.playing() ?
-                    <PauseIcon fontSize='large' style={{ color: 'white' }} /> : <PlayArrowIcon fontSize='large' style={{ color: 'white' }} />
-                  }
-                </IconButton>
-                <IconButton
-                  aria-label="expand row"
-                  size="large"
-                  onClick={() => console.log('hoge')}
-                >
-                  <SkipNextIcon fontSize='large' style={{ color: 'white' }} />
-                </IconButton>
-              </div>
-            </Grid>
-            <Grid item xs>
-              <div style={{ display: 'flex', justifyContent: "right" }}>
-                <VolumeButton />
-                <IconButton
-                  aria-label="expand row"
-                  size="large"
-                  onClick={() => console.log('hoge')}
-                >
-                  <MoreHorizIcon fontSize='large' style={{ color: 'white' }} />
-                </IconButton>
-              </div>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-    </div >
+          </CardContent >
+        </Card >
+      </div >
+    )
+  }
+  return (
+    <div></div>
   )
 }
 

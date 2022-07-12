@@ -37,7 +37,9 @@ def deleteMusics(ids):
             music = Music.query.filter(Music.id == id).one()
             print(music.fileName)
             os.remove('static/musics/'+music.fileName)
-            musicCount = Music.query.filter(Music.id == id).delete()
+            Music.query.filter(Music.id == id).delete()
+            Music_Photo.query.filter(Music_Photo.musicId == id).delete()
+
     db.session.commit()
     musics = Music.query.all()
     return jsonify(MusicSchema(many=True).dump(musics))
@@ -79,6 +81,12 @@ def uploadMusic():
             fileType=fileType,
             fileSize=fileSize,
             fileName=fileName,
+            music_photo=Music_Photo(
+                fileName='no_image_white.png',
+                fileType='png',
+                fileSize="5.88KB",
+                path='static/photos/no_image_white.png',
+            )
         )
         db.session.add(newMusic)
         db.session.commit()
