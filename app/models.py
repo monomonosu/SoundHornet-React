@@ -30,9 +30,9 @@ class Music_Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     musicId = db.Column(db.Integer, db.ForeignKey('musics.id'), unique=True)
     fileName = db.Column(db.String)
-    fileType = db.Column(db.String, nullable=False)
-    fileSize = db.Column(db.String, nullable=False)
-    path = db.Column(db.String, nullable=False)
+    fileType = db.Column(db.String)
+    fileSize = db.Column(db.String)
+    path = db.Column(db.String)
     createdAt = db.Column(db.String, nullable=False, default=datetime.now)
     updatedAt = db.Column(db.String, nullable=False,
                           default=datetime.now, onupdate=datetime.now)
