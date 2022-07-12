@@ -7,10 +7,13 @@ import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 // types
 import type { Music } from '../types/musics'
+import { useRecoilState } from 'recoil';
+import { currentSoundAtom } from '../atoms/CurrentSoundAtom';
 
 type MusicTableProp = {
     musics: Music[];
@@ -22,7 +25,7 @@ type MusicTableProp = {
 }
 
 export default function MusicTable(props: MusicTableProp) {
-    const { musics, checkedNumbers, } = props;
+    const { musics, checkedNumbers } = props;
     const { setCheckedNumbers } = props
     const { PlaySound, isDeleteButton, musicsDelete } = props;
     return (
@@ -67,6 +70,7 @@ export const Row = (props: {
     music: Music, setCheckedNumbers: React.Dispatch<React.SetStateAction<number[]>>, checkedNumbers: number[],
     PlaySound(music: Music): void
 }) => {
+    const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
     const [isDetail, setIsDetail] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +81,7 @@ export const Row = (props: {
             props.setCheckedNumbers([...props.checkedNumbers, props.music.id]);
         else
             props.setCheckedNumbers(props.checkedNumbers.filter((value) => (value !== props.music.id)));
-    }
+    };
     return (
         <React.Fragment>
             <TableRow
@@ -102,7 +106,8 @@ export const Row = (props: {
                         size="small"
                         onClick={() => props.PlaySound(props.music)}
                     >
-                        <PlayArrowIcon style={{ color: 'white' }} />
+                        {currentSound.filePath === 'static/musics/' + props.music.musicName && currentSound.howl?.playing() === true ?
+                            <PauseIcon style={{ color: 'white' }} /> : <PlayArrowIcon style={{ color: 'white' }} />}
                     </IconButton>
                 </TableCell>
                 <TableCell style={{ color: "#FFFFFF" }} component="th" scope="row">
