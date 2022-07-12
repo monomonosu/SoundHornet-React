@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -15,7 +16,7 @@ import Header from './component/Header';
 import MusicTable from './component/MusicsTable';
 import axios from "axios"
 import { Howl, Howler } from 'howler';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
 import { currentSoundAtom } from './atoms/CurrentSoundAtom';
 import { soundsAtom } from './atoms/SoundsAtom';
 import { volumeAtom } from './atoms/VolumeAtom';
@@ -42,6 +43,7 @@ function App() {
   const [volume, setVolume] = useRecoilState(volumeAtom);
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
+  const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
   useEffect(() => {
     musicsGet();
     settingGet();
@@ -156,13 +158,15 @@ function App() {
       <div style={{ height: '5vh' }}></div>
 
       {/* テーブル */}
-      <MusicTable
-        musics={musics}
-        checkedNumbers={checkedNumbers}
-        setCheckedNumbers={setCheckedNumbers}
-        PlaySound={PlaySound}
-        isDeleteButton={isDeleteButton}
-        musicsDelete={musicsDelete}></MusicTable>
+      <RecoilBridge>
+        <MusicTable
+          musics={musics}
+          checkedNumbers={checkedNumbers}
+          setCheckedNumbers={setCheckedNumbers}
+          PlaySound={PlaySound}
+          isDeleteButton={isDeleteButton}
+          musicsDelete={musicsDelete}></MusicTable>
+      </RecoilBridge>
 
       <div style={{ height: '150px' }}></div>
 
@@ -188,6 +192,14 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   useEffect(() => {
     setTimePer(timeToPerCalculation(currentSeek));
   }, [currentSeek]);
+  const playButtonSubmit = () => {
+    if (!!currentSound.howl && currentSound.howl?.playing()) {
+      currentSound.howl.pause();
+      return;
+    }
+    if (!!currentSound.howl)
+      currentSound.howl.play();
+  };
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val_str = newValue.toString();
     const val: number = Number(val_str);
@@ -255,9 +267,11 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
                   <IconButton
                     aria-label="expand row"
                     size="large"
-                    onClick={() => console.log('hoge')}
+                    onClick={playButtonSubmit}
                   >
-                    <PlayArrowIcon fontSize='large' style={{ color: 'white' }} />
+                    {currentSound.howl?.playing() ?
+                      <PauseIcon fontSize='large' style={{ color: 'white' }} /> : <PlayArrowIcon fontSize='large' style={{ color: 'white' }} />
+                    }
                   </IconButton>
                   <IconButton
                     aria-label="expand row"
@@ -281,8 +295,8 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
                 </div>
               </Grid>
             </Grid>
-          </CardContent>
-        </Card>
+          </CardContent >
+        </Card >
       </div >
     )
   }
