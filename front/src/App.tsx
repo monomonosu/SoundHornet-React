@@ -242,7 +242,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
                   <CardMedia
                     component="img"
                     sx={{ width: 60, height: 60 }}
-                    image={currentSound.music_photo?.path}
+                    image={currentSound.music_photo?.path ? currentSound.music_photo?.path : 'static/resource/no_image_white.png'}
                     alt="Live from space album cover"
                   />
                   <div style={{ marginLeft: '10px' }}>

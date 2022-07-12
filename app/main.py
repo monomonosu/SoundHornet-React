@@ -82,10 +82,10 @@ def uploadMusic():
             fileSize=fileSize,
             fileName=fileName,
             music_photo=Music_Photo(
-                fileName='no_image_white.png',
-                fileType='png',
-                fileSize="5.88KB",
-                path='static/photos/no_image_white.png',
+                fileName=None,
+                fileType=None,
+                fileSize=None,
+                path=None,
             )
         )
         db.session.add(newMusic)
