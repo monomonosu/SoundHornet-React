@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import React from 'react';
 import {
-    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox,
+    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -73,6 +73,8 @@ export const Row = (props: {
     const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
     const [isDetail, setIsDetail] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [isOpenModal, setIsOpenModal] = React.useState(false);
+    const modalOpen = () => setIsOpenModal(true);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const check = event.target.checked;
         setIsChecked(check);
@@ -148,10 +150,11 @@ export const Row = (props: {
                                         <TableCell>
                                             <IconButton
                                                 size="small"
-                                                onClick={() => console.log('hoge')}
+                                                onClick={modalOpen}
                                             >
                                                 <EditIcon style={{ color: 'white' }} />
                                             </IconButton>
+                                            <EditModal isOpen={isOpenModal} setIsOpenModal={setIsOpenModal}></EditModal>
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -162,4 +165,39 @@ export const Row = (props: {
             </TableRow>
         </React.Fragment>
     )
+}
+
+export const EditModal = (props: { isOpen: boolean, setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>> }) => {
+    const modalClose = () => props.setIsOpenModal(false);
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+
+    return (
+        <div>
+            <Modal
+                open={props.isOpen}
+                onClose={modalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Edit
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        MusicEdit
+                    </Typography>
+                </Box>
+            </Modal>
+        </div>
+    );
 }
