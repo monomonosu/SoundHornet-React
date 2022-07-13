@@ -73,8 +73,8 @@ export const Row = (props: {
     const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
     const [isDetail, setIsDetail] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-    const [isOpenModal, setIsOpenModal] = React.useState(false);
-    const modalOpen = () => setIsOpenModal(true);
+    // const [isOpenModal, setIsOpenModal] = React.useState(false);
+    // const modalOpen = () => setIsOpenModal(true);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const check = event.target.checked;
         setIsChecked(check);
@@ -148,13 +148,7 @@ export const Row = (props: {
                                         <TableCell style={{ color: "white" }}>{props.music.createdAt.toString()}</TableCell>
                                         <TableCell style={{ color: "white" }}>{props.music.updatedAt.toString()}</TableCell>
                                         <TableCell>
-                                            <IconButton
-                                                size="small"
-                                                onClick={modalOpen}
-                                            >
-                                                <EditIcon style={{ color: 'white' }} />
-                                            </IconButton>
-                                            <EditModal isOpen={isOpenModal} setIsOpenModal={setIsOpenModal}></EditModal>
+                                            <EditModal />
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -167,8 +161,10 @@ export const Row = (props: {
     )
 }
 
-export const EditModal = (props: { isOpen: boolean, setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>> }) => {
-    const modalClose = () => props.setIsOpenModal(false);
+export const EditModal = () => {
+    const [isOpenModal, setIsOpenModal] = React.useState(false);
+    const modalOpen = () => setIsOpenModal(true);
+    const modalClose = () => setIsOpenModal(false);
     const style = {
         position: 'absolute' as 'absolute',
         top: '50%',
@@ -183,8 +179,14 @@ export const EditModal = (props: { isOpen: boolean, setIsOpenModal: React.Dispat
 
     return (
         <div>
+            <IconButton
+                size="small"
+                onClick={modalOpen}
+            >
+                <EditIcon style={{ color: 'white' }} />
+            </IconButton>
             <Modal
-                open={props.isOpen}
+                open={isOpenModal}
                 onClose={modalClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
