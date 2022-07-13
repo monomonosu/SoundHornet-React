@@ -73,8 +73,6 @@ export const Row = (props: {
     const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
     const [isDetail, setIsDetail] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-    // const [isOpenModal, setIsOpenModal] = React.useState(false);
-    // const modalOpen = () => setIsOpenModal(true);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const check = event.target.checked;
         setIsChecked(check);
