@@ -37,13 +37,13 @@ export default function MusicTable(props: MusicTableProp) {
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead style={{ height: "73px" }}>
                             <TableRow>
-                                <TableCell />
-                                <TableCell align='center'>
+                                <TableCell style={{ paddingLeft: "0", paddingRight: "0" }} />
+                                <TableCell style={{ paddingLeft: "0", paddingRight: "0" }} align='center'>
                                     <IconButton style={{ color: "white" }} disabled={!isDeleteButton()} onClick={() => musicsDelete(checkedNumbers)}>
                                         {isDeleteButton() ? <DeleteIcon /> : ""}
                                     </IconButton>
                                 </TableCell>
-                                <TableCell />
+                                <TableCell style={{ paddingLeft: "0", paddingRight: "0" }} />
                                 <TableCell style={{ color: "#FFFFFF" }}>MusicName</TableCell>
                                 <TableCell style={{ color: "#FFFFFF" }}>Group</TableCell>
                                 <TableCell style={{ color: "#FFFFFF" }}>Album</TableCell>
@@ -88,7 +88,7 @@ export const Row = (props: {
                 key={props.music.musicName}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-                <TableCell>
+                <TableCell style={{ paddingLeft: "0", paddingRight: "0" }} align='center'>
                     <IconButton
                         aria-label="expand row"
                         size="small"
@@ -97,16 +97,16 @@ export const Row = (props: {
                         {isDetail ? <KeyboardArrowUpIcon style={{ color: 'white' }} /> : <KeyboardArrowDownIcon style={{ color: 'white' }} />}
                     </IconButton>
                 </TableCell>
-                <TableCell align='center'>
+                <TableCell style={{ paddingLeft: "0", paddingRight: "0" }} align='center'>
                     <Checkbox size="small" style={{ color: "white" }} checked={isChecked} onChange={handleChange}></Checkbox>
                 </TableCell>
-                <TableCell align='center'>
+                <TableCell style={{ paddingLeft: "0", paddingRight: "0" }} align='center'>
                     <IconButton
                         aria-label="expand row"
                         size="small"
                         onClick={() => props.PlaySound(props.music)}
                     >
-                        {currentSound.filePath === 'static/musics/' + props.music.musicName && currentSound.howl?.playing() === true ?
+                        {currentSound.filePath === 'static/musics/' + props.music.fileName && currentSound.howl?.playing() === true ?
                             <PauseIcon style={{ color: 'white' }} /> : <PlayArrowIcon style={{ color: 'white' }} />}
                     </IconButton>
                 </TableCell>
