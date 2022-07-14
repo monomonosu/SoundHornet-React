@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import React from 'react';
 import {
-    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal,
+    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -168,7 +168,7 @@ export const EditModal = (props: { music: Music }) => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
+        width: '80vw',
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
@@ -191,10 +191,18 @@ export const EditModal = (props: { music: Music }) => {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Edit
+                        EditMusicDetails
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        {props.music.id}
+                    <Typography id="modal-modal-description" sx={{
+                        mt: 2, '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    }}>
+                        <TextField label="musicName" id="edit-music-name" defaultValue={props.music.musicName} variant="standard" />
+                        <TextField label="group" id="edit-group" defaultValue={props.music.group} variant="standard" />
+                        <TextField label="album" id="edit-album" defaultValue={props.music.album} variant="standard" />
+                        <TextField label="genre" id="edit-genre" defaultValue={props.music.genre} variant="standard" />
+                        <TextField label="evaluation" id="edit-evaluation" defaultValue={props.music.evaluation} variant="standard" />
+                        <TextField label="comment" id="edit-comment" defaultValue={props.music.comment} variant="standard" />
+                        <TextField label="music_photo_fileName" id="edit-music-photo-filename" defaultValue={props.music.music_photo.fileName} variant="standard" />
                     </Typography>
                 </Box>
             </Modal>
