@@ -146,7 +146,7 @@ export const Row = (props: {
                                         <TableCell style={{ color: "white" }}>{props.music.createdAt.toString()}</TableCell>
                                         <TableCell style={{ color: "white" }}>{props.music.updatedAt.toString()}</TableCell>
                                         <TableCell>
-                                            <EditModal />
+                                            <EditModal music={props.music} />
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -159,7 +159,7 @@ export const Row = (props: {
     )
 }
 
-export const EditModal = () => {
+export const EditModal = (props: { music: Music }) => {
     const [isOpenModal, setIsOpenModal] = React.useState(false);
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
@@ -194,7 +194,7 @@ export const EditModal = () => {
                         Edit
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        MusicEdit
+                        {props.music.id}
                     </Typography>
                 </Box>
             </Modal>
