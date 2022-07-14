@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import React from 'react';
 import {
-    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox,
+    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -146,12 +146,7 @@ export const Row = (props: {
                                         <TableCell style={{ color: "white" }}>{props.music.createdAt.toString()}</TableCell>
                                         <TableCell style={{ color: "white" }}>{props.music.updatedAt.toString()}</TableCell>
                                         <TableCell>
-                                            <IconButton
-                                                size="small"
-                                                onClick={() => console.log('hoge')}
-                                            >
-                                                <EditIcon style={{ color: 'white' }} />
-                                            </IconButton>
+                                            <EditModal music={props.music} />
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -162,4 +157,55 @@ export const Row = (props: {
             </TableRow>
         </React.Fragment>
     )
+}
+
+export const EditModal = (props: { music: Music }) => {
+    const [isOpenModal, setIsOpenModal] = React.useState(false);
+    const modalOpen = () => setIsOpenModal(true);
+    const modalClose = () => setIsOpenModal(false);
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80vw',
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+
+    return (
+        <div>
+            <IconButton
+                size="small"
+                onClick={modalOpen}
+            >
+                <EditIcon style={{ color: 'white' }} />
+            </IconButton>
+            <Modal
+                open={isOpenModal}
+                onClose={modalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        EditMusicDetails
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{
+                        mt: 2, '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    }}>
+                        <TextField label="musicName" id="edit-music-name" defaultValue={props.music.musicName} variant="standard" />
+                        <TextField label="group" id="edit-group" defaultValue={props.music.group} variant="standard" />
+                        <TextField label="album" id="edit-album" defaultValue={props.music.album} variant="standard" />
+                        <TextField label="genre" id="edit-genre" defaultValue={props.music.genre} variant="standard" />
+                        <TextField label="evaluation" id="edit-evaluation" defaultValue={props.music.evaluation} variant="standard" />
+                        <TextField label="comment" id="edit-comment" defaultValue={props.music.comment} variant="standard" />
+                        <TextField label="music_photo_fileName" id="edit-music-photo-filename" defaultValue={props.music.music_photo.fileName} variant="standard" />
+                    </Typography>
+                </Box>
+            </Modal>
+        </div>
+    );
 }
