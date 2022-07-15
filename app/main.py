@@ -45,6 +45,12 @@ def deleteMusics(ids):
     return jsonify(MusicSchema(many=True).dump(musics))
 
 
+@app.route("/groups", methods=['GET'])
+def getGroups():
+    groups = Group.query.all()
+    return jsonify(GroupSchema(many=True).dump(groups))
+
+
 @app.route("/settings", methods=['GET'])
 def getSetting():
     setting = Setting.query.filter(Setting.id == 1).first()

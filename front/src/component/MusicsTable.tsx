@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import {
-    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField,
+    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import type { Music } from '../types/musics'
 import { useRecoilState } from 'recoil';
 import { currentSoundAtom } from '../atoms/CurrentSoundAtom';
+import axios from 'axios';
 
 type MusicTableProp = {
     musics: Music[];
@@ -160,7 +161,8 @@ export const Row = (props: {
 }
 
 export const EditModal = (props: { music: Music }) => {
-    const [isOpenModal, setIsOpenModal] = React.useState(false);
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [groups, setGroups] = useState<string[]>([]);
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
     const style = {
@@ -174,6 +176,17 @@ export const EditModal = (props: { music: Music }) => {
         boxShadow: 24,
         p: 4,
     };
+
+    useEffect(() => {
+        axios.get("/groups")
+            .then((response) => {
+                console.log(response);
+                // TODO:Group型を作成する
+                let groupsResponse: any[] = response.data;
+                let groupDatum = groupsResponse.map(data => data['groupName']);
+                setGroups(groupDatum);
+            });
+    }, [])
 
     return (
         <div>
@@ -194,15 +207,16 @@ export const EditModal = (props: { music: Music }) => {
                         EditMusicDetails
                     </Typography>
                     <Typography id="modal-modal-description" sx={{
-                        mt: 2, '& .MuiTextField-root': { m: 1, width: '25ch' },
+                        mt: 2, '& .MuiTextField-root': { m: 1 },
                     }}>
-                        <TextField label="musicName" id="edit-music-name" defaultValue={props.music.musicName} variant="standard" />
-                        <TextField label="group" id="edit-group" defaultValue={props.music.group} variant="standard" />
-                        <TextField label="album" id="edit-album" defaultValue={props.music.album} variant="standard" />
-                        <TextField label="genre" id="edit-genre" defaultValue={props.music.genre} variant="standard" />
-                        <TextField label="evaluation" id="edit-evaluation" defaultValue={props.music.evaluation} variant="standard" />
-                        <TextField label="comment" id="edit-comment" defaultValue={props.music.comment} variant="standard" />
-                        <TextField label="music_photo_fileName" id="edit-music-photo-filename" defaultValue={props.music.music_photo.fileName} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="musicName" id="edit-music-name" defaultValue={props.music.musicName} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="group" id="edit-group" defaultValue={props.music.group} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="album" id="edit-album" defaultValue={props.music.album} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="genre" id="edit-genre" defaultValue={props.music.genre} variant="standard" />
+                        <TextField style={{ width: '52ch' }} label="comment" id="edit-comment" defaultValue={props.music.comment} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="music_photo_fileName" id="edit-music-photo-filename" defaultValue={props.music.music_photo.fileName} variant="standard" />
+                        <Typography component="legend">evaluation</Typography>
+                        <Rating name="evaluation" defaultValue={props.music.evaluation} />
                     </Typography>
                 </Box>
             </Modal>
