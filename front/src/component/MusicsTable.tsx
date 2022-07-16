@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import {
-    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem,
+    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -170,6 +171,14 @@ export const EditModal = (props: { music: Music }) => {
     const [groups, setGroups] = useState<Group[]>([]);
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
+
+    const { register, handleSubmit } = useForm<Music>()
+
+    const onSubmit: SubmitHandler<Music> = (data) => {
+        // バリデーションチェックOK！なときに行う処理を追加
+        console.log(data)
+    }
+
     const style = {
         position: 'absolute' as 'absolute',
         top: '50%',
@@ -211,7 +220,7 @@ export const EditModal = (props: { music: Music }) => {
                     <Typography id="modal-modal-description" sx={{
                         mt: 2, '& .MuiTextField-root': { m: 1 },
                     }}>
-                        <TextField style={{ width: '25ch' }} label="musicName" id="edit-music-name" defaultValue={props.music.musicName} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="musicName" type="text" defaultValue={props.music.musicName} {...register('musicName')} variant="standard" />
                         <TextField
                             id="standard-select-currency"
                             select
@@ -233,6 +242,16 @@ export const EditModal = (props: { music: Music }) => {
                         <TextField style={{ width: '25ch' }} label="music_photo_fileName" id="edit-music-photo-filename" defaultValue={props.music.music_photo.fileName} variant="standard" />
                         <Typography component="legend">evaluation</Typography>
                         <Rating name="evaluation" defaultValue={props.music.evaluation} />
+                        <div>
+                            <Button
+                                sx={{ mt: 2 }}
+                                color="primary"
+                                variant="contained"
+                                size="large"
+                                onClick={handleSubmit(onSubmit)}
+                            >submit
+                            </Button>
+                        </div>
                     </Typography>
                 </Box>
             </Modal>
