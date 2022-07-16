@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, } from 'react-hook-form';
 import {
-    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button
+    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -169,15 +169,10 @@ interface Group {
 export const EditModal = (props: { music: Music }) => {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [groups, setGroups] = useState<Group[]>([]);
+    const [rating, setRating] = useState<number>();
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
-
-    const { register, handleSubmit } = useForm<Music>()
-
-    const onSubmit: SubmitHandler<Music> = (data) => {
-        // バリデーションチェックOK！なときに行う処理を追加
-        console.log(data)
-    }
+    const { register, handleSubmit } = useForm<Music>();
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -196,8 +191,24 @@ export const EditModal = (props: { music: Music }) => {
             .then((response) => {
                 console.log(response);
                 setGroups(response.data);
+                setRating(response.data.evaluation);
             });
     }, [])
+
+    function onChangeHandle(newValue: number) {
+        document.getElementById('evaluation')?.focus(); //フォーカスが当たらないと更新されない為
+        if (newValue === null) {
+            console.log(newValue);
+            setRating(3);
+        } else {
+            console.log(newValue);
+            setRating(newValue);
+        }
+    }
+    const onSubmit: SubmitHandler<Music> = (data) => {
+        // バリデーションチェックOKなときに行う処理を追加
+        console.log(data)
+    }
 
     return (
         <div>
@@ -224,10 +235,10 @@ export const EditModal = (props: { music: Music }) => {
                         <TextField
                             id="standard-select-currency"
                             select
-                            label="Select"
-                            // value={group}
-                            // onChange={handleChange}
-                            helperText="Please select your currency"
+                            label="group"
+                            type="text"
+                            defaultValue={props.music.group}
+                            {...register("group")}
                             variant="standard"
                         >
                             {groups?.map((group) => (
@@ -236,12 +247,27 @@ export const EditModal = (props: { music: Music }) => {
                                 </MenuItem>
                             ))}
                         </TextField>
+                        {/* TODO:album取得API,genre取得API作成後に繋ぎ込み */}
                         <TextField style={{ width: '25ch' }} label="album" id="edit-album" defaultValue={props.music.album} variant="standard" />
                         <TextField style={{ width: '25ch' }} label="genre" id="edit-genre" defaultValue={props.music.genre} variant="standard" />
-                        <TextField style={{ width: '52ch' }} label="comment" id="edit-comment" defaultValue={props.music.comment} variant="standard" />
-                        <TextField style={{ width: '25ch' }} label="music_photo_fileName" id="edit-music-photo-filename" defaultValue={props.music.music_photo.fileName} variant="standard" />
+                        <TextField style={{ width: '52ch' }} label="comment" type="text" defaultValue={props.music.comment} {...register('comment')} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="music_photo_fileName" disabled defaultValue={props.music.music_photo.fileName} variant="standard" />
                         <Typography component="legend">evaluation</Typography>
-                        <Rating name="evaluation" defaultValue={props.music.evaluation} />
+                        <Rating name="evaluation" defaultValue={props.music.evaluation} value={rating} onChange={(event, newValue) => {
+                            if (!!newValue)
+                                onChangeHandle(newValue);
+                        }} />
+                        <TextField
+                            id='evaluation'
+                            type="number"
+                            defaultValue={props.music.evaluation}
+                            value={rating}
+                            size='small'
+                            {...register('evaluation')}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
                         <div>
                             <Button
                                 sx={{ mt: 2 }}
@@ -249,7 +275,8 @@ export const EditModal = (props: { music: Music }) => {
                                 variant="contained"
                                 size="large"
                                 onClick={handleSubmit(onSubmit)}
-                            >submit
+                            >
+                                submit
                             </Button>
                         </div>
                     </Typography>
