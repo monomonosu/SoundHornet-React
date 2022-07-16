@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import {
-    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating,
+    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -160,9 +160,14 @@ export const Row = (props: {
     )
 }
 
+interface Group {
+    id: number,
+    groupName: string,
+}
+
 export const EditModal = (props: { music: Music }) => {
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const [groups, setGroups] = useState<string[]>([]);
+    const [groups, setGroups] = useState<Group[]>([]);
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
     const style = {
@@ -181,10 +186,7 @@ export const EditModal = (props: { music: Music }) => {
         axios.get("/groups")
             .then((response) => {
                 console.log(response);
-                // TODO:Group型を作成する
-                let groupsResponse: any[] = response.data;
-                let groupDatum = groupsResponse.map(data => data['groupName']);
-                setGroups(groupDatum);
+                setGroups(response.data);
             });
     }, [])
 
@@ -210,7 +212,21 @@ export const EditModal = (props: { music: Music }) => {
                         mt: 2, '& .MuiTextField-root': { m: 1 },
                     }}>
                         <TextField style={{ width: '25ch' }} label="musicName" id="edit-music-name" defaultValue={props.music.musicName} variant="standard" />
-                        <TextField style={{ width: '25ch' }} label="group" id="edit-group" defaultValue={props.music.group} variant="standard" />
+                        <TextField
+                            id="standard-select-currency"
+                            select
+                            label="Select"
+                            // value={group}
+                            // onChange={handleChange}
+                            helperText="Please select your currency"
+                            variant="standard"
+                        >
+                            {groups?.map((group) => (
+                                <MenuItem key={group.groupName} value={group.groupName}>
+                                    {group.groupName}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                         <TextField style={{ width: '25ch' }} label="album" id="edit-album" defaultValue={props.music.album} variant="standard" />
                         <TextField style={{ width: '25ch' }} label="genre" id="edit-genre" defaultValue={props.music.genre} variant="standard" />
                         <TextField style={{ width: '52ch' }} label="comment" id="edit-comment" defaultValue={props.music.comment} variant="standard" />
