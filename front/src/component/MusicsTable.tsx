@@ -220,7 +220,7 @@ export const EditModal = (props: { music: Music }) => {
                     <Typography id="modal-modal-description" sx={{
                         mt: 2, '& .MuiTextField-root': { m: 1 },
                     }}>
-                        <TextField style={{ width: '25ch' }} label="musicName" type="text" {...register('musicName')} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="musicName" type="text" defaultValue={props.music.musicName} {...register('musicName')} variant="standard" />
                         <TextField
                             id="standard-select-currency"
                             select
