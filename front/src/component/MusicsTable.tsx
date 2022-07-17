@@ -170,6 +170,8 @@ export const Row = (props: {
 export const EditModal = (props: { music: Music }) => {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [groups, setGroups] = useState<Group[]>([]);
+    const [albums, setAlbums] = useState<Album[]>([]);
+    const [genres, setGenres] = useState<Genre[]>([]);
     const [rating, setRating] = useState<number>();
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
@@ -193,6 +195,16 @@ export const EditModal = (props: { music: Music }) => {
                 console.log(response);
                 setGroups(response.data);
                 setRating(response.data.evaluation);
+            });
+        axios.get("/albums")
+            .then((response) => {
+                console.log(response);
+                setAlbums(response.data);
+            });
+        axios.get("/genres")
+            .then((response) => {
+                console.log(response);
+                setGenres(response.data);
             });
     }, [])
 
@@ -233,42 +245,51 @@ export const EditModal = (props: { music: Music }) => {
                         mt: 2, '& .MuiTextField-root': { m: 1 },
                     }}>
                         <TextField style={{ width: '25ch' }} label="musicName" type="text" defaultValue={props.music.musicName} {...register('musicName')} variant="standard" />
-                        <TextField
-                            id="standard-select-currency"
-                            select
-                            label="group"
-                            type="text"
-                            defaultValue={props.music.group}
-                            {...register("group")}
-                            variant="standard"
-                        >
+                        <TextField style={{ width: '25ch' }} select label="group" id="edit-group" type="text" defaultValue={props.music.group} {...register("group")} variant="standard">
                             {groups?.map((group) => (
                                 <MenuItem key={group.groupName} value={group.groupName}>
                                     {group.groupName}
                                 </MenuItem>
                             ))}
                         </TextField>
-                        {/* TODO:album取得API,genre取得API作成後に繋ぎ込み */}
-                        <TextField style={{ width: '25ch' }} label="album" id="edit-album" defaultValue={props.music.album} variant="standard" />
-                        <TextField style={{ width: '25ch' }} label="genre" id="edit-genre" defaultValue={props.music.genre} variant="standard" />
+                        <TextField style={{ width: '25ch' }} select label="album" id="edit-album" type="text" defaultValue={props.music.album} {...register('album')} variant="standard">
+                            {albums?.map((album) => (
+                                <MenuItem key={album.albumName} value={album.albumName}>
+                                    {album.albumName}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        <TextField style={{ width: '25ch' }} select label="genre" id="edit-genre" type="text" defaultValue={props.music.genre} {...register('genre')} variant="standard">
+                            {genres?.map((genre) => (
+                                <MenuItem key={genre.genreName} value={genre.genreName}>
+                                    {genre.genreName}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                         <TextField style={{ width: '52ch' }} label="comment" type="text" defaultValue={props.music.comment} {...register('comment')} variant="standard" />
-                        <TextField style={{ width: '25ch' }} label="music_photo_fileName" disabled defaultValue={props.music.music_photo.fileName} variant="standard" />
-                        <Typography component="legend">evaluation</Typography>
-                        <Rating name="evaluation" defaultValue={props.music.evaluation} value={rating} onChange={(event, newValue) => {
-                            if (!!newValue)
-                                onChangeHandle(newValue);
-                        }} />
-                        <TextField
-                            id='evaluation'
-                            type="number"
-                            defaultValue={props.music.evaluation}
-                            value={rating}
-                            size='small'
-                            {...register('evaluation')}
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
+                        <TextField style={{ width: '25ch' }} label="FileType" disabled defaultValue={props.music.fileType} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="FileSize" disabled defaultValue={props.music.fileSize} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="FileName" disabled defaultValue={props.music.fileName} variant="standard" />
+                        <TextField style={{ width: '25ch' }} label="PhotoFileName" disabled defaultValue={props.music.music_photo.fileName} variant="standard" />
+                        <Typography sx={{ mt: 2 }} component="legend">evaluation</Typography>
+                        <div>
+                            <Rating sx={{ mt: 2 }} name="evaluation" defaultValue={props.music.evaluation} value={rating} onChange={(event, newValue) => {
+                                if (!!newValue)
+                                    onChangeHandle(newValue);
+                            }} />
+                            <TextField
+                                style={{ width: '6ch' }}
+                                id='evaluation'
+                                type="number"
+                                defaultValue={props.music.evaluation}
+                                value={rating}
+                                size='small'
+                                {...register('evaluation')}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                            />
+                        </div>
                         <div>
                             <Button
                                 sx={{ mt: 2 }}
