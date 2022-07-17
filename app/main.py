@@ -29,6 +29,21 @@ def getMusics():
     return jsonify(MusicSchema(many=True).dump(musics))
 
 
+@app.route('/music/<id>', methods=['PUT'])
+def music_update(id):
+    data = request.json
+    print(data)
+    music = Music.query.filter(Music.id == id).one()
+    music.musicName = data.get('musicName')
+    music.group=data.get('group')
+    music.album=data.get('album')
+    music.genre=data.get('genre')
+    music.evaluation=data.get('evaluation')
+    music.comment=data.get('comment')
+    db.session.commit()
+    return jsonify({"result": "OK", "id": id, "data": data})
+
+
 @app.route("/musics/<ids>", methods=['DELETE'])
 def deleteMusics(ids):
     for id in ids:
