@@ -48,6 +48,16 @@ class Group(db.Model):
                           default=datetime.now, onupdate=datetime.now)
 
 
+class Album(db.Model):
+    __tablename__ = 'albums'
+
+    id = db.Column(db.Integer, primary_key=True)
+    albumName = db.Column(db.String)
+    createdAt = db.Column(db.String, nullable=False, default=datetime.now)
+    updatedAt = db.Column(db.String, nullable=False,
+                          default=datetime.now, onupdate=datetime.now)
+
+
 class Genre(db.Model):
     __tablename__ = 'genres'
 
@@ -84,6 +94,11 @@ class MusicSchema(ma.SQLAlchemyAutoSchema):
 class GroupSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Group
+
+
+class AlbumSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Album
 
 
 class GenreSchema(ma.SQLAlchemyAutoSchema):

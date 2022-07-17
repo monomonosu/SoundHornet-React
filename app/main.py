@@ -51,6 +51,18 @@ def getGroups():
     return jsonify(GroupSchema(many=True).dump(groups))
 
 
+@app.route("/albums", methods=['GET'])
+def getAlbums():
+    albums = Album.query.all()
+    return jsonify(AlbumSchema(many=True).dump(albums))
+
+
+@app.route("/genres", methods=['GET'])
+def getGenres():
+    genres = Genre.query.all()
+    return jsonify(GenreSchema(many=True).dump(genres))
+
+
 @app.route("/settings", methods=['GET'])
 def getSetting():
     setting = Setting.query.filter(Setting.id == 1).first()
