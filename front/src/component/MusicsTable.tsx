@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
+import axios from 'axios';
+import { useRecoilState } from 'recoil';
+// atoms
+import { currentSoundAtom } from '../atoms/CurrentSoundAtom';
 import { useForm, SubmitHandler, } from 'react-hook-form';
+// MUIComponents
 import {
     Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button,
 } from '@mui/material';
+// MUIIcons
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -13,9 +19,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 // types
 import type { Music } from '../types/musics'
-import { useRecoilState } from 'recoil';
-import { currentSoundAtom } from '../atoms/CurrentSoundAtom';
-import axios from 'axios';
+import type { Group } from '../types/groups'
+import type { Album } from '../types/albums'
+import type { Genre } from '../types/genres'
 
 type MusicTableProp = {
     musics: Music[];
@@ -159,11 +165,6 @@ export const Row = (props: {
             </TableRow>
         </React.Fragment>
     )
-}
-
-interface Group {
-    id: number,
-    groupName: string,
 }
 
 export const EditModal = (props: { music: Music }) => {
