@@ -3,7 +3,7 @@ from models import *
 
 
 def seeder():
-    models = [Music, Music_Photo, Group, Genre, Setting]
+    models = [Music, Music_Photo, Group, Album, Genre, Setting]
 
     for model in models:
         db.session.query(model).delete()
@@ -54,6 +54,19 @@ def seeder():
     groups = Group.query.all()
     for group in groups:
         print(group.groupName)
+
+    # -----Albums-----
+    print('---Albums---')
+    albums = [
+        Album(albumName='シャイニングスター'),
+        Album(albumName='ハルジオン'),
+        Album(albumName='ベガロスト'),
+    ]
+    db.session.add_all(albums)
+    db.session.commit()
+    albums = Album.query.all()
+    for album in albums:
+        print(album.albumName)
 
     # -----Genres-----
     print('---Genres---')
