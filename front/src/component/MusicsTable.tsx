@@ -8,7 +8,7 @@ import { musicsAtom } from '../atoms/MusicsAtom';
 import { currentSoundAtom } from '../atoms/CurrentSoundAtom';
 // MUIComponents
 import {
-    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button,
+    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button, Backdrop, CircularProgress
 } from '@mui/material';
 // MUIIcons
 import IconButton from '@mui/material/IconButton';
@@ -172,6 +172,7 @@ export const EditModal = (props: { music: Music }) => {
     const [musics, setMusics] = useRecoilState(musicsAtom);
     const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isProgress, setIsProgress] = useState(false);
     const [groups, setGroups] = useState<Group[]>([]);
     const [albums, setAlbums] = useState<Album[]>([]);
     const [genres, setGenres] = useState<Genre[]>([]);
@@ -219,6 +220,7 @@ export const EditModal = (props: { music: Music }) => {
         }
     }
     const onSubmit: SubmitHandler<Music> = async (data) => {
+        setIsProgress(true);
         await axios.put('/music/' + props.music.id, data)
             .then((response) => {
                 console.log(response);
@@ -235,6 +237,8 @@ export const EditModal = (props: { music: Music }) => {
                 copyCurrentSound.group = response.data.group;
                 setCurrentSound(copyCurrentSound);
             });
+        setIsProgress(false);
+        setIsOpenModal(false);
     }
 
     return (
@@ -323,6 +327,12 @@ export const EditModal = (props: { music: Music }) => {
                     </Typography>
                 </Box>
             </Modal>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: 1301 }}
+                open={isProgress}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </div>
     );
 }
