@@ -213,10 +213,7 @@ export const EditModal = (props: { music: Music }) => {
 
     function onChangeHandle(newValue: number) {
         document.getElementById('evaluation')?.focus(); //フォーカスが当たらないと更新されない為
-        if (newValue === null) {
-            console.log(newValue);
-            setRating(3);
-        } else {
+        if (!!newValue) {
             console.log(newValue);
             setRating(newValue);
         }
@@ -295,7 +292,7 @@ export const EditModal = (props: { music: Music }) => {
                         </div>
                         <Typography sx={{ mt: 2 }} component="legend">evaluation</Typography>
                         <div>
-                            <Rating sx={{ mt: 2 }} name="evaluation" defaultValue={props.music.evaluation} value={rating} onChange={(event, newValue) => {
+                            <Rating sx={{ mt: 2 }} name="evaluation" defaultValue={props.music.evaluation ? props.music.evaluation : 3} value={rating} onChange={(event, newValue) => {
                                 if (!!newValue)
                                     onChangeHandle(newValue);
                             }} />
