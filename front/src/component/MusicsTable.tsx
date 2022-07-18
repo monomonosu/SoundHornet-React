@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-// atoms
-import { currentSoundAtom } from '../atoms/CurrentSoundAtom';
 import { useForm, SubmitHandler, } from 'react-hook-form';
+// atoms
+import { musicsAtom } from '../atoms/MusicsAtom';
+import { currentSoundAtom } from '../atoms/CurrentSoundAtom';
 // MUIComponents
 import {
     Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button,
@@ -168,6 +169,8 @@ export const Row = (props: {
 }
 
 export const EditModal = (props: { music: Music }) => {
+    const [musics, setMusics] = useRecoilState(musicsAtom);
+    const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [groups, setGroups] = useState<Group[]>([]);
     const [albums, setAlbums] = useState<Album[]>([]);
@@ -218,11 +221,23 @@ export const EditModal = (props: { music: Music }) => {
             setRating(newValue);
         }
     }
-    const onSubmit: SubmitHandler<Music> = (data) => {
-        axios.put('/music/' + props.music.id, data)
+    const onSubmit: SubmitHandler<Music> = async (data) => {
+        await axios.put('/music/' + props.music.id, data)
             .then((response) => {
                 console.log(response);
             })
+        // Musics更新
+        await axios.get('/musics')
+            .then((response) => {
+                setMusics(response.data);
+            })
+        await axios.get('/music/' + props.music.id)
+            .then((response) => {
+                let copyCurrentSound = currentSound;
+                copyCurrentSound.musicName = response.data.musicName;
+                copyCurrentSound.group = response.data.group;
+                setCurrentSound(copyCurrentSound);
+            });
     }
 
     return (
