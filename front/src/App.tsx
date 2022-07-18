@@ -91,18 +91,19 @@ function App() {
       }
       else {
         const index = sounds.findIndex((el) => el.filePath === filepath);
-        const soundsCopy = [...sounds];
-        soundsCopy[index] = {
+        // const soundsCopy = [...sounds];
+        // soundsCopy[index] = {
+        sounds[index] = {
           musicName: music.musicName,
           group: music.group,
           filePath: filepath,
           music_photo: music.music_photo,
           howl: sounds[index].howl,
         }
-        setSounds(soundsCopy);
+        setSounds(sounds);
       }
     });
-    console.log(sounds);
+    console.log('sounds:', sounds);
   }
   function PlaySound(music: Music) {
     let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName);
