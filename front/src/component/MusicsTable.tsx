@@ -219,8 +219,10 @@ export const EditModal = (props: { music: Music }) => {
         }
     }
     const onSubmit: SubmitHandler<Music> = (data) => {
-        // バリデーションチェックOKなときに行う処理を追加
-        console.log(data)
+        axios.put('/music/' + props.music.id, data)
+            .then((response) => {
+                console.log(response);
+            })
     }
 
     return (
@@ -244,33 +246,38 @@ export const EditModal = (props: { music: Music }) => {
                     <Typography id="modal-modal-description" sx={{
                         mt: 2, '& .MuiTextField-root': { m: 1 },
                     }}>
-                        <TextField style={{ width: '25ch' }} label="musicName" type="text" defaultValue={props.music.musicName} {...register('musicName')} variant="standard" />
-                        <TextField style={{ width: '25ch' }} select label="group" id="edit-group" type="text" defaultValue={props.music.group} {...register("group")} variant="standard">
-                            {groups?.map((group) => (
-                                <MenuItem key={group.groupName} value={group.groupName}>
-                                    {group.groupName}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <TextField style={{ width: '25ch' }} select label="album" id="edit-album" type="text" defaultValue={props.music.album} {...register('album')} variant="standard">
-                            {albums?.map((album) => (
-                                <MenuItem key={album.albumName} value={album.albumName}>
-                                    {album.albumName}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <TextField style={{ width: '25ch' }} select label="genre" id="edit-genre" type="text" defaultValue={props.music.genre} {...register('genre')} variant="standard">
-                            {genres?.map((genre) => (
-                                <MenuItem key={genre.genreName} value={genre.genreName}>
-                                    {genre.genreName}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <TextField style={{ width: '52ch' }} label="comment" type="text" defaultValue={props.music.comment} {...register('comment')} variant="standard" />
-                        <TextField style={{ width: '25ch' }} label="FileType" disabled defaultValue={props.music.fileType} variant="standard" />
-                        <TextField style={{ width: '25ch' }} label="FileSize" disabled defaultValue={props.music.fileSize} variant="standard" />
-                        <TextField style={{ width: '25ch' }} label="FileName" disabled defaultValue={props.music.fileName} variant="standard" />
-                        <TextField style={{ width: '25ch' }} label="PhotoFileName" disabled defaultValue={props.music.music_photo.fileName} variant="standard" />
+                        <TextField style={{ width: '15ch' }} label="id" disabled type="value" defaultValue={props.music.id} variant="standard" />
+                        <div>
+                            <TextField style={{ width: '25ch' }} label="musicName" type="text" defaultValue={props.music.musicName} {...register('musicName')} variant="standard" />
+                            <TextField style={{ width: '25ch' }} select label="group" id="edit-group" type="text" defaultValue={props.music.group} {...register("group")} variant="standard">
+                                {groups?.map((group) => (
+                                    <MenuItem key={group.groupName} value={group.groupName}>
+                                        {group.groupName}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            <TextField style={{ width: '25ch' }} select label="album" id="edit-album" type="text" defaultValue={props.music.album} {...register('album')} variant="standard">
+                                {albums?.map((album) => (
+                                    <MenuItem key={album.albumName} value={album.albumName}>
+                                        {album.albumName}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            <TextField style={{ width: '25ch' }} select label="genre" id="edit-genre" type="text" defaultValue={props.music.genre} {...register('genre')} variant="standard">
+                                {genres?.map((genre) => (
+                                    <MenuItem key={genre.genreName} value={genre.genreName}>
+                                        {genre.genreName}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            <TextField style={{ width: '52ch' }} label="comment" type="text" defaultValue={props.music.comment} {...register('comment')} variant="standard" />
+                        </div>
+                        <div>
+                            <TextField style={{ width: '25ch' }} label="FileType" disabled defaultValue={props.music.fileType} variant="standard" />
+                            <TextField style={{ width: '25ch' }} label="FileSize" disabled defaultValue={props.music.fileSize} variant="standard" />
+                            <TextField style={{ width: '25ch' }} label="FileName" disabled defaultValue={props.music.fileName} variant="standard" />
+                            <TextField style={{ width: '25ch' }} label="PhotoFileName" disabled defaultValue={props.music.music_photo.fileName} variant="standard" />
+                        </div>
                         <Typography sx={{ mt: 2 }} component="legend">evaluation</Typography>
                         <div>
                             <Rating sx={{ mt: 2 }} name="evaluation" defaultValue={props.music.evaluation} value={rating} onChange={(event, newValue) => {
