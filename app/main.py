@@ -41,11 +41,11 @@ def music_update(id):
     print(data)
     music = Music.query.filter(Music.id == id).one()
     music.musicName = data.get('musicName')
-    music.group=data.get('group')
-    music.album=data.get('album')
-    music.genre=data.get('genre')
-    music.evaluation=data.get('evaluation')
-    music.comment=data.get('comment')
+    music.group = data.get('group')
+    music.album = data.get('album')
+    music.genre = data.get('genre')
+    music.evaluation = data.get('evaluation')
+    music.comment = data.get('comment')
     db.session.commit()
     return jsonify({"result": "OK", "id": id, "data": data})
 
@@ -115,6 +115,10 @@ def uploadMusic():
         fileSize = convert_size(os.path.getsize(filePath))
         newMusic = Music(
             musicName=fileName,
+            group=None,
+            album=None,
+            genre=None,
+            comment=None,
             duration=duration,
             time=time,
             fileType=fileType,
