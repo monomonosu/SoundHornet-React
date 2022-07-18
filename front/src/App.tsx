@@ -114,14 +114,14 @@ function App() {
     }
     else if (!!currentSound.howl && currentSound.filePath !== resource?.filePath) {
       currentSound.howl.stop();
-      setPlayingId(Number(resource?.howl.play()));
+      setPlayingId(Number(resource?.howl?.play()));
       if (!!resource)
         setCurrentSound(resource);
     }
     else {
       if (currentSound.howl === undefined && !!resource) {
         setCurrentSound(resource);
-        setPlayingId(Number(resource?.howl.play()));
+        setPlayingId(Number(resource?.howl?.play()));
       }
       if (!!currentSound.howl) {
         currentSound.howl.play();
