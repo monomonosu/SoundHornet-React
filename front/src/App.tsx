@@ -79,6 +79,7 @@ function App() {
       const filepath = 'static/musics/' + music.fileName;
       if (!sounds.find(el => el.filePath === filepath)) {
         setSounds((sounds) => [...sounds, {
+          id: music.id,
           musicName: music.musicName,
           group: music.group,
           filePath: filepath,
@@ -94,6 +95,7 @@ function App() {
         // const soundsCopy = [...sounds];
         // soundsCopy[index] = {
         sounds[index] = {
+          id: music.id,
           musicName: music.musicName,
           group: music.group,
           filePath: filepath,

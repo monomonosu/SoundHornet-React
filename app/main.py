@@ -29,6 +29,12 @@ def getMusics():
     return jsonify(MusicSchema(many=True).dump(musics))
 
 
+@app.route("/music/<id>", methods=['GET'])
+def getMusic(id):
+    music = Music.query.filter(Music.id == id).one()
+    return jsonify(MusicSchema().dump(music))
+
+
 @app.route('/music/<id>', methods=['PUT'])
 def music_update(id):
     data = request.json

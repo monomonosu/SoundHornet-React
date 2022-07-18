@@ -170,6 +170,7 @@ export const Row = (props: {
 
 export const EditModal = (props: { music: Music }) => {
     const [musics, setMusics] = useRecoilState(musicsAtom);
+    const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [groups, setGroups] = useState<Group[]>([]);
     const [albums, setAlbums] = useState<Album[]>([]);
@@ -230,6 +231,13 @@ export const EditModal = (props: { music: Music }) => {
             .then((response) => {
                 setMusics(response.data);
             })
+        await axios.get('/music/' + props.music.id)
+            .then((response) => {
+                let copyCurrentSound = currentSound;
+                copyCurrentSound.musicName = response.data.musicName;
+                copyCurrentSound.group = response.data.group;
+                setCurrentSound(copyCurrentSound);
+            });
     }
 
     return (
