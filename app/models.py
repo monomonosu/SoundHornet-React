@@ -10,7 +10,7 @@ class Music(db.Model):
     group = db.Column(db.String,)
     album = db.Column(db.String,)
     genre = db.Column(db.String,)
-    evaluation = db.Column(db.Integer,)
+    evaluation = db.Column(db.Integer, default=3,)
     comment = db.Column(db.String,)
     duration = db.Column(db.Integer,)
     time = db.Column(db.String,)
