@@ -2,21 +2,25 @@ import React, { memo, useContext, useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
+import { useRecoilState, useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
+import { Howl, Howler } from 'howler';
+import axios from "axios"
+// MUIComponents
 import {
-  Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper
+  Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton
 } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+// components
+import Header from './component/Header';
+import MusicTable from './component/MusicsTable';
+// icons
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import Header from './component/Header';
-import MusicTable from './component/MusicsTable';
-import axios from "axios"
-import { Howl, Howler } from 'howler';
-import { useRecoilState, useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
+// atoms
+import { musicsAtom } from './atoms/MusicsAtom';
 import { currentSoundAtom } from './atoms/CurrentSoundAtom';
 import { soundsAtom } from './atoms/SoundsAtom';
 import { volumeAtom } from './atoms/VolumeAtom';
@@ -36,8 +40,8 @@ export const useInterval = (callback: () => void) => {
 
 function App() {
   // ステート
-  const [musics, setMusics] = useState<Music[]>([]);
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
+  const [musics, setMusics] = useRecoilState(musicsAtom);
   const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
   const [sounds, setSounds] = useRecoilState(soundsAtom);
   const [volume, setVolume] = useRecoilState(volumeAtom);
