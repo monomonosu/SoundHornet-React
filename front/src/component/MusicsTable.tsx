@@ -8,7 +8,8 @@ import { musicsAtom } from '../atoms/MusicsAtom';
 import { currentSoundAtom } from '../atoms/CurrentSoundAtom';
 // MUIComponents
 import {
-    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button, Backdrop, CircularProgress
+    Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button,
+    Backdrop, CircularProgress, Snackbar, Alert,
 } from '@mui/material';
 // MUIIcons
 import IconButton from '@mui/material/IconButton';
@@ -173,6 +174,7 @@ export const EditModal = (props: { music: Music }) => {
     const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isProgress, setIsProgress] = useState(false);
+    const [isSnackOpen, setIsSnackOpen] = useState(false);
     const [groups, setGroups] = useState<Group[]>([]);
     const [albums, setAlbums] = useState<Album[]>([]);
     const [genres, setGenres] = useState<Genre[]>([]);
@@ -239,7 +241,15 @@ export const EditModal = (props: { music: Music }) => {
             });
         setIsProgress(false);
         setIsOpenModal(false);
+        setIsSnackOpen(true);
     }
+
+    const snackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setIsSnackOpen(false);
+    };
 
     return (
         <div>
@@ -333,6 +343,11 @@ export const EditModal = (props: { music: Music }) => {
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
+            <Snackbar open={isSnackOpen} autoHideDuration={2000} onClose={snackbarClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert onClose={snackbarClose} severity="success" variant="filled" sx={{ width: '100%' }}>
+                    Save successfully!
+                </Alert>
+            </Snackbar>
         </div>
     );
 }
