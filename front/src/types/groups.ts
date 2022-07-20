@@ -1,4 +1,4 @@
 export type Group = {
-    id: number,
+    id: number | null,
     groupName: string,
 }
