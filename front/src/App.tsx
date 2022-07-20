@@ -128,10 +128,6 @@ function App() {
       }
     }
   }
-  function ChangeSeek(seek: number | undefined) {
-    if (!!currentSound.howl)
-      currentSound.howl.seek(seek);
-  }
   function musicsGet() {
     axios.get("/musics")
       .then((response) => {
@@ -178,13 +174,13 @@ function App() {
       <div style={{ height: '150px' }}></div>
 
       {/* フッター */}
-      <Footer ChangeSeek={ChangeSeek}></Footer>
+      <Footer></Footer>
 
     </div >
   );
 }
 
-export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) => {
+export const Footer = () => {
   // TODO:アルバムフォト・MusicName・GroupNameの繋ぎこみをする。
   // TODO:再生・次へ・前へ・音量・詳細を付ける。
   const Wrapper = styled.div<{ left: number | undefined }>`
@@ -196,6 +192,10 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
   const [timePer, setTimePer] = useState<number | undefined>();
   const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
+  function ChangeSeek(seek: number | undefined) {
+    if (!!currentSound.howl)
+      currentSound.howl.seek(seek);
+  }
   useEffect(() => {
     setTimePer(timeToPerCalculation(currentSeek));
   }, [currentSeek]);
@@ -211,7 +211,7 @@ export const Footer = (props: { ChangeSeek(seek: number | undefined): void }) =>
     const val_str = newValue.toString();
     const val: number = Number(val_str);
     setTimePer(val);
-    props.ChangeSeek(perToTimeCalculation(val));
+    ChangeSeek(perToTimeCalculation(val));
   };
   const timeToPerCalculation = (seek: number) => {
     if (!!currentSound.howl) {
