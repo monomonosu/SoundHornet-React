@@ -200,7 +200,6 @@ export const EditModal = (props: { music: Music }) => {
             .then((response) => {
                 console.log(response);
                 setGroups(response.data);
-                setRating(response.data.evaluation);
             });
         axios.get("/albums")
             .then((response) => {
@@ -276,6 +275,7 @@ export const EditModal = (props: { music: Music }) => {
                         <div>
                             <TextField style={{ width: '25ch' }} label="musicName" type="text" defaultValue={props.music.musicName} {...register('musicName')} variant="standard" />
                             <TextField style={{ width: '25ch' }} select label="group" id="edit-group" type="text" defaultValue={props.music.group} {...register("group")} variant="standard">
+                                <MenuItem value=''>None</MenuItem>
                                 {groups?.map((group) => (
                                     <MenuItem key={group.groupName} value={group.groupName}>
                                         {group.groupName}
@@ -283,6 +283,7 @@ export const EditModal = (props: { music: Music }) => {
                                 ))}
                             </TextField>
                             <TextField style={{ width: '25ch' }} select label="album" id="edit-album" type="text" defaultValue={props.music.album} {...register('album')} variant="standard">
+                                <MenuItem value=''>None</MenuItem>
                                 {albums?.map((album) => (
                                     <MenuItem key={album.albumName} value={album.albumName}>
                                         {album.albumName}
@@ -290,6 +291,7 @@ export const EditModal = (props: { music: Music }) => {
                                 ))}
                             </TextField>
                             <TextField style={{ width: '25ch' }} select label="genre" id="edit-genre" type="text" defaultValue={props.music.genre} {...register('genre')} variant="standard">
+                                <MenuItem value=''>None</MenuItem>
                                 {genres?.map((genre) => (
                                     <MenuItem key={genre.genreName} value={genre.genreName}>
                                         {genre.genreName}
