@@ -54,6 +54,17 @@ function App() {
   }, [])
   useEffect(() => {
     console.log('currentSound:', currentSound);
+    // 自動連続再生 
+    currentSound.howl?.once('end', () => {
+      if (currentSound.howl?.playing())
+        return;
+      const nextSoundId = Number(currentSound.id) + 1;
+      let resource = sounds.find(el => el.id === nextSoundId);
+      if (!!resource) {
+        setCurrentSound(resource);
+        setPlayingId(Number(resource?.howl?.play()));
+      }
+    });
   }, [currentSound]);
   useEffect(() => {
     createHowler();
