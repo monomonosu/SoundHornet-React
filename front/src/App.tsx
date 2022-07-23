@@ -54,6 +54,17 @@ function App() {
   }, [])
   useEffect(() => {
     console.log('currentSound:', currentSound);
+    // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
+    currentSound.howl?.once('end', () => {
+      if (currentSound.howl?.playing())
+        return;
+      const currentSoundIndex = sounds.findIndex(hu => hu.filePath === currentSound.filePath);
+      const nextSound = sounds[currentSoundIndex + 1];
+      if (!!nextSound) {
+        setCurrentSound(nextSound);
+        setPlayingId(Number(nextSound?.howl?.play()));
+      }
+    });
   }, [currentSound]);
   useEffect(() => {
     createHowler();
