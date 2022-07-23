@@ -54,15 +54,15 @@ function App() {
   }, [])
   useEffect(() => {
     console.log('currentSound:', currentSound);
-    // 自動連続再生 
+    // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
     currentSound.howl?.once('end', () => {
       if (currentSound.howl?.playing())
         return;
-      const nextSoundId = Number(currentSound.id) + 1;
-      let resource = sounds.find(el => el.id === nextSoundId);
-      if (!!resource) {
-        setCurrentSound(resource);
-        setPlayingId(Number(resource?.howl?.play()));
+      const currentSoundIndex = sounds.findIndex(hu => hu.filePath === currentSound.filePath);
+      const nextSound = sounds[currentSoundIndex + 1];
+      if (!!nextSound) {
+        setCurrentSound(nextSound);
+        setPlayingId(Number(nextSound?.howl?.play()));
       }
     });
   }, [currentSound]);
