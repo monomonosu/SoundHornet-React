@@ -324,6 +324,7 @@ export const RepeatButton = () => {
   return (
     <div>
       <Button aria-label="expand row" size="large" onClick={repeatButtonOnClick}>
+        <LoopIcon fontSize='large' style={{ color: 'white' }} />
         {/* {isLoop ? <LoopIcon fontSize='large' /> : <LoopIcon fontSize='large' style={{ color: 'white' }} />} */}
       </Button>
     </div>
