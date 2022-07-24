@@ -9,6 +9,8 @@ import UploadPage from './UploadPage';
 import DownloadPage from './DownloadPage';
 import SettingPage from './SettingPage';
 import { RecoilRoot } from 'recoil';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 // sample
 import TableSample from './sample/TableSample';
 
@@ -17,17 +19,19 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <RecoilRoot>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path='album-page' element={<AlbumPage />}></Route>
-        <Route path="import-page" element={<UploadPage />} />
-        <Route path="download-page" element={<DownloadPage />} />
-        <Route path="setting-page" element={<SettingPage />} />
-        {/* sample */}
-        <Route path='table-sample' element={<TableSample />} />
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path='album-page' element={<AlbumPage />}></Route>
+          <Route path="import-page" element={<UploadPage />} />
+          <Route path="download-page" element={<DownloadPage />} />
+          <Route path="setting-page" element={<SettingPage />} />
+          {/* sample */}
+          <Route path='table-sample' element={<TableSample />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   </RecoilRoot>
 );
 
