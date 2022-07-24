@@ -1,10 +1,12 @@
-import React, { memo, useContext, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
 import { useRecoilState, useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
 import { Howl, Howler } from 'howler';
 import axios from "axios"
+import { useSelector, useDispatch } from 'react-redux';
+import { isLoopSetFalse, isLoopSetTrue } from './redux/isLoopSlice';
 // MUIComponents
 import {
   Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton, Button,
@@ -48,16 +50,25 @@ function App() {
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
   const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
+  const isLoop = useSelector((state: any) => state.isLooper.isLoop);
+  const isLoopRef = useRef(0);
+  const [dummyHandler, setDummyHandler] = useState(0);  // currentSound->useEffect用ダミー変数
+
   useEffect(() => {
     musicsGet();
     settingGet();
   }, [])
   useEffect(() => {
     console.log('currentSound:', currentSound);
-    // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
     currentSound.howl?.once('end', () => {
-      if (currentSound.howl?.playing())
+      // ループ機能
+      if (isLoopRef.current) {
+        setDummyHandler(() => { return dummyHandler + 1 }); // useEffectが実行されなくなる為
+        setCurrentSound(currentSound);
+        setPlayingId(Number(currentSound?.howl?.play()));
         return;
+      }
+      // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
       const currentSoundIndex = sounds.findIndex(hu => hu.filePath === currentSound.filePath);
       const nextSound = sounds[currentSoundIndex + 1];
       if (!!nextSound) {
@@ -65,7 +76,10 @@ function App() {
         setPlayingId(Number(nextSound?.howl?.play()));
       }
     });
-  }, [currentSound]);
+  }, [currentSound, dummyHandler]);
+  useEffect(() => {
+    isLoopRef.current = isLoop;
+  }, [isLoop]);
   useEffect(() => {
     createHowler();
   }, [musics]);
@@ -318,14 +332,15 @@ export const Footer = () => {
 }
 
 export const RepeatButton = () => {
-  const repeatButtonOnClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    // state更新処理
+  const isLoop = useSelector((state: any) => state.isLooper.isLoop);
+  const dispatch = useDispatch();
+  const repeatButtonOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    isLoop ? dispatch(isLoopSetFalse()) : dispatch(isLoopSetTrue());
   }
   return (
     <div>
       <Button aria-label="expand row" size="large" onClick={repeatButtonOnClick}>
-        <LoopIcon fontSize='large' style={{ color: 'white' }} />
-        {/* {isLoop ? <LoopIcon fontSize='large' /> : <LoopIcon fontSize='large' style={{ color: 'white' }} />} */}
+        {isLoop ? <LoopIcon fontSize='large' /> : <LoopIcon fontSize='large' style={{ color: 'white' }} />}
       </Button>
     </div>
   )
