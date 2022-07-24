@@ -7,7 +7,7 @@ import { Howl, Howler } from 'howler';
 import axios from "axios"
 // MUIComponents
 import {
-  Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton
+  Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton, Button,
 } from '@mui/material';
 // components
 import Header from './component/Header';
@@ -18,7 +18,7 @@ import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import LoopIcon from '@mui/icons-material/Loop';
 // atoms
 import { musicsAtom } from './atoms/MusicsAtom';
 import { currentSoundAtom } from './atoms/CurrentSoundAtom';
@@ -303,13 +303,7 @@ export const Footer = () => {
               <Grid item xs>
                 <div style={{ display: 'flex', justifyContent: "right" }}>
                   <VolumeButton />
-                  <IconButton
-                    aria-label="expand row"
-                    size="large"
-                    onClick={() => console.log('hoge')}
-                  >
-                    <MoreHorizIcon fontSize='large' style={{ color: 'white' }} />
-                  </IconButton>
+                  <RepeatButton />
                 </div>
               </Grid>
             </Grid>
@@ -320,6 +314,20 @@ export const Footer = () => {
   }
   return (
     <div></div>
+  )
+}
+
+export const RepeatButton = () => {
+  const repeatButtonOnClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    // state更新処理
+  }
+  return (
+    <div>
+      <Button aria-label="expand row" size="large" onClick={repeatButtonOnClick}>
+        <LoopIcon fontSize='large' style={{ color: 'white' }} />
+        {/* {isLoop ? <LoopIcon fontSize='large' /> : <LoopIcon fontSize='large' style={{ color: 'white' }} />} */}
+      </Button>
+    </div>
   )
 }
 
