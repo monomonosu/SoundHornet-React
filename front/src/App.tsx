@@ -26,7 +26,6 @@ import { soundsAtom } from './atoms/SoundsAtom';
 import { volumeAtom } from './atoms/VolumeAtom';
 import { playingIdAtom } from './atoms/PlayingIdAtom';
 import { currentSeekAtom } from './atoms/CurrentSeekAtom';
-import { isLoopAtom } from './atoms/IsLoopAtom';
 // types
 import type { Music } from './types/musics';
 import type { Setting } from './types/Setting';
@@ -319,14 +318,13 @@ export const Footer = () => {
 }
 
 export const RepeatButton = () => {
-  const [isLoop, setIsLoop] = useRecoilState(isLoopAtom);
   const repeatButtonOnClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    setIsLoop(!isLoop);
+    // state更新処理
   }
   return (
     <div>
       <Button aria-label="expand row" size="large" onClick={repeatButtonOnClick}>
-        {isLoop ? <LoopIcon fontSize='large' /> : <LoopIcon fontSize='large' style={{ color: 'white' }} />}
+        {/* {isLoop ? <LoopIcon fontSize='large' /> : <LoopIcon fontSize='large' style={{ color: 'white' }} />} */}
       </Button>
     </div>
   )
