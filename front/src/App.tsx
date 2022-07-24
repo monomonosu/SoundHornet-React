@@ -5,9 +5,11 @@ import './App.css';
 import { useRecoilState, useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
 import { Howl, Howler } from 'howler';
 import axios from "axios"
+import { useSelector, useDispatch } from 'react-redux';
+import { increase, decrease } from './redux/counterSlice';
 // MUIComponents
 import {
-  Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton
+  Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton, Button
 } from '@mui/material';
 // components
 import Header from './component/Header';
@@ -47,6 +49,8 @@ function App() {
   const [volume, setVolume] = useRecoilState(volumeAtom);
   const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
+  const count = useSelector((state: any) => state.counter.count);
+  const dispatch = useDispatch();
   const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
   useEffect(() => {
     musicsGet();
@@ -170,6 +174,9 @@ function App() {
       <Header></Header>
 
       <div style={{ height: '5vh' }}></div>
+      <h1 style={{ color: 'white' }}>Count: {count}</h1>
+      <Button onClick={() => dispatch(increase())}> UP </Button>
+      <Button onClick={() => dispatch(decrease())}> DOWN </Button>
 
       {/* テーブル */}
       <RecoilBridge>

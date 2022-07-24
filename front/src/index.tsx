@@ -9,6 +9,8 @@ import UploadPage from './UploadPage';
 import DownloadPage from './DownloadPage';
 import SettingPage from './SettingPage';
 import { RecoilRoot } from 'recoil';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 // sample
 import TableSample from './sample/TableSample';
 
@@ -17,6 +19,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <RecoilRoot>
+    <Provider store={store}>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
@@ -28,7 +31,9 @@ root.render(
         <Route path='table-sample' element={<TableSample />} />
       </Routes>
     </BrowserRouter>
+    </Provider>
   </RecoilRoot>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function
