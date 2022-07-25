@@ -5,8 +5,10 @@ import './App.css';
 import { useRecoilState, useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
 import { Howl, Howler } from 'howler';
 import axios from "axios"
+// Redux
 import { useSelector, useDispatch } from 'react-redux';
 import { isLoopSetFalse, isLoopSetTrue } from './redux/isLoopSlice';
+import { setPlayingId } from './redux/playingIdSlice';
 // MUIComponents
 import {
   Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton, Button,
@@ -26,11 +28,9 @@ import { musicsAtom } from './atoms/MusicsAtom';
 import { currentSoundAtom } from './atoms/CurrentSoundAtom';
 import { soundsAtom } from './atoms/SoundsAtom';
 import { volumeAtom } from './atoms/VolumeAtom';
-import { playingIdAtom } from './atoms/PlayingIdAtom';
 import { currentSeekAtom } from './atoms/CurrentSeekAtom';
 // types
 import type { Music } from './types/musics';
-import type { Setting } from './types/Setting';
 
 // 投げたcallbackを毎秒実行
 export const useInterval = (callback: () => void) => {
@@ -47,10 +47,10 @@ function App() {
   const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
   const [sounds, setSounds] = useRecoilState(soundsAtom);
   const [volume, setVolume] = useRecoilState(volumeAtom);
-  const [playingId, setPlayingId] = useRecoilState(playingIdAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
   const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
   const isLoop = useSelector((state: any) => state.isLooper.isLoop);
+  const dispatch = useDispatch();
   const isLoopRef = useRef(0);
   const [dummyHandler, setDummyHandler] = useState(0);  // currentSound->useEffect用ダミー変数
 
@@ -65,7 +65,7 @@ function App() {
       if (isLoopRef.current) {
         setDummyHandler(() => { return dummyHandler + 1 }); // useEffectが実行されなくなる為
         setCurrentSound(currentSound);
-        setPlayingId(Number(currentSound?.howl?.play()));
+        dispatch(setPlayingId(Number(currentSound?.howl?.play())));
         return;
       }
       // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
@@ -73,7 +73,7 @@ function App() {
       const nextSound = sounds[currentSoundIndex + 1];
       if (!!nextSound) {
         setCurrentSound(nextSound);
-        setPlayingId(Number(nextSound?.howl?.play()));
+        dispatch(setPlayingId(Number(nextSound?.howl?.play())));
       }
     });
   }, [currentSound, dummyHandler]);
@@ -139,14 +139,14 @@ function App() {
     }
     else if (!!currentSound.howl && currentSound.filePath !== resource?.filePath) {
       currentSound.howl.stop();
-      setPlayingId(Number(resource?.howl?.play()));
+      dispatch(setPlayingId(Number(resource?.howl?.play())));
       if (!!resource)
         setCurrentSound(resource);
     }
     else {
       if (currentSound.howl === undefined && !!resource) {
         setCurrentSound(resource);
-        setPlayingId(Number(resource?.howl?.play()));
+        dispatch(setPlayingId(Number(resource?.howl?.play())));
       }
       if (!!currentSound.howl) {
         currentSound.howl.play();
