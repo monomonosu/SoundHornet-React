@@ -6,10 +6,10 @@ export const isLoopSlice = createSlice({
         isLoop: false,
     },
     reducers: {
-        isLoopSetFalse: (state) => {
+        isLoopSetFalse: (state: { isLoop: boolean }) => {
             state.isLoop = false;
         },
-        isLoopSetTrue: (state) => {
+        isLoopSetTrue: (state: { isLoop: boolean }) => {
             state.isLoop = true;
         },
     },
