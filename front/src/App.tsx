@@ -9,6 +9,7 @@ import axios from "axios"
 import { useSelector, useDispatch } from 'react-redux';
 import { isLoopSetFalse, isLoopSetTrue } from './redux/isLoopSlice';
 import { setPlayingId } from './redux/playingIdSlice';
+import { setVolume } from './redux/volumeSlice';
 // MUIComponents
 import {
   Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton, Button,
@@ -27,7 +28,6 @@ import LoopIcon from '@mui/icons-material/Loop';
 import { musicsAtom } from './atoms/MusicsAtom';
 import { currentSoundAtom } from './atoms/CurrentSoundAtom';
 import { soundsAtom } from './atoms/SoundsAtom';
-import { volumeAtom } from './atoms/VolumeAtom';
 import { currentSeekAtom } from './atoms/CurrentSeekAtom';
 // types
 import type { Music } from './types/musics';
@@ -46,10 +46,10 @@ function App() {
   const [musics, setMusics] = useRecoilState(musicsAtom);
   const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
   const [sounds, setSounds] = useRecoilState(soundsAtom);
-  const [volume, setVolume] = useRecoilState(volumeAtom);
   const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
   const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
   const isLoop = useSelector((state: any) => state.isLooper.isLoop);
+  const volume = useSelector((state: any) => state.volume.volume);
   const dispatch = useDispatch();
   const isLoopRef = useRef(0);
   const [dummyHandler, setDummyHandler] = useState(0);  // currentSound->useEffect用ダミー変数
@@ -173,7 +173,7 @@ function App() {
     axios.get("/settings")
       .then((response) => {
         console.log(response.data);
-        setVolume(Number(response.data.volume));
+        dispatch(setVolume(Number(response.data.volume)));
       });
     return;
   }
@@ -349,7 +349,8 @@ export const RepeatButton = () => {
 export const VolumeButton = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [isOpenPopper, setIsOpenPopper] = useState<boolean>(false);
-  const [volume, setVolume] = useRecoilState(volumeAtom);
+  const dispatch = useDispatch();
+  const volume = useSelector((state: any) => state.volume.volume);
 
   const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -359,7 +360,7 @@ export const VolumeButton = () => {
   };
   const handleChange = (event: Event, newValue: number | number[]) => {
     const val: number = Number(newValue);
-    setVolume(val);
+    dispatch(setVolume(val));
     const valFloat: number = val * 0.01;
     Howler.volume(valFloat);
   };
