@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
 import { useForm, SubmitHandler, } from 'react-hook-form';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
+import { setMusics } from '../redux/musicsSlice';
 import { setCurrentSound } from '../redux/currentSoundSlice';
-// atoms
-import { musicsAtom } from '../atoms/MusicsAtom';
 // MUIComponents
 import {
     Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button,
@@ -172,7 +170,6 @@ export const Row = (props: {
 }
 
 export const EditModal = (props: { music: Music }) => {
-    const [musics, setMusics] = useRecoilState(musicsAtom);
     const dispatch = useDispatch();
     const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -232,7 +229,7 @@ export const EditModal = (props: { music: Music }) => {
         // Musics更新
         await axios.get('/musics')
             .then((response) => {
-                setMusics(response.data);
+                dispatch(setMusics(response.data));
             })
         await axios.get('/music/' + props.music.id)
             .then((response) => {
