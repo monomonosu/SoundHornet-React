@@ -3,9 +3,11 @@ import React from 'react';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { useForm, SubmitHandler, } from 'react-hook-form';
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentSound } from '../redux/currentSoundSlice';
 // atoms
 import { musicsAtom } from '../atoms/MusicsAtom';
-import { currentSoundAtom } from '../atoms/CurrentSoundAtom';
 // MUIComponents
 import {
     Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button,
@@ -80,7 +82,7 @@ export const Row = (props: {
     music: Music, setCheckedNumbers: React.Dispatch<React.SetStateAction<number[]>>, checkedNumbers: number[],
     PlaySound(music: Music): void
 }) => {
-    const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
+    const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
     const [isDetail, setIsDetail] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -171,7 +173,8 @@ export const Row = (props: {
 
 export const EditModal = (props: { music: Music }) => {
     const [musics, setMusics] = useRecoilState(musicsAtom);
-    const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
+    const dispatch = useDispatch();
+    const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isProgress, setIsProgress] = useState(false);
     const [isSnackOpen, setIsSnackOpen] = useState(false);
@@ -236,7 +239,7 @@ export const EditModal = (props: { music: Music }) => {
                 let copyCurrentSound = currentSound;
                 copyCurrentSound.musicName = response.data.musicName;
                 copyCurrentSound.group = response.data.group;
-                setCurrentSound(copyCurrentSound);
+                dispatch(setCurrentSound(copyCurrentSound));
             });
         setIsProgress(false);
         setIsOpenModal(false);
