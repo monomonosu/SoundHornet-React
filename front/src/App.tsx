@@ -11,6 +11,7 @@ import { isLoopSetFalse, isLoopSetTrue } from './redux/isLoopSlice';
 import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
 import { setCurrentSeek } from './redux/currentSeekSlice';
+import { setCurrentSound } from './redux/currentSoundSlice';
 // MUIComponents
 import {
   Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton, Button,
@@ -27,7 +28,6 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LoopIcon from '@mui/icons-material/Loop';
 // atoms
 import { musicsAtom } from './atoms/MusicsAtom';
-import { currentSoundAtom } from './atoms/CurrentSoundAtom';
 import { soundsAtom } from './atoms/SoundsAtom';
 // types
 import type { Music } from './types/musics';
@@ -44,9 +44,9 @@ function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   const [musics, setMusics] = useRecoilState(musicsAtom);
-  const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
   const [sounds, setSounds] = useRecoilState(soundsAtom);
   const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
+  const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
   const isLoop = useSelector((state: any) => state.isLooper.isLoop);
   const volume = useSelector((state: any) => state.volume.volume);
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ function App() {
       // ループ機能
       if (isLoopRef.current) {
         setDummyHandler(() => { return dummyHandler + 1 }); // useEffectが実行されなくなる為
-        setCurrentSound(currentSound);
+        dispatch(setCurrentSound(currentSound));
         dispatch(setPlayingId(Number(currentSound?.howl?.play())));
         return;
       }
@@ -71,7 +71,7 @@ function App() {
       const currentSoundIndex = sounds.findIndex(hu => hu.filePath === currentSound.filePath);
       const nextSound = sounds[currentSoundIndex + 1];
       if (!!nextSound) {
-        setCurrentSound(nextSound);
+        dispatch(setCurrentSound(nextSound));
         dispatch(setPlayingId(Number(nextSound?.howl?.play())));
       }
     });
@@ -140,11 +140,11 @@ function App() {
       currentSound.howl.stop();
       dispatch(setPlayingId(Number(resource?.howl?.play())));
       if (!!resource)
-        setCurrentSound(resource);
+        dispatch(setCurrentSound(resource));
     }
     else {
       if (currentSound.howl === undefined && !!resource) {
-        setCurrentSound(resource);
+        dispatch(setCurrentSound(resource));
         dispatch(setPlayingId(Number(resource?.howl?.play())));
       }
       if (!!currentSound.howl) {
@@ -205,8 +205,6 @@ function App() {
 }
 
 export const Footer = () => {
-  // TODO:アルバムフォト・MusicName・GroupNameの繋ぎこみをする。
-  // TODO:再生・次へ・前へ・音量・詳細を付ける。
   const Wrapper = styled.div<{ left: number | undefined }>`
     .MuiSlider-thumbColorPrimary{
       left:${props => (props.left ? props.left.toString() + '%' : '0%')} !important;
@@ -214,7 +212,7 @@ export const Footer = () => {
   `
 
   const [timePer, setTimePer] = useState<number | undefined>();
-  const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
+  const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
   const currentSeek = useSelector((state: any) => state.currentSeeker.currentSeek);
   function ChangeSeek(seek: number | undefined) {
     if (!!currentSound.howl)
