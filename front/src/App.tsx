@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { isLoopSetFalse, isLoopSetTrue } from './redux/isLoopSlice';
 import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
+import { setCurrentSeek } from './redux/currentSeekSlice';
 // MUIComponents
 import {
   Box, Grid, Typography, Card, CardContent, CardMedia, Slider, Popper, Paper, IconButton, Button,
@@ -28,7 +29,6 @@ import LoopIcon from '@mui/icons-material/Loop';
 import { musicsAtom } from './atoms/MusicsAtom';
 import { currentSoundAtom } from './atoms/CurrentSoundAtom';
 import { soundsAtom } from './atoms/SoundsAtom';
-import { currentSeekAtom } from './atoms/CurrentSeekAtom';
 // types
 import type { Music } from './types/musics';
 
@@ -46,7 +46,6 @@ function App() {
   const [musics, setMusics] = useRecoilState(musicsAtom);
   const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
   const [sounds, setSounds] = useRecoilState(soundsAtom);
-  const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
   const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
   const isLoop = useSelector((state: any) => state.isLooper.isLoop);
   const volume = useSelector((state: any) => state.volume.volume);
@@ -93,7 +92,7 @@ function App() {
   // 毎秒再生進捗を更新する。
   useInterval(() => {
     if (currentSound.howl === undefined) return;
-    setCurrentSeek(currentSound?.howl.seek());
+    dispatch(setCurrentSeek(currentSound?.howl.seek()));
   });
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
@@ -216,7 +215,7 @@ export const Footer = () => {
 
   const [timePer, setTimePer] = useState<number | undefined>();
   const [currentSound, setCurrentSound] = useRecoilState(currentSoundAtom);
-  const [currentSeek, setCurrentSeek] = useRecoilState(currentSeekAtom);
+  const currentSeek = useSelector((state: any) => state.currentSeeker.currentSeek);
   function ChangeSeek(seek: number | undefined) {
     if (!!currentSound.howl)
       currentSound.howl.seek(seek);
