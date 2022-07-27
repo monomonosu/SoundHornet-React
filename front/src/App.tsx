@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { isLoopSetFalse, isLoopSetTrue } from './redux/isLoopSlice';
 import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
+import { setMusics } from './redux/musicsSlice';
 import { setCurrentSeek } from './redux/currentSeekSlice';
 import { setCurrentSound } from './redux/currentSoundSlice';
 // MUIComponents
@@ -27,7 +28,6 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LoopIcon from '@mui/icons-material/Loop';
 // atoms
-import { musicsAtom } from './atoms/MusicsAtom';
 import { soundsAtom } from './atoms/SoundsAtom';
 // types
 import type { Music } from './types/musics';
@@ -43,12 +43,12 @@ export const useInterval = (callback: () => void) => {
 function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  const [musics, setMusics] = useRecoilState(musicsAtom);
   const [sounds, setSounds] = useRecoilState(soundsAtom);
   const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
   const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
   const isLoop = useSelector((state: any) => state.isLooper.isLoop);
   const volume = useSelector((state: any) => state.volume.volume);
+  const musics: Music[] = useSelector((state: any) => state.musics.musics);
   const dispatch = useDispatch();
   const isLoopRef = useRef(0);
   const [dummyHandler, setDummyHandler] = useState(0);  // currentSound->useEffect用ダミー変数
@@ -116,8 +116,6 @@ function App() {
       }
       else {
         const index = sounds.findIndex((el) => el.filePath === filepath);
-        // const soundsCopy = [...sounds];
-        // soundsCopy[index] = {
         sounds[index] = {
           id: music.id,
           musicName: music.musicName,
@@ -156,7 +154,7 @@ function App() {
     axios.get("/musics")
       .then((response) => {
         console.log(response.data);
-        setMusics(response.data);
+        dispatch(setMusics(response.data));
       });
   }
   function musicsDelete(ids: number[]) {
@@ -164,7 +162,7 @@ function App() {
     axios.delete("/musics/" + ids)
       .then((response) => {
         console.log(response.data);
-        setMusics(response.data);
+        dispatch(setMusics(response.data));
       })
     setCheckedNumbers([]);
   }
