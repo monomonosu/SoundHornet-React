@@ -4,6 +4,7 @@ import playingIdReducer from '../redux/playingIdSlice'
 import volumeReducer from '../redux/volumeSlice';
 import musicsReducer from '../redux/musicsSlice';
 import currentSeekReducer from '../redux/currentSeekSlice';
+import soundsReducer from '../redux/soundsSlice';
 import currentSoundReducer from '../redux/currentSoundSlice';
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
         volume: volumeReducer,
         musics: musicsReducer,
         currentSeeker: currentSeekReducer,
+        sounder: soundsReducer,
         currentSounder: currentSoundReducer,
     },
 });

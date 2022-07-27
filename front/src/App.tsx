@@ -12,6 +12,7 @@ import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
 import { setMusics } from './redux/musicsSlice';
 import { setCurrentSeek } from './redux/currentSeekSlice';
+import { setSounds } from './redux/soundsSlice';
 import { setCurrentSound } from './redux/currentSoundSlice';
 // MUIComponents
 import {
@@ -27,10 +28,9 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LoopIcon from '@mui/icons-material/Loop';
-// atoms
-import { soundsAtom } from './atoms/SoundsAtom';
 // types
 import type { Music } from './types/musics';
+import type { MusicResource } from './types/musicResource';
 
 // 投げたcallbackを毎秒実行
 export const useInterval = (callback: () => void) => {
@@ -43,12 +43,12 @@ export const useInterval = (callback: () => void) => {
 function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  const [sounds, setSounds] = useRecoilState(soundsAtom);
   const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
   const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
   const isLoop = useSelector((state: any) => state.isLooper.isLoop);
   const volume = useSelector((state: any) => state.volume.volume);
   const musics: Music[] = useSelector((state: any) => state.musics.musics);
+  const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const dispatch = useDispatch();
   const isLoopRef = useRef(0);
   const [dummyHandler, setDummyHandler] = useState(0);  // currentSound->useEffect用ダミー変数
@@ -102,7 +102,7 @@ function App() {
     musics.forEach(music => {
       const filepath = 'static/musics/' + music.fileName;
       if (!sounds.find(el => el.filePath === filepath)) {
-        setSounds((sounds) => [...sounds, {
+        dispatch(setSounds({
           id: music.id,
           musicName: music.musicName,
           group: music.group,
@@ -111,7 +111,7 @@ function App() {
           howl: new Howl({
             src: filepath,
           })
-        }])
+        }));
         return;
       }
       else {
@@ -124,10 +124,9 @@ function App() {
           music_photo: music.music_photo,
           howl: sounds[index].howl,
         }
-        setSounds(sounds);
+        dispatch(setSounds(sounds));
       }
     });
-    console.log('sounds:', sounds);
   }
   function PlaySound(music: Music) {
     let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName);
