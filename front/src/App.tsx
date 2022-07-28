@@ -116,7 +116,8 @@ function App() {
       }
       else {
         const index = sounds.findIndex((el) => el.filePath === filepath);
-        sounds[index] = {
+        let soundsCopy = [...sounds];
+        soundsCopy[index] = {
           id: music.id,
           musicName: music.musicName,
           group: music.group,
@@ -124,7 +125,7 @@ function App() {
           music_photo: music.music_photo,
           howl: sounds[index].howl,
         }
-        dispatch(setSounds(sounds));
+        dispatch(setSounds(soundsCopy));
       }
     });
   }
