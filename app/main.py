@@ -6,13 +6,13 @@ import math
 
 # ---------- Page ----------
 @app.route('/')
-@app.route('/group')
-@app.route('/album')
-@app.route('/genre')
-@app.route('/favorite')
-@app.route('/download')
-@app.route('/import')
-@app.route('/setting')
+@app.route('/group-page')
+@app.route('/album-page')
+@app.route('/genre-page')
+@app.route('/favorite-page')
+@app.route('/download-page')
+@app.route('/import-page')
+@app.route('/setting-page')
 def index():
     return render_template('index.html')
 
