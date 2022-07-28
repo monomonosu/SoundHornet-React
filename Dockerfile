@@ -6,9 +6,11 @@ WORKDIR ../front
 RUN apt-get update
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get install -y nodejs
+# 必要がないようなら消す
 RUN apt-get autoclean
 RUN apt-get clean all
 RUN apt-get update
+# ----------
 RUN apt-get install -y npm
 RUN apt-get install -y vim
 RUN npm install -g n
