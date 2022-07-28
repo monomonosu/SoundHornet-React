@@ -3,14 +3,20 @@ COPY /app /app
 COPY /front /front
 
 WORKDIR ../front
-RUN apt update
-RUN apt install -y nodejs
-RUN apt install -y npm
-RUN apt install -y vim
+RUN apt-get update
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install -y nodejs
+# 必要がないようなら消す
+RUN apt-get autoclean
+RUN apt-get clean all
+RUN apt-get update
+# ----------
+RUN apt-get install -y npm
+RUN apt-get install -y vim
 RUN npm install -g n
 RUN n 16.14.2
-RUN apt purge -y nodejs npm
-RUN apt -y autoremove
+RUN apt-get purge -y nodejs npm
+RUN apt-get -y autoremove
 RUN npm install
 RUN npm run build
 
