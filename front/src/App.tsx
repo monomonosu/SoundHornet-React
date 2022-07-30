@@ -47,6 +47,7 @@ function App() {
   const volume: number = useSelector((state: any) => state.volume.volume);
   const musics: Music[] = useSelector((state: any) => state.musics.musics);
   const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
+  const playingId: number = useSelector((state: any) => state.playingId.playingId);
   const dispatch = useDispatch();
   const isLoopRef: { current: boolean } = useRef(false);
   const [dummyHandler, setDummyHandler] = useState(0);  // currentSound->useEffect用ダミー変数
@@ -61,8 +62,7 @@ function App() {
       // ループ機能
       if (isLoopRef.current) {
         setDummyHandler(() => { return dummyHandler + 1 }); // useEffectが実行されなくなる為
-        dispatch(setCurrentSound(currentSound));
-        dispatch(setPlayingId(Number(currentSound?.howl?.play())));
+        currentSound.howl?.play(playingId);
         return;
       }
       // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
