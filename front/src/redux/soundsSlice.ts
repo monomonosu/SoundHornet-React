@@ -7,8 +7,8 @@ export const soundsSlice: Slice = createSlice({
         sounds: [],
     },
     reducers: {
-        setSounds: (state: { sounds: MusicResource[] }, actions: { payload: MusicResource }) => {
-            state.sounds = [...state.sounds, actions.payload];
+        setSounds: (state: { sounds: MusicResource[] }, actions: { payload: MusicResource[] }) => {
+            state.sounds = actions.payload;
         },
     },
 });
