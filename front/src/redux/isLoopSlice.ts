@@ -1,20 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, Slice } from '@reduxjs/toolkit';
 
-export const isLoopSlice = createSlice({
+export const isLoopSlice: Slice = createSlice({
     name: 'isLoop',
     initialState: {
         isLoop: false,
     },
     reducers: {
-        isLoopSetFalse: (state: { isLoop: boolean }) => {
-            state.isLoop = false;
-        },
-        isLoopSetTrue: (state: { isLoop: boolean }) => {
-            state.isLoop = true;
+        setIsLoop: (state: { isLoop: boolean }, actions: { payload: boolean }) => {
+            state.isLoop = actions.payload;
         },
     },
 });
 
-export const { isLoopSetFalse, isLoopSetTrue } = isLoopSlice.actions;
+export const { setIsLoop } = isLoopSlice.actions;
 
 export default isLoopSlice.reducer;

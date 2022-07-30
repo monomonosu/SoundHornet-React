@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, Slice } from '@reduxjs/toolkit';
 
-export const playingIdSlice = createSlice({
+export const playingIdSlice: Slice = createSlice({
     name: 'playingId',
     initialState: {
         playingId: undefined,
