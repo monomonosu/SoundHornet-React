@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
-import { useRecoilState, useRecoilBridgeAcrossReactRoots_UNSTABLE } from 'recoil';
 import { Howl, Howler } from 'howler';
 import axios from "axios"
 // Redux
@@ -43,7 +42,6 @@ export const useInterval = (callback: () => void) => {
 function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  const RecoilBridge = useRecoilBridgeAcrossReactRoots_UNSTABLE();
   const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
   const isLoop = useSelector((state: any) => state.isLooper.isLoop);
   const volume = useSelector((state: any) => state.volume.volume);
@@ -183,15 +181,13 @@ function App() {
       <div style={{ height: '5vh' }}></div>
 
       {/* テーブル */}
-      <RecoilBridge>
-        <MusicTable
-          musics={musics}
-          checkedNumbers={checkedNumbers}
-          setCheckedNumbers={setCheckedNumbers}
-          PlaySound={PlaySound}
-          isDeleteButton={isDeleteButton}
-          musicsDelete={musicsDelete}></MusicTable>
-      </RecoilBridge>
+      <MusicTable
+        musics={musics}
+        checkedNumbers={checkedNumbers}
+        setCheckedNumbers={setCheckedNumbers}
+        PlaySound={PlaySound}
+        isDeleteButton={isDeleteButton}
+        musicsDelete={musicsDelete}></MusicTable>
 
       <div style={{ height: '150px' }}></div>
 
