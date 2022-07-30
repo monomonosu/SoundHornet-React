@@ -24,6 +24,7 @@ import type { Music } from '../types/musics'
 import type { Group } from '../types/groups'
 import type { Album } from '../types/albums'
 import type { Genre } from '../types/genres'
+import type { MusicResource } from '../types/musicResource';
 
 type MusicTableProp = {
     musics: Music[];
@@ -80,7 +81,7 @@ export const Row = (props: {
     music: Music, setCheckedNumbers: React.Dispatch<React.SetStateAction<number[]>>, checkedNumbers: number[],
     PlaySound(music: Music): void
 }) => {
-    const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
+    const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
     const [isDetail, setIsDetail] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -171,7 +172,7 @@ export const Row = (props: {
 
 export const EditModal = (props: { music: Music }) => {
     const dispatch = useDispatch();
-    const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
+    const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isProgress, setIsProgress] = useState(false);
     const [isSnackOpen, setIsSnackOpen] = useState(false);
