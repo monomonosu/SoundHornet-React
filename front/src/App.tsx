@@ -97,10 +97,11 @@ function App() {
     else return false;
   }
   function createHowler() {
+    let newSounds: MusicResource[] = [];
     musics.forEach(music => {
       const filepath = 'static/musics/' + music.fileName;
       if (!sounds.find(el => el.filePath === filepath)) {
-        dispatch(setSounds({
+        newSounds.push({
           id: music.id,
           musicName: music.musicName,
           group: music.group,
@@ -109,23 +110,22 @@ function App() {
           howl: new Howl({
             src: filepath,
           })
-        }));
+        });
         return;
       }
       else {
         const index = sounds.findIndex((el) => el.filePath === filepath);
-        let soundsCopy = [...sounds];
-        soundsCopy[index] = {
+        newSounds.push({
           id: music.id,
           musicName: music.musicName,
           group: music.group,
           filePath: filepath,
           music_photo: music.music_photo,
           howl: sounds[index].howl,
-        }
-        dispatch(setSounds(soundsCopy));
+        })
       }
     });
+    dispatch(setSounds(newSounds));
   }
   function PlaySound(music: Music) {
     let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName);
