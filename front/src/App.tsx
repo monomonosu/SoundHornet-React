@@ -42,13 +42,13 @@ export const useInterval = (callback: () => void) => {
 function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
-  const isLoop = useSelector((state: any) => state.isLooper.isLoop);
-  const volume = useSelector((state: any) => state.volume.volume);
+  const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
+  const isLoop: boolean = useSelector((state: any) => state.isLooper.isLoop);
+  const volume: number = useSelector((state: any) => state.volume.volume);
   const musics: Music[] = useSelector((state: any) => state.musics.musics);
   const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const dispatch = useDispatch();
-  const isLoopRef = useRef(0);
+  const isLoopRef: { current: boolean } = useRef(false);
   const [dummyHandler, setDummyHandler] = useState(0);  // currentSound->useEffect用ダミー変数
 
   useEffect(() => {
@@ -206,8 +206,8 @@ export const Footer = () => {
   `
 
   const [timePer, setTimePer] = useState<number | undefined>();
-  const currentSound = useSelector((state: any) => state.currentSounder.currentSound);
-  const currentSeek = useSelector((state: any) => state.currentSeeker.currentSeek);
+  const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
+  const currentSeek: number = useSelector((state: any) => state.currentSeeker.currentSeek);
   function ChangeSeek(seek: number | undefined) {
     if (!!currentSound.howl)
       currentSound.howl.seek(seek);
@@ -323,7 +323,7 @@ export const Footer = () => {
 }
 
 export const RepeatButton = () => {
-  const isLoop = useSelector((state: any) => state.isLooper.isLoop);
+  const isLoop: boolean = useSelector((state: any) => state.isLooper.isLoop);
   const dispatch = useDispatch();
   const repeatButtonOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     isLoop ? dispatch(isLoopSetFalse()) : dispatch(isLoopSetTrue());
@@ -341,7 +341,7 @@ export const VolumeButton = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [isOpenPopper, setIsOpenPopper] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const volume = useSelector((state: any) => state.volume.volume);
+  const volume: number = useSelector((state: any) => state.volume.volume);
 
   const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
