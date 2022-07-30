@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, Slice } from '@reduxjs/toolkit';
 
-export const volumeSlice = createSlice({
+export const volumeSlice: Slice = createSlice({
     name: 'volume',
     initialState: {
         volume: 0,

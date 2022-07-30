@@ -6,7 +6,7 @@ import { Howl, Howler } from 'howler';
 import axios from "axios"
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
-import { isLoopSetFalse, isLoopSetTrue } from './redux/isLoopSlice';
+import { setIsLoop } from './redux/isLoopSlice';
 import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
 import { setMusics } from './redux/musicsSlice';
@@ -326,7 +326,7 @@ export const RepeatButton = () => {
   const isLoop: boolean = useSelector((state: any) => state.isLooper.isLoop);
   const dispatch = useDispatch();
   const repeatButtonOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    isLoop ? dispatch(isLoopSetFalse()) : dispatch(isLoopSetTrue());
+    isLoop ? dispatch(setIsLoop(false)) : dispatch(setIsLoop(true));
   }
   return (
     <div>

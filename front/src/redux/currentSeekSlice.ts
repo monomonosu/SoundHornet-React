@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, Slice } from '@reduxjs/toolkit';
 
-export const currentSeekSlice = createSlice({
+export const currentSeekSlice: Slice = createSlice({
     name: 'currentSeek',
     initialState: {
         currentSeek: 0,
