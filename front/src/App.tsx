@@ -110,7 +110,7 @@ function App() {
           howl: new Howl({
             src: filepath,
           })
-        })
+        });
         return;
       }
       else {
