@@ -50,33 +50,38 @@ function App() {
   const playingId: number = useSelector((state: any) => state.playingId.playingId);
   const dispatch = useDispatch();
   const isLoopRef: { current: boolean } = useRef(false);
-  const [dummyHandler, setDummyHandler] = useState(0);  // currentSound->useEffect用ダミー変数
+  let currentRef: { current: MusicResource } = useRef({ id: undefined, howl: undefined, musicName: undefined, filePath: undefined, music_photo: undefined, group: undefined });
+  let soundsRef: { current: MusicResource[] } = useRef([]);
 
   useEffect(() => {
     musicsGet();
     settingGet();
   }, [])
-  useEffect(() => {
-    console.log('currentSound:', currentSound);
-    currentSound.howl?.once('end', () => {
-      // ループ機能
-      if (isLoopRef.current) {
-        setDummyHandler(() => { return dummyHandler + 1 }); // useEffectが実行されなくなる為
-        currentSound.howl?.play(playingId);
-        return;
-      }
-      // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
-      const currentSoundIndex = sounds.findIndex(hu => hu.filePath === currentSound.filePath);
-      const nextSound = sounds[currentSoundIndex + 1];
-      if (!!nextSound) {
-        dispatch(setCurrentSound(nextSound));
-        dispatch(setPlayingId(Number(nextSound?.howl?.play())));
-      }
-    });
-  }, [currentSound, dummyHandler]);
+  const afterPlayback = () => {
+    let resource = soundsRef.current.find(el => el.filePath === currentRef.current.filePath);
+    // ループ機能
+    if (isLoopRef.current) {
+      dispatch(setCurrentSound(resource));
+      dispatch(setPlayingId(Number(resource?.howl?.play(playingId))));
+      return;
+    }
+    // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
+    const currentSoundIndex = soundsRef.current.findIndex(hu => hu.filePath === currentRef.current.filePath);
+    const nextSound = soundsRef.current[currentSoundIndex + 1];
+    if (!!nextSound) {
+      dispatch(setCurrentSound(nextSound));
+      dispatch(setPlayingId(Number(nextSound?.howl?.play())));
+    }
+  }
   useEffect(() => {
     isLoopRef.current = isLoop;
+    dispatch(setIsLoop(isLoopRef.current));
+    console.log('isLoop:', isLoopRef.current);
   }, [isLoop]);
+  useEffect(() => {
+    currentRef.current = currentSound;
+    soundsRef.current = sounds;
+  }, [currentSound]);
   useEffect(() => {
     createHowler();
   }, [musics]);
@@ -109,6 +114,9 @@ function App() {
           music_photo: music.music_photo,
           howl: new Howl({
             src: filepath,
+            onend: () => {
+              afterPlayback();
+            }
           })
         });
         return;
