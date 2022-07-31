@@ -57,22 +57,6 @@ function App() {
     musicsGet();
     settingGet();
   }, [])
-  const afterPlayback = () => {
-    let resource = soundsRef.current.find(el => el.filePath === currentRef.current.filePath);
-    // ループ機能
-    if (isLoopRef.current) {
-      dispatch(setCurrentSound(resource));
-      dispatch(setPlayingId(Number(resource?.howl?.play(playingId))));
-      return;
-    }
-    // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
-    const currentSoundIndex = soundsRef.current.findIndex(hu => hu.filePath === currentRef.current.filePath);
-    const nextSound = soundsRef.current[currentSoundIndex + 1];
-    if (!!nextSound) {
-      dispatch(setCurrentSound(nextSound));
-      dispatch(setPlayingId(Number(nextSound?.howl?.play())));
-    }
-  }
   useEffect(() => {
     isLoopRef.current = isLoop;
     dispatch(setIsLoop(isLoopRef.current));
@@ -156,6 +140,22 @@ function App() {
       }
     }
   }
+  const afterPlayback = () => {
+    let resource = soundsRef.current.find(el => el.filePath === currentRef.current.filePath);
+    // ループ機能
+    if (isLoopRef.current) {
+      dispatch(setCurrentSound(resource));
+      dispatch(setPlayingId(Number(resource?.howl?.play(playingId))));
+      return;
+    }
+    // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
+    const currentSoundIndex = soundsRef.current.findIndex(hu => hu.filePath === currentRef.current.filePath);
+    const nextSound = soundsRef.current[currentSoundIndex + 1];
+    if (!!nextSound) {
+      dispatch(setCurrentSound(nextSound));
+      dispatch(setPlayingId(Number(nextSound?.howl?.play())));
+    }
+  }
   function musicsGet() {
     axios.get("/musics")
       .then((response) => {
@@ -214,8 +214,10 @@ export const Footer = () => {
   `
 
   const [timePer, setTimePer] = useState<number | undefined>();
+  const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
   const currentSeek: number = useSelector((state: any) => state.currentSeeker.currentSeek);
+  const dispatch = useDispatch();
   function ChangeSeek(seek: number | undefined) {
     if (!!currentSound.howl)
       currentSound.howl.seek(seek);
@@ -249,6 +251,24 @@ export const Footer = () => {
     }
     return 0;
   };
+  const skipPrev = () => {
+    currentSound.howl?.stop();
+    const currentSoundIndex = sounds.findIndex(hu => hu.filePath === currentSound.filePath);
+    const prevSound = sounds[currentSoundIndex - 1];
+    if (!!prevSound) {
+      dispatch(setCurrentSound(prevSound));
+      dispatch(setPlayingId(Number(prevSound?.howl?.play())));
+    }
+  }
+  const skipNext = () => {
+    currentSound.howl?.stop();
+    const currentSoundIndex = sounds.findIndex(hu => hu.filePath === currentSound.filePath);
+    const nextSound = sounds[currentSoundIndex + 1];
+    if (!!nextSound) {
+      dispatch(setCurrentSound(nextSound));
+      dispatch(setPlayingId(Number(nextSound?.howl?.play())));
+    }
+  }
   if (!!currentSound.howl) {
     return (
       <div>
@@ -291,7 +311,7 @@ export const Footer = () => {
                   <IconButton
                     aria-label="expand row"
                     size="large"
-                    onClick={() => console.log('hoge')}
+                    onClick={skipPrev}
                   >
                     <SkipPreviousIcon fontSize='large' style={{ color: 'white' }} />
                   </IconButton>
@@ -307,7 +327,7 @@ export const Footer = () => {
                   <IconButton
                     aria-label="expand row"
                     size="large"
-                    onClick={() => console.log('hoge')}
+                    onClick={skipNext}
                   >
                     <SkipNextIcon fontSize='large' style={{ color: 'white' }} />
                   </IconButton>
