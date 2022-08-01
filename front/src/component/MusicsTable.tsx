@@ -234,9 +234,14 @@ export const EditModal = (props: { music: Music }) => {
             })
         await axios.get('/music/' + props.music.id)
             .then((response) => {
-                let copyCurrentSound = currentSound;
-                copyCurrentSound.musicName = response.data.musicName;
-                copyCurrentSound.group = response.data.group;
+                let copyCurrentSound: MusicResource = {
+                    howl: currentSound.howl,
+                    id: currentSound.id,
+                    musicName: response.data.musicName,
+                    group: response.data.group,
+                    filePath: currentSound.filePath,
+                    music_photo: currentSound.music_photo,
+                };
                 dispatch(setCurrentSound(copyCurrentSound));
             });
         setIsProgress(false);
