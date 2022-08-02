@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
@@ -6,6 +6,7 @@ import { Howl, Howler } from 'howler';
 import axios from "axios"
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
+import { store } from './redux/store';
 import { setIsLoop } from './redux/isLoopSlice';
 import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
@@ -43,29 +44,16 @@ function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
-  const isLoop: boolean = useSelector((state: any) => state.isLooper.isLoop);
   const volume: number = useSelector((state: any) => state.volume.volume);
   const musics: Music[] = useSelector((state: any) => state.musics.musics);
   const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const playingId: number = useSelector((state: any) => state.playingId.playingId);
   const dispatch = useDispatch();
-  const isLoopRef: { current: boolean } = useRef(false);
-  let currentRef: { current: MusicResource } = useRef({ id: undefined, howl: undefined, musicName: undefined, filePath: undefined, music_photo: undefined, group: undefined });
-  let soundsRef: { current: MusicResource[] } = useRef([]);
 
   useEffect(() => {
     musicsGet();
     settingGet();
   }, [])
-  useEffect(() => {
-    isLoopRef.current = isLoop;
-    dispatch(setIsLoop(isLoopRef.current));
-    console.log('isLoop:', isLoopRef.current);
-  }, [isLoop]);
-  useEffect(() => {
-    currentRef.current = currentSound;
-    soundsRef.current = sounds;
-  }, [currentSound]);
   useEffect(() => {
     createHowler();
   }, [musics]);
@@ -141,16 +129,18 @@ function App() {
     }
   }
   const afterPlayback = () => {
-    let resource = soundsRef.current.find(el => el.filePath === currentRef.current.filePath);
+    const storeState = store.getState();
+    const storeSounds: MusicResource[] = storeState.sounder.sounds;
+    let resource = storeSounds.find(el => el.filePath === storeState.currentSounder.currentSound.filePath);
     // ループ機能
-    if (isLoopRef.current) {
+    if (storeState.isLooper.isLoop) {
       dispatch(setCurrentSound(resource));
       dispatch(setPlayingId(Number(resource?.howl?.play(playingId))));
       return;
     }
     // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
-    const currentSoundIndex = soundsRef.current.findIndex(hu => hu.filePath === currentRef.current.filePath);
-    const nextSound = soundsRef.current[currentSoundIndex + 1];
+    const currentSoundIndex = storeSounds.findIndex(el => el.filePath === storeState.currentSounder.currentSound.filePath);
+    const nextSound = storeSounds[currentSoundIndex + 1];
     if (!!nextSound) {
       dispatch(setCurrentSound(nextSound));
       dispatch(setPlayingId(Number(nextSound?.howl?.play())));
