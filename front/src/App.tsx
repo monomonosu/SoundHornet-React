@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
@@ -49,17 +49,11 @@ function App() {
   const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const playingId: number = useSelector((state: any) => state.playingId.playingId);
   const dispatch = useDispatch();
-  let currentRef: { current: MusicResource } = useRef({ id: undefined, howl: undefined, musicName: undefined, filePath: undefined, music_photo: undefined, group: undefined });
-  let soundsRef: { current: MusicResource[] } = useRef([]);
 
   useEffect(() => {
     musicsGet();
     settingGet();
   }, [])
-  useEffect(() => {
-    currentRef.current = currentSound;
-    soundsRef.current = sounds;
-  }, [currentSound]);
   useEffect(() => {
     createHowler();
   }, [musics]);
@@ -136,7 +130,8 @@ function App() {
   }
   const afterPlayback = () => {
     const storeState = store.getState();
-    let resource = soundsRef.current.find(el => el.filePath === currentRef.current.filePath);
+    const storeSounds: MusicResource[] = storeState.sounder.sounds;
+    let resource = storeSounds.find(el => el.filePath === storeState.currentSounder.currentSound.filePath);
     // ループ機能
     if (storeState.isLooper.isLoop) {
       dispatch(setCurrentSound(resource));
@@ -144,8 +139,8 @@ function App() {
       return;
     }
     // TODO:自動連続再生 Index番号によって管理 ソートに対応できない場合修正をする事。
-    const currentSoundIndex = soundsRef.current.findIndex(hu => hu.filePath === currentRef.current.filePath);
-    const nextSound = soundsRef.current[currentSoundIndex + 1];
+    const currentSoundIndex = storeSounds.findIndex(el => el.filePath === storeState.currentSounder.currentSound.filePath);
+    const nextSound = storeSounds[currentSoundIndex + 1];
     if (!!nextSound) {
       dispatch(setCurrentSound(nextSound));
       dispatch(setPlayingId(Number(nextSound?.howl?.play())));
