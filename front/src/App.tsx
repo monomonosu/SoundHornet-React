@@ -6,6 +6,7 @@ import { Howl, Howler } from 'howler';
 import axios from "axios"
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
+import { store } from './redux/store';
 import { setIsLoop } from './redux/isLoopSlice';
 import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
@@ -43,13 +44,11 @@ function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
-  const isLoop: boolean = useSelector((state: any) => state.isLooper.isLoop);
   const volume: number = useSelector((state: any) => state.volume.volume);
   const musics: Music[] = useSelector((state: any) => state.musics.musics);
   const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const playingId: number = useSelector((state: any) => state.playingId.playingId);
   const dispatch = useDispatch();
-  const isLoopRef: { current: boolean } = useRef(false);
   let currentRef: { current: MusicResource } = useRef({ id: undefined, howl: undefined, musicName: undefined, filePath: undefined, music_photo: undefined, group: undefined });
   let soundsRef: { current: MusicResource[] } = useRef([]);
 
@@ -57,11 +56,6 @@ function App() {
     musicsGet();
     settingGet();
   }, [])
-  useEffect(() => {
-    isLoopRef.current = isLoop;
-    dispatch(setIsLoop(isLoopRef.current));
-    console.log('isLoop:', isLoopRef.current);
-  }, [isLoop]);
   useEffect(() => {
     currentRef.current = currentSound;
     soundsRef.current = sounds;
@@ -141,9 +135,10 @@ function App() {
     }
   }
   const afterPlayback = () => {
+    const storeState = store.getState();
     let resource = soundsRef.current.find(el => el.filePath === currentRef.current.filePath);
     // ループ機能
-    if (isLoopRef.current) {
+    if (storeState.isLooper.isLoop) {
       dispatch(setCurrentSound(resource));
       dispatch(setPlayingId(Number(resource?.howl?.play(playingId))));
       return;
