@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import Header from "./component/Header";
+import Footer from "./component/Footer";
 import 'react-dropzone-uploader/dist/styles.css'
 import Dropzone from 'react-dropzone-uploader'
 
@@ -59,6 +60,9 @@ const UploadPage = () => {
                 <Grid item xs>
                 </Grid>
             </Grid>
+            <div style={{ height: '150px' }}></div>
+            {/* フッター */}
+            <Footer></Footer>
         </div>
     )
 }

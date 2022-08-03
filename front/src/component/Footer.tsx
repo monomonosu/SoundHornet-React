@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setIsLoop } from '../redux/isLoopSlice';
 import { setPlayingId } from '../redux/playingIdSlice';
 import { setVolume } from '../redux/volumeSlice';
+import { setCurrentSeek } from '../redux/currentSeekSlice';
 import { setCurrentSound } from '../redux/currentSoundSlice';
 // MUIComponents
 import {
@@ -23,6 +24,14 @@ import LoopIcon from '@mui/icons-material/Loop';
 // types
 import type { MusicResource } from '../types/musicResource';
 
+// 投げたcallbackを毎秒実行
+export const useInterval = (callback: () => void) => {
+    useEffect(() => {
+        const id = setInterval(callback, 500);
+        return () => clearInterval(id);
+    }, [callback])
+}
+
 export default function Footer() {
     const Wrapper = styled.div<{ left: number | undefined }>`
       .MuiSlider-thumbColorPrimary{
@@ -34,7 +43,16 @@ export default function Footer() {
     const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
     const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
     const currentSeek: number = useSelector((state: any) => state.currentSeeker.currentSeek);
+    const volume: number = useSelector((state: any) => state.volume.volume);
     const dispatch = useDispatch();
+    useInterval(() => {
+        if (currentSound.howl === undefined) return;
+        dispatch(setCurrentSeek(currentSound?.howl.seek()));
+    });
+    useEffect(() => {
+        Howler.volume(volume ? volume * 0.01 : 0);
+        console.log('howlerVolume:', Howler.volume());
+    }, [volume]);
     function ChangeSeek(seek: number | undefined) {
         if (!!currentSound.howl)
             currentSound.howl.seek(seek);
