@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Header from './component/Header';
 import {
-    Box, Card, CardContent, CardMedia, IconButton, Typography, Grid,
+    Box, Card, CardContent, CardMedia, IconButton, Typography, Grid, Button
 } from '@mui/material'
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -15,7 +15,19 @@ export default function AlbumPage() {
             <Header></Header>
             <Grid container>
                 <Grid item xs={1}></Grid>
-                <Grid item xs><h1 style={{ color: "white" }}>Album</h1><h2 style={{ color: "white" }}>Many views</h2></Grid>
+                <Grid item xs><h1 style={{ color: "white" }}>Album</h1></Grid>
+                <Grid item xs={1}></Grid>
+            </Grid>
+            <Grid container justifyContent="flex-end">
+                <Grid item xs={1}></Grid>
+                <Grid>
+                    <Button variant="contained" size='large' style={{ textTransform: "none" }}>CreateAlbum</Button>
+                </Grid>
+                <Grid item xs={1}></Grid>
+            </Grid>
+            <Grid container>
+                <Grid item xs={1}></Grid>
+                <Grid item xs><h2 style={{ color: "white" }}>Many views</h2></Grid>
                 <Grid item xs={1}></Grid>
             </Grid>
 
