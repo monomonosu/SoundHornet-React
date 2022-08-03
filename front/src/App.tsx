@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import './App.css';
-import { Howl, Howler } from 'howler';
+import { Howl } from 'howler';
 import axios from "axios"
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,7 +9,6 @@ import { store } from './redux/store';
 import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
 import { setMusics } from './redux/musicsSlice';
-import { setCurrentSeek } from './redux/currentSeekSlice';
 import { setSounds } from './redux/soundsSlice';
 import { setCurrentSound } from './redux/currentSoundSlice';
 // components
@@ -20,19 +19,10 @@ import Footer from './component/Footer';
 import type { Music } from './types/musics';
 import type { MusicResource } from './types/musicResource';
 
-// 投げたcallbackを毎秒実行
-export const useInterval = (callback: () => void) => {
-  useEffect(() => {
-    const id = setInterval(callback, 500);
-    return () => clearInterval(id);
-  }, [callback])
-}
-
 function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
-  const volume: number = useSelector((state: any) => state.volume.volume);
   const musics: Music[] = useSelector((state: any) => state.musics.musics);
   const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const playingId: number = useSelector((state: any) => state.playingId.playingId);
@@ -46,17 +36,8 @@ function App() {
     createHowler();
   }, [musics]);
   useEffect(() => {
-    Howler.volume(volume ? volume * 0.01 : 0);
-    console.log('howlerVolume:', Howler.volume());
-  }, [volume]);
-  useEffect(() => {
     console.log('選択中のid:' + checkedNumbers.toString());
   }, [checkedNumbers]);
-  // 毎秒再生進捗を更新する。
-  useInterval(() => {
-    if (currentSound.howl === undefined) return;
-    dispatch(setCurrentSeek(currentSound?.howl.seek()));
-  });
   const isDeleteButton = () => {
     if (checkedNumbers.length !== 0) return true;
     else return false;
@@ -116,6 +97,7 @@ function App() {
       }
     }
   }
+  // ↓オブジェクト生成時に付随するものなので、コンポーネント毎に持たせる必要はない。
   const afterPlayback = () => {
     const storeState = store.getState();
     const storeSounds: MusicResource[] = storeState.sounder.sounds;
