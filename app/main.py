@@ -79,6 +79,17 @@ def getAlbums():
     return jsonify(AlbumSchema(many=True).dump(albums))
 
 
+@app.route("/album", methods=['POST'])
+def createAlbum():
+    data = request.json
+    newAlbum = Album(
+        albumName=data.get('albumName'),
+    )
+    db.session.add(newAlbum)
+    db.session.commit()
+    return jsonify({"result": "OK", "data": data})
+
+
 @app.route("/genres", methods=['GET'])
 def getGenres():
     genres = Genre.query.all()

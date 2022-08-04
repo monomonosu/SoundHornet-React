@@ -6,12 +6,8 @@ import axios from 'axios';
 // component
 import Header from './component/Header';
 import {
-    Box, Card, CardContent, CardMedia, IconButton, Typography, Grid, Button, Modal, TextField, MenuItem, Backdrop, Snackbar, Alert, CircularProgress
+    Box, Typography, Grid, Button, Modal, TextField, Backdrop, Snackbar, Alert, CircularProgress
 } from '@mui/material'
-// icons
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
 // types
 import { Album } from './types/albums';
 // redux
@@ -68,7 +64,7 @@ export const CreateModal = () => {
 
     const onSubmit: SubmitHandler<Album> = async (data) => {
         setIsProgress(true);
-        await axios.put('/music/', data)
+        await axios.post('/album', data)
             .then((response) => {
                 console.log(response);
             })
