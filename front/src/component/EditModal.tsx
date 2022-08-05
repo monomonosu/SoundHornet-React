@@ -12,6 +12,7 @@ type Props = {
     openButton: JSX.Element,
     editTitle: JSX.Element,
     editContent: JSX.Element,
+    onChangeHandle: (newValue: number) => void,
 }
 
 const EditModal: React.FC<Props> = (props: Props) => {
@@ -24,6 +25,7 @@ const EditModal: React.FC<Props> = (props: Props) => {
         openButton,
         editTitle,
         editContent,
+        onChangeHandle,
     } = props;
     const style = {
         position: 'absolute' as 'absolute',
