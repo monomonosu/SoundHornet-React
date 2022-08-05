@@ -5,7 +5,6 @@ import {
 
 type Props = {
     setIsSnackOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    modalOpen: () => void,
     modalClose: () => void,
     isOpenModal: boolean,
     isProgress: boolean,
@@ -13,17 +12,20 @@ type Props = {
     openButton: JSX.Element,
     editTitle: JSX.Element,
     editContent: JSX.Element,
+    onChangeHandle: (newValue: number) => void,
 }
 
 const EditModal: React.FC<Props> = (props: Props) => {
     const {
-        setIsSnackOpen, modalClose,
+        setIsSnackOpen,
+        modalClose,
         isOpenModal,
         isProgress,
         isSnackOpen,
         openButton,
         editTitle,
         editContent,
+        onChangeHandle,
     } = props;
     const style = {
         position: 'absolute' as 'absolute',

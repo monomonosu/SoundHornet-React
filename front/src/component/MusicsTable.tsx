@@ -11,6 +11,8 @@ import {
     Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button,
     Backdrop, CircularProgress, Snackbar, Alert,
 } from '@mui/material';
+// Components
+import EditModal from './EditModal';
 // MUIIcons
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -157,7 +159,7 @@ export const Row = (props: {
                                         <TableCell style={{ color: "white" }}>{props.music.createdAt.toString()}</TableCell>
                                         <TableCell style={{ color: "white" }}>{props.music.updatedAt.toString()}</TableCell>
                                         <TableCell>
-                                            <EditModal music={props.music} />
+                                            <ModalContent music={props.music} />
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -170,7 +172,7 @@ export const Row = (props: {
     )
 }
 
-export const EditModal = (props: { music: Music }) => {
+export const ModalContent = (props: { music: Music }) => {
     const dispatch = useDispatch();
     const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -183,18 +185,6 @@ export const EditModal = (props: { music: Music }) => {
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
     const { register, handleSubmit } = useForm<Music>();
-
-    const style = {
-        position: 'absolute' as 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '80vw',
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-    };
 
     useEffect(() => {
         axios.get("/groups")
@@ -249,113 +239,97 @@ export const EditModal = (props: { music: Music }) => {
         setIsSnackOpen(true);
     }
 
-    const snackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setIsSnackOpen(false);
-    };
+    const openButton = (
+        <IconButton size="small" onClick={modalOpen}>
+            <EditIcon style={{ color: 'white' }} />
+        </IconButton>
+    );
+    const editTitle = <Typography id="modal-modal-title" variant="h6" component="h2">EditMusicDetails</Typography>
+    const editContent = (
+        <Typography id="modal-modal-description" sx={{
+            mt: 2, '& .MuiTextField-root': { m: 1 },
+        }}>
+            <TextField style={{ width: '15ch' }} label="id" disabled type="value" defaultValue={props.music.id} variant="standard" />
+            <div>
+                <TextField style={{ width: '25ch' }} label="musicName" type="text" defaultValue={props.music.musicName} {...register('musicName')} variant="standard" />
+                <TextField style={{ width: '25ch' }} select label="group" id="edit-group" type="text" defaultValue={props.music.group} {...register("group")} variant="standard">
+                    <MenuItem value=''>None</MenuItem>
+                    {groups?.map((group) => (
+                        <MenuItem key={group.groupName} value={group.groupName}>
+                            {group.groupName}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField style={{ width: '25ch' }} select label="album" id="edit-album" type="text" defaultValue={props.music.album} {...register('album')} variant="standard">
+                    <MenuItem value=''>None</MenuItem>
+                    {albums?.map((album) => (
+                        <MenuItem key={album.albumName} value={album.albumName}>
+                            {album.albumName}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField style={{ width: '25ch' }} select label="genre" id="edit-genre" type="text" defaultValue={props.music.genre} {...register('genre')} variant="standard">
+                    <MenuItem value=''>None</MenuItem>
+                    {genres?.map((genre) => (
+                        <MenuItem key={genre.genreName} value={genre.genreName}>
+                            {genre.genreName}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField style={{ width: '52ch' }} label="comment" type="text" defaultValue={props.music.comment} {...register('comment')} variant="standard" />
+            </div>
+            <div>
+                <TextField style={{ width: '25ch' }} label="FileType" disabled defaultValue={props.music.fileType} variant="standard" />
+                <TextField style={{ width: '25ch' }} label="FileSize" disabled defaultValue={props.music.fileSize} variant="standard" />
+                <TextField style={{ width: '25ch' }} label="FileName" disabled defaultValue={props.music.fileName} variant="standard" />
+                <TextField style={{ width: '25ch' }} label="PhotoFileName" disabled defaultValue={props.music.music_photo.fileName} variant="standard" />
+            </div>
+            <Typography sx={{ mt: 2 }} component="legend">evaluation</Typography>
+            <div>
+                <Rating sx={{ mt: 2 }} name="evaluation" defaultValue={props.music.evaluation ? props.music.evaluation : 3} value={rating} onChange={(event, newValue) => {
+                    if (!!newValue)
+                        onChangeHandle(newValue);
+                }} />
+                <TextField
+                    style={{ width: '6ch' }}
+                    id='evaluation'
+                    type="number"
+                    defaultValue={props.music.evaluation}
+                    value={rating}
+                    size='small'
+                    {...register('evaluation')}
+                    InputProps={{
+                        readOnly: true,
+                    }}
+                />
+            </div>
+            <div>
+                <Button
+                    sx={{ mt: 2 }}
+                    color="primary"
+                    variant="contained"
+                    size="large"
+                    onClick={handleSubmit(onSubmit)}
+                >
+                    submit
+                </Button>
+            </div>
+        </Typography>
+    )
 
     return (
         <div>
-            <IconButton
-                size="small"
-                onClick={modalOpen}
-            >
-                <EditIcon style={{ color: 'white' }} />
-            </IconButton>
-            <Modal
-                open={isOpenModal}
-                onClose={modalClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        EditMusicDetails
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{
-                        mt: 2, '& .MuiTextField-root': { m: 1 },
-                    }}>
-                        <TextField style={{ width: '15ch' }} label="id" disabled type="value" defaultValue={props.music.id} variant="standard" />
-                        <div>
-                            <TextField style={{ width: '25ch' }} label="musicName" type="text" defaultValue={props.music.musicName} {...register('musicName')} variant="standard" />
-                            <TextField style={{ width: '25ch' }} select label="group" id="edit-group" type="text" defaultValue={props.music.group} {...register("group")} variant="standard">
-                                <MenuItem value=''>None</MenuItem>
-                                {groups?.map((group) => (
-                                    <MenuItem key={group.groupName} value={group.groupName}>
-                                        {group.groupName}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <TextField style={{ width: '25ch' }} select label="album" id="edit-album" type="text" defaultValue={props.music.album} {...register('album')} variant="standard">
-                                <MenuItem value=''>None</MenuItem>
-                                {albums?.map((album) => (
-                                    <MenuItem key={album.albumName} value={album.albumName}>
-                                        {album.albumName}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <TextField style={{ width: '25ch' }} select label="genre" id="edit-genre" type="text" defaultValue={props.music.genre} {...register('genre')} variant="standard">
-                                <MenuItem value=''>None</MenuItem>
-                                {genres?.map((genre) => (
-                                    <MenuItem key={genre.genreName} value={genre.genreName}>
-                                        {genre.genreName}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <TextField style={{ width: '52ch' }} label="comment" type="text" defaultValue={props.music.comment} {...register('comment')} variant="standard" />
-                        </div>
-                        <div>
-                            <TextField style={{ width: '25ch' }} label="FileType" disabled defaultValue={props.music.fileType} variant="standard" />
-                            <TextField style={{ width: '25ch' }} label="FileSize" disabled defaultValue={props.music.fileSize} variant="standard" />
-                            <TextField style={{ width: '25ch' }} label="FileName" disabled defaultValue={props.music.fileName} variant="standard" />
-                            <TextField style={{ width: '25ch' }} label="PhotoFileName" disabled defaultValue={props.music.music_photo.fileName} variant="standard" />
-                        </div>
-                        <Typography sx={{ mt: 2 }} component="legend">evaluation</Typography>
-                        <div>
-                            <Rating sx={{ mt: 2 }} name="evaluation" defaultValue={props.music.evaluation ? props.music.evaluation : 3} value={rating} onChange={(event, newValue) => {
-                                if (!!newValue)
-                                    onChangeHandle(newValue);
-                            }} />
-                            <TextField
-                                style={{ width: '6ch' }}
-                                id='evaluation'
-                                type="number"
-                                defaultValue={props.music.evaluation}
-                                value={rating}
-                                size='small'
-                                {...register('evaluation')}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <Button
-                                sx={{ mt: 2 }}
-                                color="primary"
-                                variant="contained"
-                                size="large"
-                                onClick={handleSubmit(onSubmit)}
-                            >
-                                submit
-                            </Button>
-                        </div>
-                    </Typography>
-                </Box>
-            </Modal>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: 1301 }}
-                open={isProgress}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
-            <Snackbar open={isSnackOpen} autoHideDuration={2000} onClose={snackbarClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                <Alert onClose={snackbarClose} severity="success" variant="filled" sx={{ width: '100%' }}>
-                    Save successfully!
-                </Alert>
-            </Snackbar>
+            <EditModal
+                setIsSnackOpen={setIsSnackOpen}
+                modalClose={modalClose}
+                isOpenModal={isOpenModal}
+                isProgress={isProgress}
+                isSnackOpen={isSnackOpen}
+                openButton={openButton}
+                editTitle={editTitle}
+                editContent={editContent}
+                onChangeHandle={onChangeHandle}
+            />
         </div>
     );
 }

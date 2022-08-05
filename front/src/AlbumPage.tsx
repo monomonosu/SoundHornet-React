@@ -23,7 +23,7 @@ export default function AlbumPage() {
             <Grid container justifyContent="flex-end">
                 <Grid item xs={1}></Grid>
                 <Grid>
-                    <CreateModal />
+                    <ModalContent />
                 </Grid>
                 <Grid item xs={1}></Grid>
             </Grid>
@@ -37,7 +37,7 @@ export default function AlbumPage() {
     );
 }
 
-export const CreateModal: React.FC = () => {
+export const ModalContent: React.FC = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isProgress, setIsProgress] = useState(false);
     const [isSnackOpen, setIsSnackOpen] = useState(false);
@@ -55,6 +55,8 @@ export const CreateModal: React.FC = () => {
         setIsOpenModal(false);
         setIsSnackOpen(true);
     }
+
+    function onChangeHandle(newValue: number) { }
 
     const openButton = <Button variant="contained" size='large' style={{ textTransform: "none" }} onClick={modalOpen}>CreateAlbum</Button>;
     const editTitle = <Typography id="modal-modal-title" variant="h6" component="h2">CreateAlbum</Typography>
@@ -83,7 +85,6 @@ export const CreateModal: React.FC = () => {
         <div>
             <EditModal
                 setIsSnackOpen={setIsSnackOpen}
-                modalOpen={modalOpen}
                 modalClose={modalClose}
                 isOpenModal={isOpenModal}
                 isProgress={isProgress}
@@ -91,6 +92,7 @@ export const CreateModal: React.FC = () => {
                 openButton={openButton}
                 editTitle={editTitle}
                 editContent={editContent}
+                onChangeHandle={onChangeHandle}
             />
         </div>
     );
