@@ -83,7 +83,6 @@ export const CreateModal: React.FC = () => {
         <div>
             <EditModal
                 setIsSnackOpen={setIsSnackOpen}
-                modalOpen={modalOpen}
                 modalClose={modalClose}
                 isOpenModal={isOpenModal}
                 isProgress={isProgress}

@@ -5,7 +5,6 @@ import {
 
 type Props = {
     setIsSnackOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    modalOpen: () => void,
     modalClose: () => void,
     isOpenModal: boolean,
     isProgress: boolean,
@@ -17,7 +16,8 @@ type Props = {
 
 const EditModal: React.FC<Props> = (props: Props) => {
     const {
-        setIsSnackOpen, modalClose,
+        setIsSnackOpen,
+        modalClose,
         isOpenModal,
         isProgress,
         isSnackOpen,
