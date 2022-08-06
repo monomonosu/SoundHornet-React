@@ -6,7 +6,7 @@ import axios from 'axios';
 import Header from './component/Header';
 import EditModal from './component/EditModal';
 import {
-    Typography, Grid, Button, TextField,
+    Typography, Grid, Button, TextField, Card, CardActionArea, CardMedia, CardContent,
 } from '@mui/material'
 // types
 import { Album } from './types/albums';
@@ -30,7 +30,18 @@ export default function AlbumPage() {
 
             <Grid container>
                 <Grid item xs={1}></Grid>
-                <Grid item xs><h2 style={{ color: "white" }}>AlbumList</h2></Grid>
+                <Grid item xs>
+                    <div>
+                        <h2 style={{ color: "white" }}>AlbumList</h2>
+                    </div>
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 3, md: 4 }}>
+                        {Array.from(Array(8)).map((_, index) => (
+                            <Grid item xs={1} sm={1} md={1} key={index}>
+                                <AlbumMedia />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Grid>
                 <Grid item xs={1}></Grid>
             </Grid>
         </div >
@@ -95,5 +106,31 @@ export const ModalContent: React.FC = () => {
                 onChangeHandle={onChangeHandle}
             />
         </div>
+    );
+}
+
+export const AlbumMedia = () => {
+    return (
+        <Card sx={{ maxWidth: 345 }}>
+            <CardActionArea>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    // TODO:propsで渡されたphotoのパスを指定
+                    image="https://kisidakyoudan.com/images/ksdreitai_ja01m.jpg"
+                    alt="album-photo"
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="div" height={25}>
+                        {/* TODO:propsで渡されたアルバム名をレンダリング */}
+                        AlbumName
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        {/* TODO:Albumに紐づくMusicsをカウント */}
+                        ... sound sources
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+        </Card>
     );
 }
