@@ -56,6 +56,8 @@ class Album(db.Model):
     createdAt = db.Column(db.String, nullable=False, default=datetime.now)
     updatedAt = db.Column(db.String, nullable=False,
                           default=datetime.now, onupdate=datetime.now)
+    album_photo = db.relationship(
+        'Album_Photo', backref='album', uselist=False, cascade='all, delete',)
 
 
 class Album_Photo(db.Model):
