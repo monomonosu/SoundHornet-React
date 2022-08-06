@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
@@ -12,6 +12,17 @@ import {
 import { Album } from './types/albums';
 
 export default function AlbumPage() {
+    const [albums, setAlbums] = useState<Album[]>([]);
+    useEffect(() => {
+        albumsGet();
+    }, [])
+    function albumsGet() {
+        axios.get("/albums")
+            .then((response) => {
+                console.log(response.data);
+                setAlbums(response.data);
+            });
+    }
     return (
         <div>
             <Header></Header>
@@ -35,9 +46,9 @@ export default function AlbumPage() {
                         <h2 style={{ color: "white" }}>AlbumList</h2>
                     </div>
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 3, md: 4 }}>
-                        {Array.from(Array(8)).map((_, index) => (
+                        {albums.map((album: Album, index) => (
                             <Grid item xs={1} sm={1} md={1} key={index}>
-                                <AlbumMedia />
+                                <AlbumMedia album={(album)} />
                             </Grid>
                         ))}
                     </Grid>
@@ -109,21 +120,20 @@ export const ModalContent: React.FC = () => {
     );
 }
 
-export const AlbumMedia = () => {
+export const AlbumMedia = (props: { album: Album }) => {
+    const { album } = props;
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardActionArea>
                 <CardMedia
                     component="img"
                     height="140"
-                    // TODO:propsで渡されたphotoのパスを指定
-                    image="https://kisidakyoudan.com/images/ksdreitai_ja01m.jpg"
+                    image={props.album.album_photo.path ? props.album.album_photo.path : 'static/resource/no_image_white.png'}
                     alt="album-photo"
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div" height={25}>
-                        {/* TODO:propsで渡されたアルバム名をレンダリング */}
-                        AlbumName
+                        {props.album.albumName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         {/* TODO:Albumに紐づくMusicsをカウント */}
