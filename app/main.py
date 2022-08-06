@@ -23,6 +23,7 @@ def componentSample():
 
 
 # ---------- API ----------
+# ---------- Musics ----------
 @app.route("/musics", methods=['GET'])
 def getMusics():
     musics = Music.query.all()
@@ -67,12 +68,14 @@ def deleteMusics(ids):
     return jsonify(MusicSchema(many=True).dump(musics))
 
 
+# ---------- Groups ----------
 @app.route("/groups", methods=['GET'])
 def getGroups():
     groups = Group.query.all()
     return jsonify(GroupSchema(many=True).dump(groups))
 
 
+# ---------- Albums ----------
 @app.route("/albums", methods=['GET'])
 def getAlbums():
     albums = Album.query.all()
@@ -90,18 +93,27 @@ def createAlbum():
     data = request.json
     newAlbum = Album(
         albumName=data.get('albumName'),
+        # TODO:フォト登録・選択機能完成後に繋ぎ込み
+        album_photo=Album_Photo(
+            fileName=None,
+            fileType=None,
+            fileSize=None,
+            path=None,
+        )
     )
     db.session.add(newAlbum)
     db.session.commit()
     return jsonify({"result": "OK", "data": data})
 
 
+# ---------- Genres ----------
 @app.route("/genres", methods=['GET'])
 def getGenres():
     genres = Genre.query.all()
     return jsonify(GenreSchema(many=True).dump(genres))
 
 
+# ---------- Settings ----------
 @app.route("/settings", methods=['GET'])
 def getSetting():
     setting = Setting.query.filter(Setting.id == 1).first()
