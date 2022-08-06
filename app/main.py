@@ -82,6 +82,17 @@ def getAlbums():
     return jsonify(AlbumSchema(many=True).dump(albums))
 
 
+@app.route("/albums-attached-music-count", methods=['GET'])
+def getAlbumsAttachedMusicCount():
+    ''' アルバムに紐づいた音源数を追加して返す '''
+    albums = Album.query.all()
+    for album in albums:
+        musicsCount = Music.query.filter(
+            Music.album == album.albumName).count()
+        album.musicsCount = musicsCount
+    return jsonify(AlbumAttachedMusicCountSchema(many=True).dump(albums))
+
+
 @app.route("/album/<id>", methods=['GET'])
 def getAlbum(id):
     album = Album.query.filter(Album.id == id).one()

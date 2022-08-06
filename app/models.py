@@ -1,5 +1,6 @@
 from app import db, app, migrate, ma
 from datetime import datetime
+from marshmallow import fields
 
 
 class Music(db.Model):
@@ -133,3 +134,11 @@ class GenreSchema(ma.SQLAlchemyAutoSchema):
 class SettingSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Setting
+
+
+# 独自定義
+class AlbumAttachedMusicCountSchema(ma.SQLAlchemyAutoSchema):
+    id = fields.Int()
+    albumName = fields.String()
+    musicsCount = fields.Int()
+    album_photo = ma.Nested(Album_PhotoSchema, many=False)
