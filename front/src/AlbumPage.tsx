@@ -9,6 +9,7 @@ import {
     Typography, Grid, Button, TextField, Card, CardActionArea, CardMedia, CardContent,
 } from '@mui/material'
 // types
+import { Album } from './types/albums';
 import { AlbumAddMusicCount } from './types/albumsAddMusicCount';
 
 export default function AlbumPage() {
@@ -65,9 +66,9 @@ export const ModalContent: React.FC = () => {
     const [isSnackOpen, setIsSnackOpen] = useState(false);
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
-    const { register, handleSubmit } = useForm<AlbumAddMusicCount>();
+    const { register, handleSubmit } = useForm<Album>();
 
-    const onSubmit: SubmitHandler<AlbumAddMusicCount> = async (data) => {
+    const onSubmit: SubmitHandler<Album> = async (data) => {
         setIsProgress(true);
         await axios.post('/album', data)
             .then((response) => {
