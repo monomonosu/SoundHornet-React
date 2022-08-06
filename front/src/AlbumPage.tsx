@@ -9,15 +9,15 @@ import {
     Typography, Grid, Button, TextField, Card, CardActionArea, CardMedia, CardContent,
 } from '@mui/material'
 // types
-import { Album } from './types/albums';
+import { AlbumAddMusicCount } from './types/albumsAddMusicCount';
 
 export default function AlbumPage() {
-    const [albums, setAlbums] = useState<Album[]>([]);
+    const [albums, setAlbums] = useState<AlbumAddMusicCount[]>([]);
     useEffect(() => {
         albumsGet();
     }, [])
     function albumsGet() {
-        axios.get("/albums")
+        axios.get("/albums-attached-music-count")
             .then((response) => {
                 console.log(response.data);
                 setAlbums(response.data);
@@ -46,7 +46,7 @@ export default function AlbumPage() {
                         <h2 style={{ color: "white" }}>AlbumList</h2>
                     </div>
                     <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 3, md: 4 }}>
-                        {albums.map((album: Album, index) => (
+                        {albums.map((album: AlbumAddMusicCount, index) => (
                             <Grid item xs={1} sm={1} md={1} key={index}>
                                 <AlbumMedia album={(album)} />
                             </Grid>
@@ -65,9 +65,9 @@ export const ModalContent: React.FC = () => {
     const [isSnackOpen, setIsSnackOpen] = useState(false);
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
-    const { register, handleSubmit } = useForm<Album>();
+    const { register, handleSubmit } = useForm<AlbumAddMusicCount>();
 
-    const onSubmit: SubmitHandler<Album> = async (data) => {
+    const onSubmit: SubmitHandler<AlbumAddMusicCount> = async (data) => {
         setIsProgress(true);
         await axios.post('/album', data)
             .then((response) => {
@@ -120,7 +120,7 @@ export const ModalContent: React.FC = () => {
     );
 }
 
-export const AlbumMedia = (props: { album: Album }) => {
+export const AlbumMedia = (props: { album: AlbumAddMusicCount }) => {
     const { album } = props;
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -136,8 +136,7 @@ export const AlbumMedia = (props: { album: Album }) => {
                         {props.album.albumName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {/* TODO:Albumに紐づくMusicsをカウント */}
-                        ... sound sources
+                        {props.album.musicsCount} sounds
                     </Typography>
                 </CardContent>
             </CardActionArea>
