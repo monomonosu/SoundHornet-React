@@ -68,6 +68,22 @@ def seeder():
     for album in albums:
         print(album.albumName)
 
+    # -----Album_Photo-----
+    print('---Album_Photo---')
+    albumPhotos = [
+        Album_Photo(albumId=1, fileName='field.jpg', fileType='jpg', fileSize='432KB',
+                    path='static/photos/field.jpg',),
+        Album_Photo(albumId=2, fileName='erigeron.jpg', fileType='jpg', fileSize='445KB',
+                    path='static/photos/erigeron.jpg',),
+        Album_Photo(albumId=3, fileName='forest.jpg', fileType='jpg', fileSize='3.17MB',
+                    path='static/photos/forest.jpg',),
+    ]
+    db.session.add_all(albumPhotos)
+    db.session.commit()
+    albumPhotos = Album_Photo.query.all()
+    for photo in albumPhotos:
+        print(photo.fileName)
+
     # -----Genres-----
     print('---Genres---')
     genres = [

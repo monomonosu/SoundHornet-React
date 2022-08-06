@@ -54,6 +54,21 @@
 
 <br>
 
+## Album_Photos
+
+| 項目      | 和名           | タイプ   | 備考 | 
+| --------- | -------------- | -------- | ---- | 
+| id        | id             | integer  |      | 
+| album_id  | アルバム_id     | integer  | FK   | 
+| fileName  | ファイル名     | string   |      | 
+| fileType  | ファイル形式   | string   |      | 
+| fileSize  | ファイルサイズ | string   |      | 
+| path      | ファイルPATH   | string   |      | 
+| createdAt | 作成日時       | datetime |      | 
+| updatedAt | 更新日時       | datetime |      | 
+
+<br>
+
 ## Genres
 
 | 項目       | 和名           | タイプ  | 備考 | 

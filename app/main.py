@@ -79,6 +79,12 @@ def getAlbums():
     return jsonify(AlbumSchema(many=True).dump(albums))
 
 
+@app.route("/album/<id>", methods=['GET'])
+def getAlbum(id):
+    album = Album.query.filter(Album.id == id).one()
+    return jsonify(AlbumSchema().dump(album))
+
+
 @app.route("/album", methods=['POST'])
 def createAlbum():
     data = request.json
