@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
@@ -6,12 +6,23 @@ import axios from 'axios';
 import Header from './component/Header';
 import EditModal from './component/EditModal';
 import {
-    Typography, Grid, Button, TextField,
+    Typography, Grid, Button, TextField, Card, CardActionArea, CardMedia, CardContent,
 } from '@mui/material'
 // types
 import { Album } from './types/albums';
 
 export default function AlbumPage() {
+    const [albums, setAlbums] = useState<Album[]>([]);
+    useEffect(() => {
+        albumsGet();
+    }, [])
+    function albumsGet() {
+        axios.get("/albums")
+            .then((response) => {
+                console.log(response.data);
+                setAlbums(response.data);
+            });
+    }
     return (
         <div>
             <Header></Header>
@@ -30,7 +41,18 @@ export default function AlbumPage() {
 
             <Grid container>
                 <Grid item xs={1}></Grid>
-                <Grid item xs><h2 style={{ color: "white" }}>AlbumList</h2></Grid>
+                <Grid item xs>
+                    <div>
+                        <h2 style={{ color: "white" }}>AlbumList</h2>
+                    </div>
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 3, md: 4 }}>
+                        {albums.map((album: Album, index) => (
+                            <Grid item xs={1} sm={1} md={1} key={index}>
+                                <AlbumMedia album={(album)} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Grid>
                 <Grid item xs={1}></Grid>
             </Grid>
         </div >
@@ -95,5 +117,30 @@ export const ModalContent: React.FC = () => {
                 onChangeHandle={onChangeHandle}
             />
         </div>
+    );
+}
+
+export const AlbumMedia = (props: { album: Album }) => {
+    const { album } = props;
+    return (
+        <Card sx={{ maxWidth: 345 }}>
+            <CardActionArea>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    image={props.album.album_photo.path ? props.album.album_photo.path : 'static/resource/no_image_white.png'}
+                    alt="album-photo"
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="div" height={25}>
+                        {props.album.albumName}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        {/* TODO:Albumに紐づくMusicsをカウント */}
+                        ... sound sources
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+        </Card>
     );
 }

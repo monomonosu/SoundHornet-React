@@ -56,6 +56,22 @@ class Album(db.Model):
     createdAt = db.Column(db.String, nullable=False, default=datetime.now)
     updatedAt = db.Column(db.String, nullable=False,
                           default=datetime.now, onupdate=datetime.now)
+    album_photo = db.relationship(
+        'Album_Photo', backref='album', uselist=False, cascade='all, delete',)
+
+
+class Album_Photo(db.Model):
+    __tablename__ = 'album_photos'
+
+    id = db.Column(db.Integer, primary_key=True)
+    albumId = db.Column(db.Integer, db.ForeignKey('albums.id'), unique=True)
+    fileName = db.Column(db.String)
+    fileType = db.Column(db.String)
+    fileSize = db.Column(db.String)
+    path = db.Column(db.String)
+    createdAt = db.Column(db.String, nullable=False, default=datetime.now)
+    updatedAt = db.Column(db.String, nullable=False,
+                          default=datetime.now, onupdate=datetime.now)
 
 
 class Genre(db.Model):
@@ -84,6 +100,12 @@ class Music_PhotoSchema(ma.SQLAlchemyAutoSchema):
         include_fk = True
 
 
+class Album_PhotoSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Album_Photo
+        include_fk = True
+
+
 class MusicSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Music
@@ -99,6 +121,8 @@ class GroupSchema(ma.SQLAlchemyAutoSchema):
 class AlbumSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Album
+        include_fk = True
+    album_photo = ma.Nested(Album_PhotoSchema, many=False)
 
 
 class GenreSchema(ma.SQLAlchemyAutoSchema):
