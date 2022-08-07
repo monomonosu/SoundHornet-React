@@ -15,6 +15,7 @@ import { AlbumAddMusicCount } from './types/albumsAddMusicCount';
 
 export default function AlbumPage() {
     const [albums, setAlbums] = useState<AlbumAddMusicCount[]>([]);
+    const [selectAlbum, setSelectAlbum] = useState<AlbumAddMusicCount>();
     useEffect(() => {
         albumsGet();
     }, [])
@@ -25,42 +26,47 @@ export default function AlbumPage() {
                 setAlbums(response.data);
             });
     }
-    return (
-        <div>
-            <Header></Header>
-            <Grid container>
-                <Grid item xs={1}></Grid>
-                <Grid item xs><h1 style={{ color: "white" }}>Album</h1></Grid>
-                <Grid item xs={1}></Grid>
-            </Grid>
-            <Grid container justifyContent="flex-end">
-                <Grid item xs={1}></Grid>
-                <Grid>
-                    <ModalContent />
+    if (!selectAlbum) {
+        return (
+            <div>
+                <Header></Header>
+                <Grid container>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs><h1 style={{ color: "white" }}>Album</h1></Grid>
+                    <Grid item xs={1}></Grid>
                 </Grid>
-                <Grid item xs={1}></Grid>
-            </Grid>
-
-            <Grid container>
-                <Grid item xs={1}></Grid>
-                <Grid item xs>
-                    <div>
-                        <h2 style={{ color: "white" }}>AlbumList</h2>
-                    </div>
-                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 3, md: 4 }}>
-                        {albums.map((album: AlbumAddMusicCount, index) => (
-                            <Grid item xs={1} sm={1} md={1} key={index}>
-                                <AlbumMedia album={(album)} />
-                            </Grid>
-                        ))}
+                <Grid container justifyContent="flex-end">
+                    <Grid item xs={1}></Grid>
+                    <Grid>
+                        <ModalContent />
                     </Grid>
+                    <Grid item xs={1}></Grid>
                 </Grid>
-                <Grid item xs={1}></Grid>
-            </Grid>
-            <div style={{ height: '150px' }}></div>
-            <Footer></Footer>
-        </div >
-    );
+
+                <Grid container>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs>
+                        <div>
+                            <h2 style={{ color: "white" }}>AlbumList</h2>
+                        </div>
+                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 3, md: 4 }}>
+                            {albums.map((album: AlbumAddMusicCount, index) => (
+                                <Grid item xs={1} sm={1} md={1} key={index}>
+                                    <AlbumMedia album={(album)} setSelectAlbum={setSelectAlbum} />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={1}></Grid>
+                </Grid>
+                <div style={{ height: '150px' }}></div>
+                <Footer></Footer>
+            </div >
+        );
+    }
+    return (
+        <div></div>
+    )
 }
 
 export const ModalContent: React.FC = () => {
@@ -124,11 +130,11 @@ export const ModalContent: React.FC = () => {
     );
 }
 
-export const AlbumMedia = (props: { album: AlbumAddMusicCount }) => {
-    const { album } = props;
+export const AlbumMedia = (props: { album: AlbumAddMusicCount, setSelectAlbum: React.Dispatch<React.SetStateAction<AlbumAddMusicCount | undefined>> }) => {
+    const { album, setSelectAlbum } = props;
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
+            <CardActionArea onClick={() => setSelectAlbum(props.album)}>
                 <CardMedia
                     component="img"
                     height="140"
@@ -145,5 +151,5 @@ export const AlbumMedia = (props: { album: AlbumAddMusicCount }) => {
                 </CardContent>
             </CardActionArea>
         </Card>
-    );
+    )
 }
