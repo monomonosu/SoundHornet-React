@@ -134,7 +134,7 @@ export const AlbumMedia = (props: { album: AlbumAddMusicCount }) => {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div" height={25}>
-                        {props.album.albumName}
+                        {props.album.albumName ? props.album.albumName : 'Unknown'}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         {props.album.musicsCount} sounds
