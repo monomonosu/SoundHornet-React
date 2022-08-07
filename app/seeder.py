@@ -3,7 +3,7 @@ from models import *
 
 
 def seeder():
-    models = [Music, Music_Photo, Group, Album, Genre, Setting]
+    models = [Music, Music_Photo, Group, Album, Album_Photo, Genre, Setting]
 
     for model in models:
         db.session.query(model).delete()
