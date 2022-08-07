@@ -56,6 +56,7 @@ export default function AlbumPage() {
                 </Grid>
                 <Grid item xs={1}></Grid>
             </Grid>
+            <div style={{ height: '150px' }}></div>
         </div >
     );
 }
@@ -133,7 +134,7 @@ export const AlbumMedia = (props: { album: AlbumAddMusicCount }) => {
                     alt="album-photo"
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div" height={25}>
+                    <Typography noWrap variant="h5" component="div" height={25}>
                         {props.album.albumName ? props.album.albumName : 'Unknown'}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
