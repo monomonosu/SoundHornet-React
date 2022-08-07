@@ -5,6 +5,7 @@ import axios from 'axios';
 // component
 import Header from './component/Header';
 import EditModal from './component/EditModal';
+import Footer from './component/Footer';
 import {
     Typography, Grid, Button, TextField, Card, CardActionArea, CardMedia, CardContent,
 } from '@mui/material'
@@ -57,6 +58,7 @@ export default function AlbumPage() {
                 <Grid item xs={1}></Grid>
             </Grid>
             <div style={{ height: '150px' }}></div>
+            <Footer></Footer>
         </div >
     );
 }
