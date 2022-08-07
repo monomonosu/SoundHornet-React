@@ -86,6 +86,19 @@ def getAlbums():
 def getAlbumsAttachedMusicCount():
     ''' アルバムに紐づいた音源数を追加して返す '''
     albums = Album.query.all()
+    unknown = Album(
+        id=None,
+        albumName=None,
+        album_photo=Album_Photo(
+            id=None,
+            albumId=None,
+            fileName=None,
+            fileType=None,
+            fileSize=None,
+            path=None,
+        )
+    )
+    albums.append(unknown)
     for album in albums:
         musicsCount = Music.query.filter(
             Music.album == album.albumName).count()
