@@ -6,10 +6,10 @@ import { useForm, SubmitHandler, } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMusics } from '../redux/musicsSlice';
 import { setCurrentSound } from '../redux/currentSoundSlice';
+import { setPlayingId } from '../redux/playingIdSlice';
 // MUIComponents
 import {
     Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Collapse, Typography, Checkbox, Modal, TextField, Rating, MenuItem, Button,
-    Backdrop, CircularProgress, Snackbar, Alert,
 } from '@mui/material';
 // Components
 import EditModal from './EditModal';
@@ -32,7 +32,6 @@ type MusicTableProp = {
     musics: Music[];
     checkedNumbers: number[];
     setCheckedNumbers: React.Dispatch<React.SetStateAction<number[]>>;
-    PlaySound(music: Music): void
     isDeleteButton: () => boolean;
     musicsDelete(ids: number[]): void
 }
@@ -40,7 +39,7 @@ type MusicTableProp = {
 export default function MusicTable(props: MusicTableProp) {
     const { musics, checkedNumbers } = props;
     const { setCheckedNumbers } = props
-    const { PlaySound, isDeleteButton, musicsDelete } = props;
+    const { isDeleteButton, musicsDelete } = props;
     return (
         <Grid container>
             <Grid item xs>
@@ -66,7 +65,7 @@ export default function MusicTable(props: MusicTableProp) {
                         </TableHead>
                         <TableBody>
                             {musics.map((music) => (
-                                <Row music={music} setCheckedNumbers={setCheckedNumbers} checkedNumbers={checkedNumbers} PlaySound={PlaySound} />
+                                <Row music={music} setCheckedNumbers={setCheckedNumbers} checkedNumbers={checkedNumbers} />
                             ))}
                         </TableBody>
                     </Table>
@@ -81,11 +80,12 @@ export default function MusicTable(props: MusicTableProp) {
 // テーブルRow
 export const Row = (props: {
     music: Music, setCheckedNumbers: React.Dispatch<React.SetStateAction<number[]>>, checkedNumbers: number[],
-    PlaySound(music: Music): void
 }) => {
     const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
     const [isDetail, setIsDetail] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
+    const dispatch = useDispatch();
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const check = event.target.checked;
         setIsChecked(check);
@@ -95,6 +95,28 @@ export const Row = (props: {
         else
             props.setCheckedNumbers(props.checkedNumbers.filter((value) => (value !== props.music.id)));
     };
+    function PlaySound(music: Music) {
+        let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName);
+        if (!!currentSound?.howl && currentSound?.howl?.playing() === true && currentSound?.filePath === resource?.filePath) {
+            currentSound.howl.pause();
+        }
+        else if (!!currentSound?.howl && currentSound?.filePath !== resource?.filePath) {
+            currentSound.howl.stop();
+            dispatch(setPlayingId(Number(resource?.howl?.play())));
+            if (!!resource) {
+                dispatch(setCurrentSound(resource));
+            }
+        }
+        else {
+            if (currentSound?.howl === undefined && !!resource) {
+                dispatch(setPlayingId(Number(resource?.howl?.play())));
+                dispatch(setCurrentSound(resource));
+            }
+            if (!!currentSound?.howl) {
+                currentSound.howl.play();
+            }
+        }
+    }
     return (
         <React.Fragment>
             <TableRow
@@ -117,9 +139,9 @@ export const Row = (props: {
                     <IconButton
                         aria-label="expand row"
                         size="small"
-                        onClick={() => props.PlaySound(props.music)}
+                        onClick={() => PlaySound(props.music)}
                     >
-                        {currentSound?.filePath === 'static/musics/' + props.music.fileName && currentSound?.howl?.playing() === true ?
+                        {currentSound?.filePath === 'static/musics/' + props.music.fileName && currentSound?.howl?.playing() ?
                             <PauseIcon style={{ color: 'white' }} /> : <PlayArrowIcon style={{ color: 'white' }} />}
                     </IconButton>
                 </TableCell>

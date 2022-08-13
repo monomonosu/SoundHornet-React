@@ -22,7 +22,6 @@ import type { MusicResource } from './types/musicResource';
 function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
   const musics: Music[] = useSelector((state: any) => state.musics.musics);
   const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const playingId: number = useSelector((state: any) => state.playingId.playingId);
@@ -75,27 +74,6 @@ function App() {
       }
     });
     dispatch(setSounds(newSounds));
-  }
-  function PlaySound(music: Music) {
-    let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName);
-    if (!!currentSound?.howl && currentSound?.howl?.playing() === true && currentSound?.filePath === resource?.filePath) {
-      currentSound.howl.pause();
-    }
-    else if (!!currentSound?.howl && currentSound?.filePath !== resource?.filePath) {
-      currentSound.howl.stop();
-      dispatch(setPlayingId(Number(resource?.howl?.play())));
-      if (!!resource)
-        dispatch(setCurrentSound(resource));
-    }
-    else {
-      if (currentSound?.howl === undefined && !!resource) {
-        dispatch(setCurrentSound(resource));
-        dispatch(setPlayingId(Number(resource?.howl?.play())));
-      }
-      if (!!currentSound?.howl) {
-        currentSound.howl.play();
-      }
-    }
   }
   // ↓オブジェクト生成時に付随するものなので、コンポーネント毎に持たせる必要はない。
   const afterPlayback = () => {
@@ -153,7 +131,6 @@ function App() {
         musics={musics}
         checkedNumbers={checkedNumbers}
         setCheckedNumbers={setCheckedNumbers}
-        PlaySound={PlaySound}
         isDeleteButton={isDeleteButton}
         musicsDelete={musicsDelete}></MusicTable>
 
