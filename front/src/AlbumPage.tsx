@@ -222,27 +222,6 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount }) => {
         });
         dispatch(setSounds(newSounds));
     }
-    function PlaySound(music: Music) {
-        let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName);
-        if (!!currentSound?.howl && currentSound?.howl?.playing() === true && currentSound?.filePath === resource?.filePath) {
-            currentSound.howl.pause();
-        }
-        else if (!!currentSound?.howl && currentSound?.filePath !== resource?.filePath) {
-            currentSound.howl.stop();
-            dispatch(setPlayingId(Number(resource?.howl?.play())));
-            if (!!resource)
-                dispatch(setCurrentSound(resource));
-        }
-        else {
-            if (currentSound?.howl === undefined && !!resource) {
-                dispatch(setCurrentSound(resource));
-                dispatch(setPlayingId(Number(resource?.howl?.play())));
-            }
-            if (!!currentSound?.howl) {
-                currentSound.howl.play();
-            }
-        }
-    }
     const afterPlayback = () => {
         const storeState = store.getState();
         const storeSounds: MusicResource[] = storeState.sounder.sounds;
@@ -292,7 +271,6 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount }) => {
                 musics={musics}
                 checkedNumbers={checkedNumbers}
                 setCheckedNumbers={setCheckedNumbers}
-                PlaySound={PlaySound}
                 isDeleteButton={isDeleteButton}
                 musicsDelete={musicsDelete} />
             <Footer></Footer>
