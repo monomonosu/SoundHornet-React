@@ -119,7 +119,7 @@ export const Row = (props: {
                         size="small"
                         onClick={() => props.PlaySound(props.music)}
                     >
-                        {currentSound.filePath === 'static/musics/' + props.music.fileName && currentSound.howl?.playing() === true ?
+                        {currentSound?.filePath === 'static/musics/' + props.music.fileName && currentSound?.howl?.playing() === true ?
                             <PauseIcon style={{ color: 'white' }} /> : <PlayArrowIcon style={{ color: 'white' }} />}
                     </IconButton>
                 </TableCell>

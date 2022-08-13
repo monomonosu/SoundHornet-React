@@ -46,7 +46,7 @@ export default function Footer() {
     const volume: number = useSelector((state: any) => state.volume.volume);
     const dispatch = useDispatch();
     useInterval(() => {
-        if (currentSound.howl === undefined) return;
+        if (!currentSound?.howl) return;
         dispatch(setCurrentSeek(currentSound?.howl.seek()));
     });
     useEffect(() => {
@@ -104,7 +104,7 @@ export default function Footer() {
             dispatch(setPlayingId(Number(nextSound?.howl?.play())));
         }
     }
-    if (!!currentSound.howl) {
+    if (!!currentSound?.howl) {
         return (
             <div>
                 <Card style={{ width: "100%", position: "fixed", height: "100px", bottom: "0", backgroundColor: '#161B22', }}>

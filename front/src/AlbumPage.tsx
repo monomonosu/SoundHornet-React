@@ -220,35 +220,25 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount }) => {
                 })
             }
         });
-        // if (!sounds.find(el => el.filePath === currentSound.filePath)) {
-        //     newSounds.push({
-        //         id: currentSound.id,
-        //         musicName: currentSound.musicName,
-        //         group: currentSound.group,
-        //         filePath: currentSound.filePath,
-        //         music_photo: currentSound.music_photo,
-        //         howl: currentSound.howl,
-        //     });
-        // }
         dispatch(setSounds(newSounds));
     }
     function PlaySound(music: Music) {
         let resource = sounds.find(el => el.filePath === 'static/musics/' + music.fileName);
-        if (!!currentSound.howl && currentSound.howl.playing() === true && currentSound.filePath === resource?.filePath) {
+        if (!!currentSound?.howl && currentSound?.howl?.playing() === true && currentSound?.filePath === resource?.filePath) {
             currentSound.howl.pause();
         }
-        else if (!!currentSound.howl && currentSound.filePath !== resource?.filePath) {
+        else if (!!currentSound?.howl && currentSound?.filePath !== resource?.filePath) {
             currentSound.howl.stop();
             dispatch(setPlayingId(Number(resource?.howl?.play())));
             if (!!resource)
                 dispatch(setCurrentSound(resource));
         }
         else {
-            if (currentSound.howl === undefined && !!resource) {
+            if (currentSound?.howl === undefined && !!resource) {
                 dispatch(setCurrentSound(resource));
                 dispatch(setPlayingId(Number(resource?.howl?.play())));
             }
-            if (!!currentSound.howl) {
+            if (!!currentSound?.howl) {
                 currentSound.howl.play();
             }
         }
