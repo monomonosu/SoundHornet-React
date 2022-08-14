@@ -267,6 +267,8 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount }) => {
 
     return (
         <div>
+            <Header></Header>
+            <div style={{ height: '5vh' }}></div>
             <MusicTable
                 musics={musics}
                 checkedNumbers={checkedNumbers}
