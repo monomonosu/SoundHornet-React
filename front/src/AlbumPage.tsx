@@ -11,6 +11,8 @@ import MusicTable from './component/MusicsTable';
 import {
     Typography, Grid, Button, TextField, Card, CardActionArea, CardMedia, CardContent,
 } from '@mui/material'
+// icons
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 // types
 import { Album } from './types/albums';
 import { AlbumAddMusicCount } from './types/albumsAddMusicCount';
@@ -77,7 +79,7 @@ export default function AlbumPage() {
         );
     }
     return (
-        <Album_MusicPage album={selectAlbum}></Album_MusicPage>
+        <Album_MusicPage album={selectAlbum} setSelectAlbum={setSelectAlbum}></Album_MusicPage>
     )
 }
 
@@ -102,7 +104,7 @@ export const ModalContent: React.FC = () => {
 
     function onChangeHandle(newValue: number) { }
 
-    const openButton = <Button variant="contained" size='large' style={{ textTransform: "none" }} onClick={modalOpen}>CreateAlbum</Button>;
+    const openButton = <Button color='success' variant="contained" size='large' style={{ textTransform: "none" }} onClick={modalOpen}>CreateAlbum</Button>;
     const editTitle = <Typography id="modal-modal-title" variant="h6" component="h2">CreateAlbum</Typography>
     const editContent = (
         <Typography id="modal-modal-description" sx={{
@@ -166,10 +168,9 @@ export const AlbumMedia = (props: { album: AlbumAddMusicCount, setSelectAlbum: R
     )
 }
 
-export const Album_MusicPage = (props: { album: AlbumAddMusicCount }) => {
-    const { album } = props;
+export const Album_MusicPage = (props: { album: AlbumAddMusicCount, setSelectAlbum: React.Dispatch<React.SetStateAction<AlbumAddMusicCount | undefined>> }) => {
+    const { album, setSelectAlbum } = props;
     const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-    const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
     const musics: Music[] = useSelector((state: any) => state.musics.musics);
     const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
     const playingId: number = useSelector((state: any) => state.playingId.playingId);
@@ -269,6 +270,13 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount }) => {
         <div>
             <Header></Header>
             <div style={{ height: '5vh' }}></div>
+            <Grid container>
+                <Grid item xs></Grid>
+                <Grid item xs={11}>
+                    <Button variant="contained" size='large' style={{ textTransform: "none" }} sx={{ mb: 3 }} onClick={() => { setSelectAlbum(undefined) }}><ArrowBackIcon />AlbumList</Button>
+                </Grid>
+                <Grid item xs></Grid>
+            </Grid>
             <MusicTable
                 musics={musics}
                 checkedNumbers={checkedNumbers}
