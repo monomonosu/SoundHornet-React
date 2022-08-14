@@ -73,7 +73,7 @@ export default function Header() {
                                     <Button><BoyIcon />　Group</Button>
                                 </Grid>
                                 <Grid container>
-                                    <Link to="/album-page">
+                                    <Link to="/album-page" style={{ textDecoration: 'none' }}>
                                         <Button><FilterIcon />　Album</Button>
                                     </Link>
                                 </Grid>
