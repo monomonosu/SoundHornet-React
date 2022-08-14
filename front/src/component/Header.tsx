@@ -73,7 +73,7 @@ export default function Header() {
                                     <Button><BoyIcon />　Group</Button>
                                 </Grid>
                                 <Grid container>
-                                    <Link to="/album-page">
+                                    <Link to="/album-page" style={{ textDecoration: 'none' }}>
                                         <Button><FilterIcon />　Album</Button>
                                     </Link>
                                 </Grid>
@@ -83,13 +83,11 @@ export default function Header() {
                                 <Grid container>
                                     <Button><FavoriteIcon />　Favorite</Button>
                                 </Grid>
-                                <Grid container>
-                                </Grid>
-                                <Grid container>
-                                    <Link to="/table-sample">
+                                {/* <Grid container>
+                                    <Link to="/table-sample" style={{ textDecoration: 'none' }}>
                                         <Button>　Sample</Button>
                                     </Link>
-                                </Grid>
+                                </Grid> */}
                             </Box>
                         </Drawer>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
