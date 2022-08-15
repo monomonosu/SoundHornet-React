@@ -15,23 +15,24 @@ import { setCurrentSound } from './redux/currentSoundSlice';
 import Header from './component/Header';
 import MusicTable from './component/MusicsTable';
 import Footer from './component/Footer';
+// hooks
+import useFetchMusics from './hooks/useFetchMusics';
 // types
-import type { Music } from './types/musics';
 import type { MusicResource } from './types/musicResource';
 
 function App() {
   // ステート
   const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-  const musics: Music[] = useSelector((state: any) => state.musics.musics);
   const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const playingId: number = useSelector((state: any) => state.playingId.playingId);
   const dispatch = useDispatch();
-
+  const { getMusics, musics } = useFetchMusics();
   useEffect(() => {
-    musicsGet();
+    getMusics('/musics');
     settingGet();
   }, [])
   useEffect(() => {
+    console.log('create');
     createHowler();
   }, [musics]);
   useEffect(() => {
@@ -93,13 +94,6 @@ function App() {
       dispatch(setCurrentSound(nextSound));
       dispatch(setPlayingId(Number(nextSound?.howl?.play())));
     }
-  }
-  function musicsGet() {
-    axios.get("/musics")
-      .then((response) => {
-        console.log(response.data);
-        dispatch(setMusics(response.data));
-      });
   }
   function musicsDelete(ids: number[]) {
     console.log(ids);
