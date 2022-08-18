@@ -16,16 +16,16 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 // types
 import { Album } from './types/albums';
 import { AlbumAddMusicCount } from './types/albumsAddMusicCount';
-import type { Music } from './types/musics';
 import type { MusicResource } from './types/musicResource';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
 import { store } from './redux/store';
 import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
-import { setMusics } from './redux/musicsSlice';
 import { setSounds } from './redux/soundsSlice';
 import { setCurrentSound } from './redux/currentSoundSlice';
+// hooks
+import useFetchMusics from './hooks/useFetchMusics';
 
 export default function AlbumPage() {
     const [albums, setAlbums] = useState<AlbumAddMusicCount[]>([]);
@@ -171,12 +171,12 @@ export const AlbumMedia = (props: { album: AlbumAddMusicCount, setSelectAlbum: R
 export const Album_MusicPage = (props: { album: AlbumAddMusicCount, setSelectAlbum: React.Dispatch<React.SetStateAction<AlbumAddMusicCount | undefined>> }) => {
     const { album, setSelectAlbum } = props;
     const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
-    const musics: Music[] = useSelector((state: any) => state.musics.musics);
     const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
     const playingId: number = useSelector((state: any) => state.playingId.playingId);
     const dispatch = useDispatch();
+    const { getMusics, musics } = useFetchMusics();
     useEffect(() => {
-        musicsGet();
+        getMusics("/musics/" + album.albumName);
         settingGet();
     }, []);
     useEffect(() => {
@@ -241,19 +241,12 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount, setSelectAlb
             dispatch(setPlayingId(Number(nextSound?.howl?.play())));
         }
     }
-    function musicsGet() {
-        axios.get("/musics/" + album.albumName)
-            .then((response) => {
-                console.log(response.data);
-                dispatch(setMusics(response.data));
-            });
-    }
     function musicsDelete(ids: number[]) {
         console.log(ids);
         axios.delete("/musics/" + ids)
             .then((response) => {
                 console.log(response.data);
-                dispatch(setMusics(response.data));
+                getMusics("/musics/" + album.albumName);
             })
         setCheckedNumbers([]);
     }

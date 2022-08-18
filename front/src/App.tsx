@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { store } from './redux/store';
 import { setPlayingId } from './redux/playingIdSlice';
 import { setVolume } from './redux/volumeSlice';
-import { setMusics } from './redux/musicsSlice';
 import { setSounds } from './redux/soundsSlice';
 import { setCurrentSound } from './redux/currentSoundSlice';
 // components
@@ -100,7 +99,7 @@ function App() {
     axios.delete("/musics/" + ids)
       .then((response) => {
         console.log(response.data);
-        dispatch(setMusics(response.data));
+        getMusics("/musics");
       })
     setCheckedNumbers([]);
   }
