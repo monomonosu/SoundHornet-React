@@ -72,25 +72,24 @@ def deleteMusics(ids):
             Music_Photo.query.filter(Music_Photo.musicId == id).delete()
 
     db.session.commit()
-    musics = Music.query.all()
-    return jsonify(MusicSchema(many=True).dump(musics))
+    return jsonify({"result": "OK", "id": id, "data": ""})
 
 
 # ---------- Groups ----------
-@app.route("/groups", methods=['GET'])
+@ app.route("/groups", methods=['GET'])
 def getGroups():
     groups = Group.query.all()
     return jsonify(GroupSchema(many=True).dump(groups))
 
 
 # ---------- Albums ----------
-@app.route("/albums", methods=['GET'])
+@ app.route("/albums", methods=['GET'])
 def getAlbums():
     albums = Album.query.all()
     return jsonify(AlbumSchema(many=True).dump(albums))
 
 
-@app.route("/albums-attached-music-count", methods=['GET'])
+@ app.route("/albums-attached-music-count", methods=['GET'])
 def getAlbumsAttachedMusicCount():
     ''' アルバムに紐づいた音源数を追加して返す '''
     albums = Album.query.all()
@@ -114,13 +113,13 @@ def getAlbumsAttachedMusicCount():
     return jsonify(AlbumAttachedMusicCountSchema(many=True).dump(albums))
 
 
-@app.route("/album/<id>", methods=['GET'])
+@ app.route("/album/<id>", methods=['GET'])
 def getAlbum(id):
     album = Album.query.filter(Album.id == id).one()
     return jsonify(AlbumSchema().dump(album))
 
 
-@app.route("/album", methods=['POST'])
+@ app.route("/album", methods=['POST'])
 def createAlbum():
     data = request.json
     newAlbum = Album(
