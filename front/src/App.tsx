@@ -31,7 +31,6 @@ function App() {
     settingGet();
   }, [])
   useEffect(() => {
-    console.log('create');
     createHowler();
   }, [musics]);
   useEffect(() => {
@@ -124,6 +123,7 @@ function App() {
         musics={musics}
         checkedNumbers={checkedNumbers}
         setCheckedNumbers={setCheckedNumbers}
+        musicsGetUrl={"/musics"}
         isDeleteButton={isDeleteButton}
         musicsDelete={musicsDelete}></MusicTable>
 
