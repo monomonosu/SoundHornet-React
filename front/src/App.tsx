@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useState } from 'react';
 import './App.css';
 import { Howl } from 'howler';
 import axios from "axios"
@@ -21,7 +20,6 @@ import type { MusicResource } from './types/musicResource';
 
 function App() {
   // ステート
-  const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
   const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
   const playingId: number = useSelector((state: any) => state.playingId.playingId);
   const dispatch = useDispatch();
@@ -33,13 +31,6 @@ function App() {
   useEffect(() => {
     createHowler();
   }, [musics]);
-  useEffect(() => {
-    console.log('選択中のid:' + checkedNumbers.toString());
-  }, [checkedNumbers]);
-  const isDeleteButton = () => {
-    if (checkedNumbers.length !== 0) return true;
-    else return false;
-  }
   function createHowler() {
     let newSounds: MusicResource[] = [];
     musics.forEach(music => {
@@ -93,15 +84,6 @@ function App() {
       dispatch(setPlayingId(Number(nextSound?.howl?.play())));
     }
   }
-  function musicsDelete(ids: number[]) {
-    console.log(ids);
-    axios.delete("/musics/" + ids)
-      .then((response) => {
-        console.log(response.data);
-        getMusics("/musics");
-      })
-    setCheckedNumbers([]);
-  }
   function settingGet() {
     axios.get("/settings")
       .then((response) => {
@@ -121,11 +103,8 @@ function App() {
       {/* テーブル */}
       <MusicTable
         musics={musics}
-        checkedNumbers={checkedNumbers}
-        setCheckedNumbers={setCheckedNumbers}
         musicsGetUrl={"/musics"}
-        isDeleteButton={isDeleteButton}
-        musicsDelete={musicsDelete}></MusicTable>
+      />
 
       <div style={{ height: '150px' }}></div>
 

@@ -170,7 +170,6 @@ export const AlbumMedia = (props: { album: AlbumAddMusicCount, setSelectAlbum: R
 
 export const Album_MusicPage = (props: { album: AlbumAddMusicCount, setSelectAlbum: React.Dispatch<React.SetStateAction<AlbumAddMusicCount | undefined>> }) => {
     const { album, setSelectAlbum } = props;
-    const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
     const sounds: MusicResource[] = useSelector((state: any) => state.sounder.sounds);
     const playingId: number = useSelector((state: any) => state.playingId.playingId);
     const dispatch = useDispatch();
@@ -182,13 +181,6 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount, setSelectAlb
     useEffect(() => {
         createHowler();
     }, [musics]);
-    useEffect(() => {
-        console.log('選択中のid:' + checkedNumbers.toString());
-    }, [checkedNumbers]);
-    const isDeleteButton = () => {
-        if (checkedNumbers.length !== 0) return true;
-        else return false;
-    }
     function createHowler() {
         let newSounds: MusicResource[] = [];
         musics.forEach(music => {
@@ -241,15 +233,6 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount, setSelectAlb
             dispatch(setPlayingId(Number(nextSound?.howl?.play())));
         }
     }
-    function musicsDelete(ids: number[]) {
-        console.log(ids);
-        axios.delete("/musics/" + ids)
-            .then((response) => {
-                console.log(response.data);
-                getMusics("/musics/" + album.albumName);
-            })
-        setCheckedNumbers([]);
-    }
     function settingGet() {
         axios.get("/settings")
             .then((response) => {
@@ -272,11 +255,8 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount, setSelectAlb
             </Grid>
             <MusicTable
                 musics={musics}
-                checkedNumbers={checkedNumbers}
-                setCheckedNumbers={setCheckedNumbers}
                 musicsGetUrl={"/musics/" + album.albumName}
-                isDeleteButton={isDeleteButton}
-                musicsDelete={musicsDelete} />
+            />
             <Footer></Footer>
         </div>
     )
