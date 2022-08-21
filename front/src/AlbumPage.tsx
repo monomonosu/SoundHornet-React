@@ -274,6 +274,7 @@ export const Album_MusicPage = (props: { album: AlbumAddMusicCount, setSelectAlb
                 musics={musics}
                 checkedNumbers={checkedNumbers}
                 setCheckedNumbers={setCheckedNumbers}
+                musicsGetUrl={"/musics/" + album.albumName}
                 isDeleteButton={isDeleteButton}
                 musicsDelete={musicsDelete} />
             <Footer></Footer>

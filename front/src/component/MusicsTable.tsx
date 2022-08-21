@@ -27,10 +27,13 @@ import type { Group } from '../types/groups'
 import type { Album } from '../types/albums'
 import type { Genre } from '../types/genres'
 import type { MusicResource } from '../types/musicResource';
+// hooks
+import useFetchMusics from '../hooks/useFetchMusics';
 
 type MusicTableProp = {
     musics: Music[];
     checkedNumbers: number[];
+    musicsGetUrl: string;
     setCheckedNumbers: React.Dispatch<React.SetStateAction<number[]>>;
     isDeleteButton: () => boolean;
     musicsDelete(ids: number[]): void
@@ -38,7 +41,8 @@ type MusicTableProp = {
 
 export default function MusicTable(props: MusicTableProp) {
     const { musics, checkedNumbers } = props;
-    const { setCheckedNumbers } = props
+    const { setCheckedNumbers } = props;
+    const { musicsGetUrl } = props;
     const { isDeleteButton, musicsDelete } = props;
     return (
         <Grid container>
@@ -65,7 +69,7 @@ export default function MusicTable(props: MusicTableProp) {
                         </TableHead>
                         <TableBody>
                             {musics.map((music) => (
-                                <Row music={music} setCheckedNumbers={setCheckedNumbers} checkedNumbers={checkedNumbers} />
+                                <Row music={music} setCheckedNumbers={setCheckedNumbers} checkedNumbers={checkedNumbers} musicsGetUrl={musicsGetUrl} />
                             ))}
                         </TableBody>
                     </Table>
@@ -79,7 +83,7 @@ export default function MusicTable(props: MusicTableProp) {
 
 // テーブルRow
 export const Row = (props: {
-    music: Music, setCheckedNumbers: React.Dispatch<React.SetStateAction<number[]>>, checkedNumbers: number[],
+    music: Music, setCheckedNumbers: React.Dispatch<React.SetStateAction<number[]>>, checkedNumbers: number[], musicsGetUrl: string,
 }) => {
     const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
     const [isDetail, setIsDetail] = useState(false);
@@ -181,7 +185,7 @@ export const Row = (props: {
                                         <TableCell style={{ color: "white" }}>{props.music.createdAt.toString()}</TableCell>
                                         <TableCell style={{ color: "white" }}>{props.music.updatedAt.toString()}</TableCell>
                                         <TableCell>
-                                            <ModalContent music={props.music} />
+                                            <ModalContent music={props.music} musicsGetUrl={props.musicsGetUrl} />
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -194,7 +198,7 @@ export const Row = (props: {
     )
 }
 
-export const ModalContent = (props: { music: Music }) => {
+export const ModalContent = (props: { music: Music, musicsGetUrl: string }) => {
     const dispatch = useDispatch();
     const currentSound: MusicResource = useSelector((state: any) => state.currentSounder.currentSound);
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -207,6 +211,7 @@ export const ModalContent = (props: { music: Music }) => {
     const modalOpen = () => setIsOpenModal(true);
     const modalClose = () => setIsOpenModal(false);
     const { register, handleSubmit } = useForm<Music>();
+    const { getMusics } = useFetchMusics();
 
     useEffect(() => {
         axios.get("/groups")
@@ -240,10 +245,7 @@ export const ModalContent = (props: { music: Music }) => {
                 console.log(response);
             })
         // Musics更新
-        await axios.get('/musics')
-            .then((response) => {
-                dispatch(setMusics(response.data));
-            })
+        getMusics(props.musicsGetUrl);
         await axios.get('/music/' + props.music.id)
             .then((response) => {
                 let copyCurrentSound: MusicResource = {
