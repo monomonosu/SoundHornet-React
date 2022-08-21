@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useForm, SubmitHandler, } from 'react-hook-form';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { setMusics } from '../redux/musicsSlice';
 import { setCurrentSound } from '../redux/currentSoundSlice';
 import { setPlayingId } from '../redux/playingIdSlice';
 // MUIComponents
@@ -32,18 +31,31 @@ import useFetchMusics from '../hooks/useFetchMusics';
 
 type MusicTableProp = {
     musics: Music[];
-    checkedNumbers: number[];
     musicsGetUrl: string;
-    setCheckedNumbers: React.Dispatch<React.SetStateAction<number[]>>;
-    isDeleteButton: () => boolean;
-    musicsDelete(ids: number[]): void
 }
 
 export default function MusicTable(props: MusicTableProp) {
-    const { musics, checkedNumbers } = props;
-    const { setCheckedNumbers } = props;
+    const { musics } = props;
     const { musicsGetUrl } = props;
-    const { isDeleteButton, musicsDelete } = props;
+    const [checkedNumbers, setCheckedNumbers] = useState<number[]>([]);
+    const { getMusics } = useFetchMusics();
+
+    const isDeleteButton = () => {
+        if (checkedNumbers.length !== 0) return true;
+        else return false;
+    }
+    function musicsDelete(ids: number[]) {
+        console.log(ids);
+        axios.delete("/musics/" + ids)
+            .then((response) => {
+                console.log(response.data);
+                getMusics(musicsGetUrl);
+            })
+        setCheckedNumbers([]);
+    }
+    useEffect(() => {
+        console.log('選択中のid:' + checkedNumbers.toString());
+    }, [checkedNumbers]);
     return (
         <Grid container>
             <Grid item xs>
