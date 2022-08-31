@@ -26,20 +26,10 @@ import { setSounds } from './redux/soundsSlice';
 import { setCurrentSound } from './redux/currentSoundSlice';
 // hooks
 import useFetchMusics from './hooks/useFetchMusics';
+import useFetchAlbums from './hooks/useFetchAlbums';
 
 export default function AlbumPage() {
-    const [albums, setAlbums] = useState<AlbumAddMusicCount[]>([]);
     const [selectAlbum, setSelectAlbum] = useState<AlbumAddMusicCount>();
-    useEffect(() => {
-        albumsGet();
-    }, [])
-    function albumsGet() {
-        axios.get("/albums-attached-music-count")
-            .then((response) => {
-                console.log(response.data);
-                setAlbums(response.data);
-            });
-    }
     if (!selectAlbum) {
         return (
             <div>
@@ -63,13 +53,7 @@ export default function AlbumPage() {
                         <div>
                             <h2 style={{ color: "white" }}>AlbumList</h2>
                         </div>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 3, md: 4 }}>
-                            {albums.map((album: AlbumAddMusicCount, index) => (
-                                <Grid item xs={1} sm={1} md={1} key={index}>
-                                    <AlbumMedia album={(album)} setSelectAlbum={setSelectAlbum} />
-                                </Grid>
-                            ))}
-                        </Grid>
+                        <AlbumIndex setSelectAlbum={setSelectAlbum} />
                     </Grid>
                     <Grid item xs={1}></Grid>
                 </Grid>
@@ -142,6 +126,23 @@ export const ModalContent: React.FC = () => {
             />
         </div>
     );
+}
+
+export const AlbumIndex = (props: { setSelectAlbum: React.Dispatch<React.SetStateAction<AlbumAddMusicCount | undefined>> }) => {
+    const { setSelectAlbum } = props;
+    const { albums, getAlbums } = useFetchAlbums();
+    useEffect(() => {
+        getAlbums('/albums-attached-music-count');
+    }, [])
+    return (
+        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 3, md: 4 }}>
+            {albums.map((album: AlbumAddMusicCount, index) => (
+                <Grid item xs={1} sm={1} md={1} key={index}>
+                    <AlbumMedia album={(album)} setSelectAlbum={setSelectAlbum} />
+                </Grid>
+            ))}
+        </Grid>
+    )
 }
 
 export const AlbumMedia = (props: { album: AlbumAddMusicCount, setSelectAlbum: React.Dispatch<React.SetStateAction<AlbumAddMusicCount | undefined>> }) => {
