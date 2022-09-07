@@ -30,6 +30,7 @@ import useFetchAlbums from './hooks/useFetchAlbums';
 
 export default function AlbumPage() {
     const [selectAlbum, setSelectAlbum] = useState<AlbumAddMusicCount>();
+    const { albums, getAlbums } = useFetchAlbums();
     if (!selectAlbum) {
         return (
             <div>
@@ -42,7 +43,7 @@ export default function AlbumPage() {
                 <Grid container justifyContent="flex-end">
                     <Grid item xs={1}></Grid>
                     <Grid>
-                        <ModalContent />
+                        <ModalContent getAlbums={getAlbums} />
                     </Grid>
                     <Grid item xs={1}></Grid>
                 </Grid>
@@ -53,7 +54,7 @@ export default function AlbumPage() {
                         <div>
                             <h2 style={{ color: "white" }}>AlbumList</h2>
                         </div>
-                        <AlbumIndex setSelectAlbum={setSelectAlbum} />
+                        <AlbumIndex setSelectAlbum={setSelectAlbum} albums={albums} getAlbums={getAlbums} />
                     </Grid>
                     <Grid item xs={1}></Grid>
                 </Grid>
@@ -67,7 +68,8 @@ export default function AlbumPage() {
     )
 }
 
-export const ModalContent: React.FC = () => {
+export const ModalContent = (props: { getAlbums: (url: string) => Promise<void> }) => {
+    const { getAlbums } = props;
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isProgress, setIsProgress] = useState(false);
     const [isSnackOpen, setIsSnackOpen] = useState(false);
@@ -80,6 +82,7 @@ export const ModalContent: React.FC = () => {
         await axios.post('/album', data)
             .then((response) => {
                 console.log(response);
+                getAlbums('/albums-attached-music-count');
             })
         setIsProgress(false);
         setIsOpenModal(false);
@@ -128,9 +131,13 @@ export const ModalContent: React.FC = () => {
     );
 }
 
-export const AlbumIndex = (props: { setSelectAlbum: React.Dispatch<React.SetStateAction<AlbumAddMusicCount | undefined>> }) => {
+export const AlbumIndex = (props: {
+    setSelectAlbum: React.Dispatch<React.SetStateAction<AlbumAddMusicCount | undefined>>,
+    albums: AlbumAddMusicCount[],
+    getAlbums: (url: string) => Promise<void>
+}) => {
     const { setSelectAlbum } = props;
-    const { albums, getAlbums } = useFetchAlbums();
+    const { albums, getAlbums } = props;
     useEffect(() => {
         getAlbums('/albums-attached-music-count');
     }, [])
