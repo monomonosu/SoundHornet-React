@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import "../styles/main.scss";
 import {
     AppBar, Toolbar, IconButton, Typography, Button, Box, Grid, Paper, Drawer, Popper,
 } from '@mui/material';
@@ -51,7 +52,7 @@ export default function Header() {
         <div className="Header">
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static">
-                    <Toolbar style={{ backgroundColor: "#161B22" }}>
+                    <Toolbar className='-bgdarkgray'>
                         <IconButton
                             size="large"
                             edge="start"
