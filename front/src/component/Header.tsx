@@ -52,7 +52,7 @@ export default function Header() {
         <div className="Header">
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static">
-                    <Toolbar className='-bgdarkgray'>
+                    <Toolbar className='-bggraydark'>
                         <IconButton
                             size="large"
                             edge="start"
