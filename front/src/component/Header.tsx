@@ -52,7 +52,7 @@ export default function Header() {
         <div className="Header">
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="static">
-                    <Toolbar className='-bgdarkgray'>
+                    <Toolbar className='-bggraydark'>
                         <IconButton
                             size="large"
                             edge="start"
@@ -69,12 +69,12 @@ export default function Header() {
                             onClose={drawerOpen}
                         >
                             <Box style={{ backgroundColor: "#161B22", height: '100vh' }}>
-                                <Box style={{ height: '9vh' }}></Box>
+                                <Box className='-h9vh'></Box>
                                 <Grid container>
                                     <Button><BoyIcon />　Group</Button>
                                 </Grid>
                                 <Grid container>
-                                    <Link to="/album-page" style={{ textDecoration: 'none' }}>
+                                    <Link className='-textborderoff' to="/album-page">
                                         <Button><FilterIcon />　Album</Button>
                                     </Link>
                                 </Grid>
@@ -92,7 +92,7 @@ export default function Header() {
                             </Box>
                         </Drawer>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                            <Link to="/" style={{ textDecoration: 'none' }}>
+                            <Link className='-textborderoff' to="/">
                                 <Button size='large' style={{ textTransform: "none", color: "white" }}>Sound</Button>
                             </Link>
                         </Typography>
