@@ -74,7 +74,7 @@ export default function Header() {
                                     <Button><BoyIcon />　Group</Button>
                                 </Grid>
                                 <Grid container>
-                                    <Link className='-textupperoff' to="/album-page">
+                                    <Link className='-textborderoff' to="/album-page">
                                         <Button><FilterIcon />　Album</Button>
                                     </Link>
                                 </Grid>
@@ -92,7 +92,7 @@ export default function Header() {
                             </Box>
                         </Drawer>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-                            <Link className='-textupperoff' to="/">
+                            <Link className='-textborderoff' to="/">
                                 <Button size='large' style={{ textTransform: "none", color: "white" }}>Sound</Button>
                             </Link>
                         </Typography>
