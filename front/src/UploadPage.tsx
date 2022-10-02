@@ -1,5 +1,7 @@
+// components
 import { Grid } from "@mui/material";
 import Header from "./component/Header";
+import PageTitle from "./component/PageTitle";
 import Footer from "./component/Footer";
 import 'react-dropzone-uploader/dist/styles.css'
 import Dropzone from 'react-dropzone-uploader'
@@ -44,12 +46,11 @@ const UploadPage = () => {
 
     return (
         <div>
-            <Header></Header>
+            <Header />
+            <PageTitle title="Import" />
             <Grid container>
-                <Grid item xs>
-                </Grid>
+                <Grid item xs></Grid>
                 <Grid item xs={11}>
-                    <h1 style={{ color: "white" }}>Import</h1>
                     <Dropzone
                         getUploadParams={getUploadParams}
                         onChangeStatus={handleChangeStatus}
@@ -57,8 +58,7 @@ const UploadPage = () => {
                         accept="audio/*"
                     />
                 </Grid>
-                <Grid item xs>
-                </Grid>
+                <Grid item xs></Grid>
             </Grid>
             <div style={{ height: '150px' }}></div>
             {/* フッター */}

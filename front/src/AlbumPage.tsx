@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Howl } from 'howler';
 // component
 import Header from './component/Header';
+import PageTitle from './component/PageTitle';
 import EditModal from './component/EditModal';
 import Footer from './component/Footer';
 import MusicTable from './component/MusicsTable';
@@ -35,11 +36,7 @@ export default function AlbumPage() {
         return (
             <div>
                 <Header></Header>
-                <Grid container>
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs><h1 style={{ color: "white" }}>Album</h1></Grid>
-                    <Grid item xs={1}></Grid>
-                </Grid>
+                <PageTitle title='Albums'></PageTitle>
                 <Grid container justifyContent="flex-end">
                     <Grid item xs={1}></Grid>
                     <Grid>
