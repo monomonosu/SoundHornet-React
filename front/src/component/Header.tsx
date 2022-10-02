@@ -68,7 +68,7 @@ export default function Header() {
                             open={isOpenDrawer}
                             onClose={drawerOpen}
                         >
-                            <Box style={{ backgroundColor: "#161B22", height: '100vh' }}>
+                            <Box className='o-header-sidebar'>
                                 <Box className='-h9vh'></Box>
                                 <Grid container>
                                     <Button><BoyIcon />　Group</Button>
@@ -93,7 +93,7 @@ export default function Header() {
                         </Drawer>
                         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                             <Link className='-textborderoff' to="/">
-                                <Button size='large' style={{ textTransform: "none", color: "white" }}>Sound</Button>
+                                <Button className='c-button-normal' size='large'>Sound</Button>
                             </Link>
                         </Typography>
                         <Link to="/download-page">
