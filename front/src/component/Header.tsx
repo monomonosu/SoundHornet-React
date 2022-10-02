@@ -68,7 +68,7 @@ export default function Header() {
                             open={isOpenDrawer}
                             onClose={drawerOpen}
                         >
-                            <Box style={{ backgroundColor: "#161B22", height: '100vh' }}>
+                            <Box className='o-header-sidebar'>
                                 <Box className='-h9vh'></Box>
                                 <Grid container>
                                     <Button><BoyIcon />　Group</Button>
