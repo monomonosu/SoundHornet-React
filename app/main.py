@@ -10,6 +10,7 @@ import math
 @app.route('/album-page')
 @app.route('/genre-page')
 @app.route('/favorite-page')
+@app.route('/photo-page')
 @app.route('/download-page')
 @app.route('/import-page')
 @app.route('/setting-page')

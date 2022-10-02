@@ -11,6 +11,7 @@ import BoyIcon from '@mui/icons-material/Boy';
 import FilterIcon from '@mui/icons-material/Filter';
 import SellIcon from '@mui/icons-material/Sell';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Link } from "react-router-dom";
 
 export default function Header() {
@@ -83,6 +84,11 @@ export default function Header() {
                                 </Grid>
                                 <Grid container>
                                     <Button><FavoriteIcon />　Favorite</Button>
+                                </Grid>
+                                <Grid container>
+                                    <Link className='-textborderoff' to="/photo-page">
+                                        <Button className='-textupperoff'><AddPhotoAlternateIcon />　AddPhoto</Button>
+                                    </Link>
                                 </Grid>
                                 {/* <Grid container>
                                     <Link to="/table-sample" style={{ textDecoration: 'none' }}>
