@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route, } from "react-router-dom";
 import AlbumPage from './AlbumPage';
+import PhotoPage from './PhotoPage';
 import UploadPage from './UploadPage';
 import DownloadPage from './DownloadPage';
 import SettingPage from './SettingPage';
@@ -22,6 +23,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path='album-page' element={<AlbumPage />}></Route>
+        <Route path='photo-page' element={<PhotoPage />}></Route>
         <Route path="import-page" element={<UploadPage />} />
         <Route path="download-page" element={<DownloadPage />} />
         <Route path="setting-page" element={<SettingPage />} />

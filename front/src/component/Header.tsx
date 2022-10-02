@@ -11,6 +11,7 @@ import BoyIcon from '@mui/icons-material/Boy';
 import FilterIcon from '@mui/icons-material/Filter';
 import SellIcon from '@mui/icons-material/Sell';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Link } from "react-router-dom";
 
 export default function Header() {
@@ -71,18 +72,23 @@ export default function Header() {
                             <Box className='o-header-sidebar'>
                                 <Box className='-h9vh'></Box>
                                 <Grid container>
-                                    <Button><BoyIcon />　Group</Button>
+                                    <Button className='-textupperoff'><BoyIcon />　Group</Button>
                                 </Grid>
                                 <Grid container>
                                     <Link className='-textborderoff' to="/album-page">
-                                        <Button><FilterIcon />　Album</Button>
+                                        <Button className='-textupperoff'><FilterIcon />　Album</Button>
                                     </Link>
                                 </Grid>
                                 <Grid container>
-                                    <Button><SellIcon />　Genre</Button>
+                                    <Button className='-textupperoff'><SellIcon />　Genre</Button>
                                 </Grid>
                                 <Grid container>
-                                    <Button><FavoriteIcon />　Favorite</Button>
+                                    <Button className='-textupperoff'><FavoriteIcon />　Favorite</Button>
+                                </Grid>
+                                <Grid container>
+                                    <Link className='-textborderoff' to="/photo-page">
+                                        <Button className='-textupperoff'><AddPhotoAlternateIcon />　AddPhoto</Button>
+                                    </Link>
                                 </Grid>
                                 {/* <Grid container>
                                     <Link to="/table-sample" style={{ textDecoration: 'none' }}>
