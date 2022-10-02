@@ -11,6 +11,7 @@ import { setSounds } from './redux/soundsSlice';
 import { setCurrentSound } from './redux/currentSoundSlice';
 // components
 import Header from './component/Header';
+import PageTitle from './component/PageTitle';
 import MusicTable from './component/MusicsTable';
 import Footer from './component/Footer';
 // hooks
@@ -97,8 +98,7 @@ function App() {
     <div className="App">
 
       <Header></Header>
-
-      <div style={{ height: '5vh' }}></div>
+      <PageTitle title='AllSounds'></PageTitle>
 
       {/* テーブル */}
       <MusicTable

@@ -1,5 +1,7 @@
 import { useState } from "react";
+// components
 import Header from "./component/Header";
+import PageTitle from "./component/PageTitle";
 import { Box, Button, TextField, Grid, createTheme, ThemeProvider } from "@mui/material";
 import { grey } from "@mui/material/colors";
 
@@ -17,12 +19,12 @@ const DownloadPage = () => {
         }
     });
     return (
-        <div>
-            <Header></Header>
+        <>
+            <Header />
+            <PageTitle title="DownLoad" />
             <Grid container>
                 <Grid item xs></Grid>
                 <Grid item xs={11}>
-                    <h1 style={{ color: "white" }}>Download</h1>
                     <p style={{ color: "white" }}>Please do not download audio from copyrighted videos.
                         Please only download material that uses a Creative Commons license.
                         Please do not redistribute the downloaded audio, and keep it for personal use only.</p>
@@ -64,7 +66,7 @@ const DownloadPage = () => {
                 </Grid>
                 <Grid item xs></Grid>
             </Grid>
-        </div>
+        </>
     )
 }
 
