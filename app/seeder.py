@@ -109,4 +109,5 @@ def seeder():
 
 
 if __name__ == '__main__':
-    seeder()
+    with app.app_context():
+        seeder()
