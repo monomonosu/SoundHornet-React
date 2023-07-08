@@ -1,6 +1,20 @@
 # SoundHornet
 Multifunctional sound player
 
+## セットアップ
+
+### ビルド
+docker
+- `docker build -t <image-name>:<version> .`
+   - dbが無いことによるエラーが出る場合はdatabaseディレクトリで`database.sqlite`を作成
+- `docker run -d -it --name <container-name> -p <port>:80 <image-name>:<version>`
+
+### デベロップ
+front
+- `cd front`
+- `npm install`
+- `npm run dev`
+
 ## 初期データ・音楽で使用している楽曲に関して
 当アプリでは初期データ・初期楽曲として著作権フリーの魔王魂様の楽曲を使用しております。<br>
 URL:https://maou.audio

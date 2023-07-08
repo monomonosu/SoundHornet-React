@@ -17,7 +17,7 @@ convention = {
 }
 
 # config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////app/database/database.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(app, metadata=metadata)
