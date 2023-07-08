@@ -7,7 +7,7 @@ Multifunctional sound player
 docker
 - `docker build -t <image-name>:<version> .`
    - dbが無いことによるエラーが出る場合はdatabaseディレクトリで`database.sqlite`を作成
-- `apt update`
+- `docker run -d -it --name <container-name> -p <port>:80 <image-name>:<version>`
 
 ### デベロップ
 front
